@@ -17,6 +17,8 @@
 
   :root {
     --bg: #090b10;
+    --bg-image: none;
+    --bg-image-position: center center;
     --surface: rgba(8, 10, 16, 0.62);
     --surface-hover: rgba(10, 12, 18, 0.78);
     --text: #f7f3ef;
@@ -35,11 +37,7 @@
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background-color: #090b10;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+    background-color: transparent;
     color: var(--text);
     min-height: 100vh;
     position: relative;
@@ -50,10 +48,11 @@
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at center, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.48) 58%, rgba(0, 0, 0, 0.9) 100%),
-      linear-gradient(180deg, rgba(7, 9, 12, 0.14) 0%, rgba(7, 9, 12, 0.76) 100%);
+      var(--bg-image) var(--bg-image-position) / cover no-repeat fixed,
+      radial-gradient(circle at center, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.56) 58%, rgba(0, 0, 0, 0.92) 100%),
+      linear-gradient(180deg, rgba(7, 9, 12, 0.22) 0%, rgba(7, 9, 12, 0.8) 100%);
     pointer-events: none;
-    z-index: -2;
+    z-index: 0;
   }
 
   body::after {
@@ -61,15 +60,15 @@
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at top left, var(--accent-soft) 0%, rgba(0, 0, 0, 0) 30%),
-      radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 34%),
-      linear-gradient(90deg, rgba(6, 8, 12, 0.62) 0%, rgba(6, 8, 12, 0.14) 38%, rgba(6, 8, 12, 0.52) 100%);
+      radial-gradient(circle at top left, var(--accent-soft) 0%, rgba(0, 0, 0, 0) 28%),
+      radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.56) 0%, rgba(0, 0, 0, 0) 34%),
+      linear-gradient(90deg, rgba(6, 8, 12, 0.84) 0%, rgba(6, 8, 12, 0.44) 32%, rgba(6, 8, 12, 0.22) 52%, rgba(6, 8, 12, 0.6) 100%);
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
   }
 
   html.theme-racing-bulls body {
-    background-image: url('./2026-Racing-Bulls-VCARB-03-003-2160.webp');
+    --bg-image: url('./2026-Racing-Bulls-VCARB-03-003-2160.webp');
     --accent: #ff7053;
     --accent-soft: rgba(255, 112, 83, 0.18);
     --surface: rgba(10, 10, 14, 0.62);
@@ -79,7 +78,7 @@
   }
 
   html.theme-alpine body {
-    background-image: url('./2026-Alpine-A526-001-2160.webp');
+    --bg-image: url('./2026-Alpine-A526-001-2160.webp');
     --accent: #ff5ca8;
     --accent-soft: rgba(255, 92, 168, 0.16);
     --surface: rgba(7, 10, 18, 0.66);
@@ -94,7 +93,7 @@
   .section,
   footer {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 
   nav {
@@ -107,17 +106,41 @@
     padding: 0 2.5rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 1rem;
     height: 62px;
   }
 
   .nav-logo {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(247, 243, 239, 0.18);
+    background: rgba(247, 243, 239, 0.06);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+    overflow: hidden;
+  }
+
+  .nav-title {
+    margin-right: auto;
     font-family: 'DM Serif Display', serif;
     font-size: 18px;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
     color: var(--text);
     text-decoration: none;
     text-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    white-space: nowrap;
+  }
+
+  .nav-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .nav-links {
@@ -159,6 +182,14 @@
   .nav-toggle svg {
     width: 20px;
     height: 20px;
+  }
+
+  .nav-toggle-avatar {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
   }
 
   .mobile-menu {
@@ -211,6 +242,17 @@
     animation-delay: 0.08s;
   }
 
+  .hero-shell {
+    max-width: 540px;
+    padding: 2rem 2rem 1.6rem;
+    border: 1px solid rgba(247, 243, 239, 0.12);
+    background: linear-gradient(180deg, rgba(8, 10, 16, 0.54) 0%, rgba(8, 10, 16, 0.32) 100%);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 28px;
+  }
+
   .hero-tag {
     display: inline-block;
     font-size: 11px;
@@ -233,7 +275,7 @@
     letter-spacing: -0.05em;
     color: var(--text);
     margin-bottom: 1.4rem;
-    text-shadow: 0 14px 38px rgba(0, 0, 0, 0.38);
+    text-shadow: 0 14px 38px rgba(0, 0, 0, 0.52);
   }
 
   .hero h1 em {
@@ -248,7 +290,7 @@
     max-width: 600px;
     font-weight: 400;
     margin-bottom: 2.5rem;
-    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.52);
   }
 
   .hero-actions {
@@ -275,12 +317,13 @@
     color: #0b0d13;
     font-weight: 700;
     letter-spacing: 0.01em;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
   }
 
   .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
   .btn-ghost {
-    background: rgba(8, 10, 16, 0.24);
+    background: rgba(8, 10, 16, 0.42);
     color: var(--text);
     font-weight: 500;
     border: 1px solid var(--border);
@@ -485,9 +528,16 @@
   .section:nth-of-type(4) { animation-delay: 0.5s; }
 
   @media (max-width: 768px) {
+    html.theme-racing-bulls body {
+      --bg-image: url('./2026-Racing-Bulls-VCARB-mobile.webp');
+    }
+
+    html.theme-alpine body {
+      --bg-image: url('./2026-Alpine-A526-mobile.webp');
+    }
+
     body {
-      background-attachment: scroll;
-      background-position: center top;
+      --bg-image-position: center top;
     }
 
     nav {
@@ -499,12 +549,50 @@
       display: none;
     }
 
+    .nav-title {
+      font-size: 16px;
+      max-width: calc(100vw - 130px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-logo {
+      display: none;
+    }
+
     .nav-toggle {
       display: inline-flex;
+      position: relative;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .nav-toggle-avatar {
+      display: block;
+    }
+
+    .nav-toggle svg {
+      position: absolute;
+      right: -1px;
+      bottom: -1px;
+      width: 20px;
+      height: 20px;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(8, 10, 16, 0.88);
+      border: 1px solid rgba(247, 243, 239, 0.18);
     }
 
     .hero {
       padding: 5rem 1.25rem 3.5rem;
+    }
+
+    .hero-shell {
+      max-width: 100%;
+      padding: 1.5rem 1.25rem 1.35rem;
+      border-radius: 22px;
     }
 
     .hero-bio {
@@ -551,6 +639,11 @@
   }
 
   @media (max-width: 480px) {
+    .bg-blur {
+      filter: blur(14px) saturate(0.9) brightness(0.92);
+      transform: scale(1.06);
+    }
+
     .hero {
       padding-top: 4.25rem;
     }
@@ -568,6 +661,16 @@
     }
   }
 
+  @media (min-width: 769px) and (max-width: 1366px) {
+    html.theme-racing-bulls body {
+      --bg-image: url('./2026-Racing-Bulls-VCARB-03-003-2160-1280.webp');
+    }
+
+    html.theme-alpine body {
+      --bg-image: url('./2026-Alpine-A526-001-2160-1280.webp');
+    }
+  }
+
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -576,19 +679,23 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="#">AV</a>
+  <a class="nav-title" href="#">Abhimanyu Vishwakarma</a>
   <ul class="nav-links">
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+    <img class="nav-toggle-avatar" src="./mrAbhimanyu.png" alt="Open menu">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
       <path d="M4 7h16"></path>
       <path d="M4 12h16"></path>
       <path d="M4 17h16"></path>
     </svg>
   </button>
+  <a class="nav-logo" href="#" aria-label="Abhimanyu Vishwakarma home">
+    <img class="nav-avatar" src="./mrAbhimanyu.png" alt="Abhimanyu Vishwakarma">
+  </a>
 </nav>
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
@@ -599,22 +706,24 @@
 </div>
 
 <section class="hero">
-  <span class="hero-tag">Available for opportunities</span>
-  <h1>Abhimanyu<br><em>Vishwakarma</em></h1>
-  <p class="hero-bio">
-    Backend engineer with a passion for building scalable systems and clean APIs. I work with Java, Spring Boot, and cloud infrastructure to turn complex problems into reliable software, and I am always learning what comes next.
-  </p>
-  <div class="hero-actions">
-    <a href="mailto:abhimanyuvishwakarma9228@gmail.com" class="btn-primary">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-      </svg>
-      Get in touch
-    </a>
-    <a href="https://github.com/mrAbhimanyuVishwakarma" target="_blank" rel="noopener noreferrer" class="btn-ghost">
-      View GitHub →
-    </a>
+  <div class="hero-shell">
+    <span class="hero-tag">Available for opportunities</span>
+    <h1>Abhimanyu<br><em>Vishwakarma</em></h1>
+    <p class="hero-bio">
+      Backend engineer with a passion for building scalable systems and clean APIs. I work with Java, Spring Boot, and cloud infrastructure to turn complex problems into reliable software, and I am always learning what comes next.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:abhimanyuvishwakarma9228@gmail.com" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
+        Get in touch
+      </a>
+      <a href="https://github.com/mrAbhimanyuVishwakarma" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+        View GitHub →
+      </a>
+    </div>
   </div>
 </section>
 
@@ -625,15 +734,12 @@
   <div class="skills-grid">
     <span class="skill-tag">Java</span>
     <span class="skill-tag">Spring Boot</span>
-    <span class="skill-tag">Python</span>
-    <span class="skill-tag">SQL</span>
-    <span class="skill-tag">PostgreSQL</span>
-    <span class="skill-tag">AWS</span>
-    <span class="skill-tag">GCP</span>
-    <span class="skill-tag">Docker</span>
+    <span class="skill-tag">MySQL</span>
+    <span class="skill-tag">Kafka</span>
+    <span class="skill-tag">AWS|GCP</span>
     <span class="skill-tag">Microservices</span>
     <span class="skill-tag">REST APIs</span>
-    <span class="skill-tag">Git</span>
+    <span class="skill-tag">Git|GitHub</span>
   </div>
 </section>
 
