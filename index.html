@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abhimanyu Vishwakarma</title>
+<meta name="description" content="Backend engineer with a passion for building scalable systems and clean APIs. I work with Java, Spring Boot, and cloud infrastructure.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abhimanyu Vishwakarma | Backend Engineer">
+<meta property="og:description" content="Backend engineer with a passion for building scalable systems and clean APIs.">
 <script>
   (() => {
     const themes = ['theme-racing-bulls', 'theme-alpine'];
@@ -33,6 +37,7 @@
 
   html {
     background: #090b10;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -65,6 +70,24 @@
       linear-gradient(90deg, rgba(6, 8, 12, 0.84) 0%, rgba(6, 8, 12, 0.44) 32%, rgba(6, 8, 12, 0.22) 52%, rgba(6, 8, 12, 0.6) 100%);
     pointer-events: none;
     z-index: 1;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(247, 243, 239, 0.2);
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(247, 243, 239, 0.4);
   }
 
   html.theme-racing-bulls body {
@@ -159,6 +182,11 @@
   }
 
   .nav-links a:hover { color: var(--text); }
+
+  /* Active state for navigation links */
+  .nav-links a.active {
+    color: var(--text);
+  }
 
   .nav-toggle {
     display: none;
@@ -379,37 +407,63 @@
     padding: 8px 18px;
     border: 1px solid transparent;
     backdrop-filter: blur(8px);
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
     cursor: default;
   }
 
   .skill-tag:hover {
     border-color: var(--border);
     background: rgba(247, 243, 239, 0.14);
+    transform: scale(1.05);
   }
 
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    overflow: hidden;
-    background: var(--border);
-    box-shadow: var(--shadow);
+    gap: 1.5rem;
   }
 
   .project-card {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
     background: var(--surface);
     backdrop-filter: blur(14px);
     padding: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    transition: background 0.2s ease;
+    transition: background 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
   }
 
-  .project-card:hover { background: var(--surface-hover); }
+  /* Dynamic mouse spotlight glare */
+  .project-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(247, 243, 239, 0.08),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .project-card:hover {
+    background: var(--surface-hover);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+  }
+
+  .project-card:hover::before {
+    opacity: 1;
+  }
 
   .project-number {
     font-size: 11px;
@@ -444,15 +498,14 @@
   .contact-row {
     display: flex;
     flex-direction: column;
-    gap: 1px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    overflow: hidden;
-    background: var(--border);
-    box-shadow: var(--shadow);
+    gap: 1.25rem;
   }
 
   .contact-item {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
     background: var(--surface);
     backdrop-filter: blur(14px);
     display: flex;
@@ -460,11 +513,41 @@
     justify-content: space-between;
     padding: 1.25rem 1.75rem;
     text-decoration: none;
-    transition: background 0.2s ease;
+    transition: background 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
     gap: 1rem;
+    transform-style: preserve-3d;
+    will-change: transform;
   }
 
-  .contact-item:hover { background: var(--surface-hover); }
+  .contact-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(247, 243, 239, 0.08),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .contact-item:hover {
+    background: var(--surface-hover);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+  }
+
+  .contact-item:hover::before {
+    opacity: 1;
+  }
+
+  .contact-item > * {
+    position: relative;
+    z-index: 2;
+  }
 
   .contact-left {
     display: flex;
@@ -526,6 +609,46 @@
   .section:nth-of-type(2) { animation-delay: 0.2s; }
   .section:nth-of-type(3) { animation-delay: 0.35s; }
   .section:nth-of-type(4) { animation-delay: 0.5s; }
+
+  .scroll-to-top {
+    position: fixed;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    z-index: 99;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: rgba(8, 10, 16, 0.54);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .scroll-to-top:hover {
+    background: rgba(10, 12, 18, 0.78);
+    border-color: rgba(247, 243, 239, 0.26);
+    transform: translateY(-3px);
+  }
+
+  .scroll-to-top svg {
+    width: 20px;
+    height: 20px;
+  }
 
   @media (max-width: 768px) {
     html.theme-racing-bulls body {
@@ -636,6 +759,11 @@
       align-items: flex-start;
       padding-top: 1.5rem;
     }
+
+    .scroll-to-top {
+      bottom: 1.25rem;
+      right: 1.25rem;
+    }
   }
 
   @media (max-width: 480px) {
@@ -673,6 +801,18 @@
 
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.25); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.25); }
+  }
+
+  .heart-beat {
+    display: inline-block;
+    animation: heartbeat 1.5s infinite;
   }
 </style>
 </head>
@@ -713,7 +853,7 @@
       Backend engineer with a passion for building scalable systems and clean APIs. I work with Java, Spring Boot, and cloud infrastructure to turn complex problems into reliable software, and I am always learning what comes next.
     </p>
     <div class="hero-actions">
-      <a href="mailto:abhimanyuvishwakarma9228@gmail.com" class="btn-primary">
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=abhimanyuvishwakarma9228@gmail.com" target="_blank" rel="noopener noreferrer" class="btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="2" y="4" width="20" height="16" rx="2"></rect>
           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
@@ -736,10 +876,10 @@
     <span class="skill-tag">Spring Boot</span>
     <span class="skill-tag">MySQL</span>
     <span class="skill-tag">Kafka</span>
-    <span class="skill-tag">AWS|GCP</span>
+    <span class="skill-tag">AWS | GCP</span>
     <span class="skill-tag">Microservices</span>
     <span class="skill-tag">REST APIs</span>
-    <span class="skill-tag">Git|GitHub</span>
+    <span class="skill-tag">Git | GitHub</span>
   </div>
 </section>
 
@@ -798,7 +938,7 @@
       <span class="contact-arrow">↗</span>
     </a>
 
-    <a href="mailto:abhimanyuvishwakarma9228@gmail.com" class="contact-item">
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=abhimanyuvishwakarma9228@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-item">
       <div class="contact-left">
         <div class="contact-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#f7f3ef" stroke-width="1.8" style="width:16px;height:16px">
@@ -849,8 +989,14 @@
 
 <footer>
   <p>© 2026 Abhimanyu Vishwakarma</p>
-  <p>Built with care ✦</p>
+  <p>Built with care <span class="heart-beat">❤️</span></p>
 </footer>
+
+<button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
 
 <script>
   const navToggle = document.querySelector('.nav-toggle');
@@ -884,6 +1030,92 @@
     if (event.key === 'Escape') {
       setMenuState(false);
     }
+  });
+
+  // Active Navigation Highlighting (Scroll Spy)
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-links a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').substring(1) === entry.target.id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { threshold: 0.5 }); // Triggers when 50% of the section is visible
+
+  sections.forEach(section => observer.observe(section));
+
+  // Scroll to Top Logic
+  const scrollTopBtn = document.getElementById('scroll-to-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      scrollTopBtn.classList.add('show');
+    } else {
+      scrollTopBtn.classList.remove('show');
+    }
+  });
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // 3D Tilt Effect for Project Cards
+  const projectCards = document.querySelectorAll('.project-card');
+  
+  projectCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -10; // Increased max rotation
+      const rotateY = ((x - centerX) / centerX) * 10;
+      
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+
+      card.style.transform = `perspective(1000px) scale3d(1.04, 1.04, 1.04) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
+    });
+  });
+
+  // 3D Tilt Effect for Contact Items
+  const contactItems = document.querySelectorAll('.contact-item');
+  
+  contactItems.forEach(item => {
+    item.addEventListener('mousemove', (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -6; // Subtle X rotation
+      const rotateY = ((x - centerX) / centerX) * 4;  // Subtler Y rotation for wide cards
+      
+      item.style.setProperty('--mouse-x', `${x}px`);
+      item.style.setProperty('--mouse-y', `${y}px`);
+
+      item.style.transform = `perspective(1000px) scale3d(1.02, 1.02, 1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
+    });
   });
 </script>
 
