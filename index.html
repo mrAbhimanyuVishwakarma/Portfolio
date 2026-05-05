@@ -146,6 +146,7 @@
     background: rgba(247, 243, 239, 0.06);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
     overflow: hidden;
+    transition: transform 0.15s ease-out;
   }
 
   .nav-title {
@@ -337,7 +338,7 @@
     padding: 11px 22px;
     border-radius: 999px;
     text-decoration: none;
-    transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    transition: transform 0.15s ease-out, opacity 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
   }
 
   .btn-primary {
@@ -348,7 +349,9 @@
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
   }
 
-  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
 
   .btn-ghost {
     background: rgba(8, 10, 16, 0.42);
@@ -360,7 +363,6 @@
   .btn-ghost:hover {
     border-color: rgba(247, 243, 239, 0.28);
     background: rgba(247, 243, 239, 0.08);
-    transform: translateY(-1px);
   }
 
   .divider {
@@ -380,7 +382,13 @@
     padding: 4rem 2.5rem;
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeUp 0.6s ease forwards;
+    transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .section-label {
@@ -605,10 +613,6 @@
     font-size: 12px;
     color: var(--muted);
   }
-
-  .section:nth-of-type(2) { animation-delay: 0.2s; }
-  .section:nth-of-type(3) { animation-delay: 0.35s; }
-  .section:nth-of-type(4) { animation-delay: 0.5s; }
 
   .scroll-to-top {
     position: fixed;
@@ -1051,6 +1055,18 @@
 
   sections.forEach(section => observer.observe(section));
 
+  // Scroll Reveal Animations
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target); // Stops observing once revealed
+      }
+    });
+  }, { threshold: 0.15 }); // Triggers when 15% of section is visible
+
+  sections.forEach(section => revealObserver.observe(section));
+
   // Scroll to Top Logic
   const scrollTopBtn = document.getElementById('scroll-to-top');
 
@@ -1115,6 +1131,22 @@
     
     item.addEventListener('mouseleave', () => {
       item.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
+    });
+  });
+
+  // Magnetic Button Effect
+  const magneticElements = document.querySelectorAll('.btn-primary, .btn-ghost, .nav-logo');
+  
+  magneticElements.forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
+      const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
+      el.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = `translate(0px, 0px)`;
     });
   });
 </script>
