@@ -28,8 +28,8 @@
     --text: #f7f3ef;
     --muted: rgba(247, 243, 239, 0.76);
     --border: rgba(247, 243, 239, 0.16);
-    --accent: #ff6a57;
-    --accent-soft: rgba(255, 106, 87, 0.18);
+    --accent: #8339B3;
+    --accent-soft: rgba(131, 57, 179, 0.18);
     --tag-bg: rgba(247, 243, 239, 0.1);
     --tag-text: #f7f3ef;
     --shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
@@ -92,8 +92,8 @@
 
   html.theme-racing-bulls body {
     --bg-image: url('./2026-Racing-Bulls-VCARB-03-003-2160.webp');
-    --accent: #ff7053;
-    --accent-soft: rgba(255, 112, 83, 0.18);
+    --accent: #8339B3;
+    --accent-soft: rgba(131, 57, 179, 0.18);
     --surface: rgba(10, 10, 14, 0.62);
     --surface-hover: rgba(12, 12, 16, 0.8);
     --border: rgba(247, 243, 239, 0.18);
@@ -102,8 +102,8 @@
 
   html.theme-alpine body {
     --bg-image: url('./2026-Alpine-A526-001-2160.webp');
-    --accent: #ff5ca8;
-    --accent-soft: rgba(255, 92, 168, 0.16);
+    --accent: #8339B3;
+    --accent-soft: rgba(131, 57, 179, 0.18);
     --surface: rgba(7, 10, 18, 0.66);
     --surface-hover: rgba(8, 12, 22, 0.84);
     --border: rgba(223, 235, 255, 0.18);
@@ -146,6 +146,7 @@
     background: rgba(247, 243, 239, 0.06);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
     overflow: hidden;
+    transition: transform 0.15s ease-out;
   }
 
   .nav-title {
@@ -279,6 +280,12 @@
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-radius: 28px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hero-shell:hover {
+    border-color: var(--accent);
+    box-shadow: 0 32px 72px rgba(0, 0, 0, 0.35), 0 0 32px var(--accent-soft);
   }
 
   .hero-tag {
@@ -319,6 +326,22 @@
     font-weight: 400;
     margin-bottom: 2.5rem;
     text-shadow: 0 10px 24px rgba(0, 0, 0, 0.52);
+    min-height: 90px;
+  }
+
+  .typewriter-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background-color: var(--accent);
+    margin-left: 6px;
+    vertical-align: -1px;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
   .hero-actions {
@@ -337,7 +360,7 @@
     padding: 11px 22px;
     border-radius: 999px;
     text-decoration: none;
-    transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    transition: transform 0.15s ease-out, opacity 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
   }
 
   .btn-primary {
@@ -348,7 +371,9 @@
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
   }
 
-  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
 
   .btn-ghost {
     background: rgba(8, 10, 16, 0.42);
@@ -360,7 +385,6 @@
   .btn-ghost:hover {
     border-color: rgba(247, 243, 239, 0.28);
     background: rgba(247, 243, 239, 0.08);
-    transform: translateY(-1px);
   }
 
   .divider {
@@ -380,7 +404,13 @@
     padding: 4rem 2.5rem;
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeUp 0.6s ease forwards;
+    transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .section-label {
@@ -407,14 +437,17 @@
     padding: 8px 18px;
     border: 1px solid transparent;
     backdrop-filter: blur(8px);
-    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
     cursor: default;
   }
 
   .skill-tag:hover {
-    border-color: var(--border);
-    background: rgba(247, 243, 239, 0.14);
+    border-color: var(--accent);
+    background: var(--accent-soft);
     transform: scale(1.05);
+    box-shadow: 0 0 12px var(--accent-soft), 0 0 24px var(--accent-soft);
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
   }
 
   .projects-grid {
@@ -433,8 +466,9 @@
     padding: 1.75rem;
     display: flex;
     flex-direction: column;
+    text-decoration: none;
     gap: 10px;
-    transition: background 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
     transform-style: preserve-3d;
     will-change: transform;
   }
@@ -458,11 +492,29 @@
 
   .project-card:hover {
     background: var(--surface-hover);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3), 0 0 24px var(--accent-soft);
   }
 
   .project-card:hover::before {
     opacity: 1;
+  }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .project-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 10px;
+    border-radius: 999px;
   }
 
   .project-number {
@@ -483,9 +535,10 @@
     font-size: 13px;
     color: var(--muted);
     line-height: 1.7;
+    min-height: 45px;
   }
 
-  .project-coming {
+  .project-action {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -493,6 +546,11 @@
     color: var(--muted);
     margin-top: auto;
     padding-top: 8px;
+    transition: color 0.3s ease;
+  }
+
+  .project-card:hover .project-action {
+    color: var(--accent);
   }
 
   .contact-row {
@@ -513,7 +571,7 @@
     justify-content: space-between;
     padding: 1.25rem 1.75rem;
     text-decoration: none;
-    transition: background 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
     gap: 1rem;
     transform-style: preserve-3d;
     will-change: transform;
@@ -537,7 +595,8 @@
 
   .contact-item:hover {
     background: var(--surface-hover);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3), 0 0 24px var(--accent-soft);
   }
 
   .contact-item:hover::before {
@@ -583,6 +642,7 @@
     color: var(--muted);
     line-height: 1.5;
     overflow-wrap: anywhere;
+    min-height: 36px;
   }
 
   .contact-arrow {
@@ -605,10 +665,6 @@
     font-size: 12px;
     color: var(--muted);
   }
-
-  .section:nth-of-type(2) { animation-delay: 0.2s; }
-  .section:nth-of-type(3) { animation-delay: 0.35s; }
-  .section:nth-of-type(4) { animation-delay: 0.5s; }
 
   .scroll-to-top {
     position: fixed;
@@ -721,6 +777,7 @@
     .hero-bio {
       max-width: 100%;
       font-size: 16px;
+      min-height: 140px;
     }
 
     .hero-actions {
@@ -888,18 +945,24 @@
 <section class="section" id="projects">
   <p class="section-label">Projects</p>
   <div class="projects-grid">
-    <div class="project-card">
-      <span class="project-number">01</span>
-      <p class="project-title">Coming Soon</p>
-      <p class="project-desc">Exciting projects are in the works. Check back soon or follow on GitHub for updates.</p>
-      <span class="project-coming">In progress →</span>
-    </div>
-    <div class="project-card">
-      <span class="project-number">02</span>
-      <p class="project-title">Your Next Project</p>
-      <p class="project-desc">Got an idea worth building? Let&apos;s connect and make it real.</p>
-      <span class="project-coming">Collaborate →</span>
-    </div>
+    <a href="https://github.com/mrAbhimanyuVishwakarma/trading-bot" target="_blank" rel="noopener noreferrer" class="project-card">
+      <div class="project-header">
+        <span class="project-number">01</span>
+        <span class="project-badge">In progress</span>
+      </div>
+      <p class="project-title">Trading Bot</p>
+      <p class="project-desc">An automated algorithmic trading bot designed to analyze market trends and execute trades efficiently.</p>
+      <span class="project-action">View Repository →</span>
+    </a>
+    <a href="https://github.com/mrAbhimanyuVishwakarma/Student.ai" target="_blank" rel="noopener noreferrer" class="project-card">
+      <div class="project-header">
+        <span class="project-number">02</span>
+        <span class="project-badge">In progress</span>
+      </div>
+      <p class="project-title">Student.ai</p>
+      <p class="project-desc">An AI-powered application designed to assist students with their learning, productivity, and scheduling.</p>
+      <span class="project-action">View Repository →</span>
+    </a>
   </div>
 </section>
 
@@ -1051,6 +1114,18 @@
 
   sections.forEach(section => observer.observe(section));
 
+  // Scroll Reveal Animations
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target); // Stops observing once revealed
+      }
+    });
+  }, { threshold: 0.15 }); // Triggers when 15% of section is visible
+
+  sections.forEach(section => revealObserver.observe(section));
+
   // Scroll to Top Logic
   const scrollTopBtn = document.getElementById('scroll-to-top');
 
@@ -1117,6 +1192,68 @@
       item.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
     });
   });
+
+  // Magnetic Button Effect
+  const magneticElements = document.querySelectorAll('.btn-primary, .btn-ghost, .nav-logo');
+  
+  magneticElements.forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
+      const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
+      el.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = `translate(0px, 0px)`;
+    });
+  });
+
+  // Typewriter Effect on Scroll
+  const setupTypewriter = (element, delay = 0) => {
+    const originalText = element.innerText.trim();
+    if (!originalText) return;
+
+    element.innerHTML = '<span class="typewriter-text"></span><span class="typewriter-cursor"></span>';
+    const textSpan = element.querySelector('.typewriter-text');
+    const cursorSpan = element.querySelector('.typewriter-cursor');
+    
+    let charIndex = 0;
+    
+    function type() {
+      if (charIndex < originalText.length) {
+        textSpan.textContent += originalText.charAt(charIndex);
+        charIndex++;
+        
+        let currentSpeed = Math.random() * 40 + 20;
+        
+        const lastChar = originalText.charAt(charIndex - 1);
+        if (lastChar === '.' || lastChar === ',') {
+          currentSpeed += 250;
+        }
+        
+        setTimeout(type, currentSpeed);
+      } else {
+        if (cursorSpan) cursorSpan.style.display = 'none';
+      }
+    }
+    
+    setTimeout(type, delay);
+  };
+
+  const typewriterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.hero-bio, .project-desc, .contact-handle').forEach(el => {
+          const isHero = el.classList.contains('hero-bio');
+          setupTypewriter(el, isHero ? 800 : 0); // Wait for hero fade-in animation
+        });
+        typewriterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  document.querySelectorAll('.hero, #projects, #contact').forEach(section => typewriterObserver.observe(section));
 </script>
 
 </body>
