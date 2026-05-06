@@ -452,7 +452,7 @@
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
   }
 
@@ -506,6 +506,11 @@
     align-items: center;
   }
 
+  .project-badges {
+    display: flex;
+    gap: 6px;
+  }
+
   .project-badge {
     font-size: 10px;
     font-weight: 700;
@@ -515,6 +520,16 @@
     background: var(--accent-soft);
     padding: 4px 10px;
     border-radius: 999px;
+  }
+
+  .project-badge.public {
+    color: #86efac;
+    background: rgba(134, 239, 172, 0.15);
+  }
+
+  .project-badge.private {
+    color: #fca5a5;
+    background: rgba(252, 165, 165, 0.15);
   }
 
   .project-number {
@@ -856,7 +871,170 @@
     }
   }
 
-  @keyframes fadeUp {
+  /* ── Experience Section ── */
+  .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .exp-card {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    backdrop-filter: blur(14px);
+    padding: 1.75rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .exp-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.25), 0 0 24px var(--accent-soft);
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .exp-role {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .exp-company {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .exp-client {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .exp-date {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .exp-bullets li {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.7;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 10px;
+    top: 4px;
+  }
+
+  .exp-bullets li strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .exp-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 4px 12px;
+  }
+
+  /* ── Currently Learning Block ── */
+  .learning-block {
+    margin-top: 2rem;
+    padding: 1.4rem 1.6rem;
+    border: 1px dashed rgba(247, 243, 239, 0.18);
+    border-radius: 16px;
+    background: rgba(247, 243, 239, 0.03);
+  }
+
+  .learning-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+
+  .skill-learning {
+    border: 1px dashed rgba(247, 243, 239, 0.22) !important;
+    background: rgba(247, 243, 239, 0.05) !important;
+    color: var(--muted) !important;
+  }
+
+  .skill-learning:hover {
+    border-color: var(--accent) !important;
+    background: var(--accent-soft) !important;
+    color: #fff !important;
+  }
+
+  /* ── Project Tech Tags ── */
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .project-tech span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+
+  @media (max-width: 768px) {
+    .exp-header {
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .exp-date {
+      align-self: flex-start;
+    }
+  }
+
+@keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -878,6 +1056,7 @@
 <nav>
   <a class="nav-title" href="#">Abhimanyu Vishwakarma</a>
   <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -896,6 +1075,7 @@
 </nav>
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#experience">Experience</a>
   <a href="#skills">Skills</a>
   <a href="#projects">Projects</a>
   <a href="#contact">Contact</a>
@@ -907,20 +1087,79 @@
     <span class="hero-tag">Available for opportunities</span>
     <h1>Abhimanyu<br><em>Vishwakarma</em></h1>
     <p class="hero-bio">
-      Backend engineer with a passion for building scalable systems and clean APIs. I work with Java, Spring Boot, and cloud infrastructure to turn complex problems into reliable software, and I am always learning what comes next.
+      I'm a backend engineer from Bengaluru with 2+ years at Cognizant, where I've been working on real enterprise systems for a large insurance client. Java and IBM ODM are my daily tools — and right now I'm deep into learning Spring Boot and system design, because I want to grow into the kind of engineer who builds products people actually use.
     </p>
     <div class="hero-actions">
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=abhimanyuvishwakarma9228@gmail.com" target="_blank" rel="noopener noreferrer" class="btn-primary">
+      <a href="#" class="btn-primary copy-email">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="2" y="4" width="20" height="16" rx="2"></rect>
           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
         </svg>
         Get in touch
       </a>
+      <a href="./Abhimanyu_Vishwakarma_Resume.pdf" download class="btn-ghost">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Resume
+      </a>
       <a href="https://github.com/mrAbhimanyuVishwakarma" target="_blank" rel="noopener noreferrer" class="btn-ghost">
-        View GitHub →
+        GitHub →
       </a>
     </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<section class="section" id="experience">
+  <p class="section-label">Experience</p>
+  <div class="experience-list">
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-left">
+          <p class="exp-role">Junior Software Engineer <span class="exp-company">@ Cognizant</span></p>
+          <p class="exp-client">Client: Travelers Insurance (Enterprise Insurance Platform)</p>
+        </div>
+        <span class="exp-date">Jan 2024 – Present</span>
+      </div>
+      <ul class="exp-bullets">
+        <li>Developed and maintained business logic and automation rules using <strong>Java</strong> and <strong>IBM ODM Rule Designer</strong>, directly impacting insurance decision workflows at enterprise scale.</li>
+        <li>Owned PR reviews and production deployments each sprint, managing an 8–10 point Jira board per iteration while maintaining live application stability.</li>
+        <li>Built AI-driven automation tooling with <strong>Python and prompt engineering</strong> to accelerate rule development and testing cycles, reducing manual effort across the team.</li>
+        <li>Collaborated with QA teams across unit, integration, and UAT phases to ensure high-quality, on-time feature delivery.</li>
+        <li>Applied <strong>REST API integration</strong> and <strong>CI/CD pipeline</strong> practices for deployment and monitoring of backend services.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="exp-tag">Java</span>
+        <span class="exp-tag">IBM ODM</span>
+        <span class="exp-tag">Python</span>
+        <span class="exp-tag">REST APIs</span>
+        <span class="exp-tag">CI/CD</span>
+        <span class="exp-tag">Agile / Jira</span>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-left">
+          <p class="exp-role">GenC Intern <span class="exp-company">@ Cognizant</span></p>
+          <p class="exp-client">TIBCO BusinessWorks 6 Training Program</p>
+        </div>
+        <span class="exp-date">2023</span>
+      </div>
+      <ul class="exp-bullets">
+        <li>Completed enterprise integration training with <strong>TIBCO BW6</strong>, working with JMS, HTTP, SOAP/REST web services, XML/XSD, and data mapping.</li>
+        <li>Implemented process orchestration, logging, and exception handling; gained exposure to TIBCO EMS, JMS, and JDBC.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="exp-tag">Java</span>
+        <span class="exp-tag">TIBCO BW6</span>
+        <span class="exp-tag">JMS</span>
+        <span class="exp-tag">MySQL</span>
+        <span class="exp-tag">Web Services</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -937,6 +1176,22 @@
     <span class="skill-tag">Microservices</span>
     <span class="skill-tag">REST APIs</span>
     <span class="skill-tag">Git | GitHub</span>
+    <span class="skill-tag">CI | CD</span>
+    <span class="skill-tag">Jira</span>
+    <span class="skill-tag">IBM ODM</span>
+  </div>
+
+  <div class="learning-block">
+    <p class="learning-label">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-1px;margin-right:6px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Currently levelling up
+    </p>
+    <div class="skills-grid" style="margin-top:0.75rem">
+      <span class="skill-tag skill-learning">Spring Boot (deep dive)</span>
+      <span class="skill-tag skill-learning">System Design</span>
+      <span class="skill-tag skill-learning">Low-Level Design · Design Patterns</span>
+      <span class="skill-tag skill-learning">PostgreSQL · Advanced SQL</span>
+    </div>
   </div>
 </section>
 
@@ -945,22 +1200,34 @@
 <section class="section" id="projects">
   <p class="section-label">Projects</p>
   <div class="projects-grid">
-    <a href="https://github.com/mrAbhimanyuVishwakarma/trading-bot" target="_blank" rel="noopener noreferrer" class="project-card">
-      <div class="project-header">
-        <span class="project-number">01</span>
-        <span class="project-badge">In progress</span>
-      </div>
-      <p class="project-title">Trading Bot</p>
-      <p class="project-desc">An automated algorithmic trading bot designed to analyze market trends and execute trades efficiently.</p>
-      <span class="project-action">View Repository →</span>
-    </a>
     <a href="https://github.com/mrAbhimanyuVishwakarma/Student.ai" target="_blank" rel="noopener noreferrer" class="project-card">
       <div class="project-header">
-        <span class="project-number">02</span>
-        <span class="project-badge">In progress</span>
+        <span class="project-number">01</span>
+        <div class="project-badges">
+          <span class="project-badge public repo-visibility-badge">Public</span>
+          <span class="project-badge">Featured</span>
+        </div>
       </div>
       <p class="project-title">Student.ai</p>
-      <p class="project-desc">An AI-powered application designed to assist students with their learning, productivity, and scheduling.</p>
+      <p class="project-desc">An AI-powered productivity app for students — covering learning assistance, task scheduling, and progress tracking. Designed as a solo-built full-stack product exploring AI integration in real-world apps.</p>
+      <div class="project-tech">
+        <span>Python</span><span>AI APIs</span><span>Backend</span><span>Full-stack</span>
+      </div>
+      <span class="project-action">View Repository →</span>
+    </a>
+    <a href="https://github.com/mrAbhimanyuVishwakarma/trading-bot" target="_blank" rel="noopener noreferrer" class="project-card">
+      <div class="project-header">
+        <span class="project-number">02</span>
+        <div class="project-badges">
+          <span class="project-badge public repo-visibility-badge">Public</span>
+          <span class="project-badge">In progress</span>
+        </div>
+      </div>
+      <p class="project-title">APEX — Algorithmic Trading Bot</p>
+      <p class="project-desc">An AI-powered trading bot with a clear separation between backtesting and live trading environments. Uses a central feature store to ensure data parity across modes, with TradingView for signal analysis and Alpaca as the broker API.</p>
+      <div class="project-tech">
+        <span>Python</span><span>Alpaca API</span><span>TradingView</span><span>AI/ML</span>
+      </div>
       <span class="project-action">View Repository →</span>
     </a>
   </div>
@@ -1001,7 +1268,7 @@
       <span class="contact-arrow">↗</span>
     </a>
 
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=abhimanyuvishwakarma9228@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-item">
+    <a href="#" class="contact-item copy-email">
       <div class="contact-left">
         <div class="contact-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#f7f3ef" stroke-width="1.8" style="width:16px;height:16px">
@@ -1016,37 +1283,20 @@
       </div>
       <span class="contact-arrow">↗</span>
     </a>
+  </div>
+</section>
 
-    <a href="https://x.com/axedude7gamerz" target="_blank" rel="noopener noreferrer" class="contact-item">
-      <div class="contact-left">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:#f7f3ef;width:16px;height:16px">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.264 5.636 5.9-5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-          </svg>
-        </div>
-        <div>
-          <p class="contact-name">Twitter / X</p>
-          <p class="contact-handle">@axedude7gamerz</p>
-        </div>
+<section class="section" id="education" style="padding-bottom:2rem">
+  <p class="section-label">Education</p>
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-left">
+        <p class="exp-role">B.Tech, Mechanical Engineering</p>
+        <p class="exp-client">Dr. B.C. Roy Engineering College, Durgapur, WB</p>
       </div>
-      <span class="contact-arrow">↗</span>
-    </a>
-
-    <a href="https://www.patreon.com/cw/mrAbhimanyu" target="_blank" rel="noopener noreferrer" class="contact-item">
-      <div class="contact-left">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px">
-            <circle cx="15.5" cy="8.5" r="4.5" fill="#ff6f3d"></circle>
-            <rect x="3" y="4" width="4" height="16" rx="2" fill="#f7f3ef"></rect>
-          </svg>
-        </div>
-        <div>
-          <p class="contact-name">Patreon</p>
-          <p class="contact-handle">mrAbhimanyu</p>
-        </div>
-      </div>
-      <span class="contact-arrow">↗</span>
-    </a>
+      <span class="exp-date">2019 – 2023</span>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:0.2rem">CGPA: <strong style="color:var(--text)">8.83 / 10</strong></p>
   </div>
 </section>
 
@@ -1254,6 +1504,98 @@
   }, { threshold: 0.4 });
 
   document.querySelectorAll('.hero, #projects, #contact').forEach(section => typewriterObserver.observe(section));
+
+  // Copy Email to Clipboard Logic
+  const copyEmailBtns = document.querySelectorAll('.copy-email');
+  copyEmailBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const email = 'abhimanyuvishwakarma9228@gmail.com';
+      navigator.clipboard.writeText(email).then(() => {
+        showToast('Email copied to clipboard!');
+      });
+    });
+  });
+
+  function showToast(message) {
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) existingToast.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    Object.assign(toast.style, {
+      position: 'fixed', bottom: '100px', left: '50%', transform: 'translateX(-50%) translateY(20px)',
+      background: 'var(--text)', color: '#090b10', padding: '12px 24px', borderRadius: '999px',
+      fontWeight: '700', fontSize: '13px', zIndex: '1000', opacity: '0',
+      boxShadow: '0 8px 24px rgba(0,0,0,0.2)', transition: 'all 0.3s ease'
+    });
+    document.body.appendChild(toast);
+    
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    });
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(20px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 2500);
+  }
+
+  // Dynamic GitHub Repository Visibility Check
+  const checkRepoVisibility = async () => {
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    for (const card of projectCards) {
+      const url = card.getAttribute('href');
+      const badge = card.querySelector('.repo-visibility-badge');
+      
+      // Only check if it's a GitHub link and has the visibility badge
+      if (url && url.includes('github.com') && badge) {
+        try {
+          const urlPath = new URL(url).pathname.split('/').filter(Boolean);
+          if (urlPath.length >= 2) {
+            const owner = urlPath[0];
+            const repo = urlPath[1];
+            
+            // Call the GitHub API
+            const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+            
+            if (response.status === 404) {
+              // If 404, the repo is private (or deleted)
+              badge.textContent = 'Private';
+              badge.className = 'project-badge private repo-visibility-badge';
+              
+              // Disable the link so users don't hit a 404 page
+              card.removeAttribute('href');
+              const actionText = card.querySelector('.project-action');
+              if (actionText) actionText.textContent = 'Private Repository';
+            }
+          }
+        } catch (error) {
+          console.error('Failed to check repo visibility:', error);
+        }
+      }
+    }
+  };
+  
+  checkRepoVisibility();
+
+  // --- Code Protection Deterrents ---
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  // Disable common developer tools keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (
+      e.key === 'F12' || // F12
+      (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || // Ctrl+Shift+I/J/C
+      (e.ctrlKey && e.key === 'U') // Ctrl+U (View Source)
+    ) {
+      e.preventDefault();
+    }
+  });
 </script>
 
 </body>
