@@ -21,8 +21,6 @@
 
   :root {
     --bg: #090b10;
-    --bg-image: none;
-    --bg-image-position: center center;
     --surface: rgba(8, 10, 16, 0.62);
     --surface-hover: rgba(10, 12, 18, 0.78);
     --text: #f7f3ef;
@@ -58,7 +56,6 @@
     position: fixed;
     inset: 0;
     background:
-      var(--bg-image) var(--bg-image-position) / cover no-repeat,
       radial-gradient(circle at center, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.56) 58%, rgba(0, 0, 0, 0.92) 100%),
       linear-gradient(180deg, rgba(7, 9, 12, 0.22) 0%, rgba(7, 9, 12, 0.8) 100%);
     pointer-events: none;
@@ -95,8 +92,21 @@
     background: rgba(247, 243, 239, 0.4);
   }
 
+  .video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+    transform: translateZ(0);
+    opacity: 0;
+    animation: fadeInVideo 1.2s ease 0.5s forwards;
+  }
+
   html.theme-racing-bulls body {
-    --bg-image: url('./2026-Racing-Bulls-VCARB-03-003-2160.webp');
     --accent: #8339B3;
     --accent-soft: rgba(131, 57, 179, 0.18);
     --surface: rgba(10, 10, 14, 0.62);
@@ -106,7 +116,6 @@
   }
 
   html.theme-alpine body {
-    --bg-image: url('./2026-Alpine-A526-001-2160.webp');
     --accent: #8339B3;
     --accent-soft: rgba(131, 57, 179, 0.18);
     --surface: rgba(7, 10, 18, 0.66);
@@ -137,6 +146,11 @@
     justify-content: flex-end;
     gap: 1rem;
     height: 62px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  nav.nav--hidden {
+    transform: translateY(-100%);
   }
 
   .nav-logo {
@@ -728,18 +742,6 @@
   }
 
   @media (max-width: 768px) {
-    html.theme-racing-bulls body {
-      --bg-image: url('./2026-Racing-Bulls-VCARB-mobile.webp');
-    }
-
-    html.theme-alpine body {
-      --bg-image: url('./2026-Alpine-A526-mobile.webp');
-    }
-
-    body {
-      --bg-image-position: center top;
-    }
-
     nav {
       padding: 0 1.25rem;
       height: 58px;
@@ -864,16 +866,6 @@
 
     .contact-arrow {
       padding-top: 0.2rem;
-    }
-  }
-
-  @media (min-width: 769px) and (max-width: 1366px) {
-    html.theme-racing-bulls body {
-      --bg-image: url('./2026-Racing-Bulls-VCARB-03-003-2160-1280.webp');
-    }
-
-    html.theme-alpine body {
-      --bg-image: url('./2026-Alpine-A526-001-2160-1280.webp');
     }
   }
 
@@ -1040,6 +1032,10 @@
     }
   }
 
+@keyframes fadeInVideo {
+  to { opacity: 1; }
+}
+
 @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -1059,6 +1055,11 @@
 </head>
 <body>
 
+<video class="video-bg" autoplay loop muted playsinline poster="./2026-Racing-Bulls-VCARB-03-003-2160.webp">
+  <source src="./f1-wallpaper.webm" type="video/webm">
+  <source src="./f1-wallpaper.mp4" type="video/mp4">
+</video>
+
 <nav>
   <a class="nav-title" href="#">Abhimanyu Vishwakarma</a>
   <ul class="nav-links">
@@ -1068,16 +1069,14 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-    <img class="nav-toggle-avatar" src="./mrAbhimanyu.png" alt="Open menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <img class="nav-toggle-avatar" src="./mrAbhimanyu.ntColor" stroke-width="1.8" stroke-linecap="round">
       <path d="M4 7h16"></path>
       <path d="M4 12h16"></path>
       <path d="M4 17h16"></path>
     </svg>
   </button>
   <a class="nav-logo" href="#" aria-label="Abhimanyu Vishwakarma home">
-    <img class="nav-avatar" src="./mrAbhimanyu.png" alt="Abhimanyu Vishwakarma">
-  </a>
+    <img class="nav-avatar" src="./mrAbhimanyu.webp" alt="Abhimanyu V
 </nav>
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
@@ -1382,18 +1381,32 @@
 
   sections.forEach(section => revealObserver.observe(section));
 
-  // Scroll to Top Logic
+  // Scroll to Top & Hiding Nav Logic
   const scrollTopBtn = document.getElementById('scroll-to-top');
+  const nav = document.querySelector('nav');
+  let lastScrollY = window.scrollY;
 
   let isScrolling = false;
   window.addEventListener('scroll', () => {
     if (!isScrolling) {
       window.requestAnimationFrame(() => {
-        if (window.scrollY > 400) {
+        const currentScrollY = window.scrollY;
+
+        // Scroll to top button
+        if (currentScrollY > 400) {
           scrollTopBtn.classList.add('show');
         } else {
           scrollTopBtn.classList.remove('show');
         }
+
+        // Hiding nav
+        if (currentScrollY > lastScrollY && currentScrollY > nav.offsetHeight) {
+          nav.classList.add('nav--hidden');
+        } else {
+          nav.classList.remove('nav--hidden');
+        }
+        
+        lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
         isScrolling = false;
       });
       isScrolling = true;
