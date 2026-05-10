@@ -262,7 +262,7 @@
   }
 
   .hero {
-    max-width: 860px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 7rem 2.5rem 5rem;
     opacity: 0;
@@ -389,7 +389,7 @@
   }
 
   .divider {
-    max-width: 860px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 2.5rem;
   }
@@ -400,7 +400,7 @@
   }
 
   .section {
-    max-width: 860px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 4rem 2.5rem;
     opacity: 0;
@@ -668,7 +668,7 @@
   }
 
   footer {
-    max-width: 860px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 2.5rem 4rem;
     display: flex;
