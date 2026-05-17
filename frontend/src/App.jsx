@@ -10,6 +10,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
 import Certificates from './components/Certificates';
+import Education from './components/Education';
 import Lenis from 'lenis';
 
 function App() {
@@ -90,45 +91,78 @@ function App() {
     }, { threshold: 0.15 });
     sections.forEach(section => revealObserver.observe(section));
 
-    // Scroll to Top Logic
-    let isScrolling = false;
-    let lastScrollY = window.scrollY;
-    const handleScroll = () => {
-      if (!isScrolling) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          setShowScrollTop(currentScrollY > 400);
+    // Scroll to Top & Autohide Navbar Logic using Lenis hook (Highly Optimized)
+    let lastScrollY = 0;
+    const handleLenisScroll = (e) => {
+      const currentScrollY = e.scroll;
+      setShowScrollTop(currentScrollY > 400);
 
-          lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
-          isScrolling = false;
-        });
-        isScrolling = true;
+      const nav = document.querySelector('nav');
+      if (nav) {
+        if (currentScrollY > lastScrollY && currentScrollY > nav.offsetHeight) {
+          nav.classList.add('nav--hidden');
+        } else {
+          nav.classList.remove('nav--hidden');
+        }
+      }
+      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+    };
+    lenisInstance.on('scroll', handleLenisScroll);
+
+    // Anchor Link Interceptor for Smooth Scroll to prevent sticky header cutoffs
+    const handleAnchorClick = (e) => {
+      const targetLink = e.target.closest('a');
+      if (!targetLink) return;
+      
+      const href = targetLink.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const targetId = href.substring(1);
+        
+        if (targetId === '' || targetId === '#') {
+          lenisInstance.scrollTo(0, { duration: 1.2 });
+        } else {
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
+            lenisInstance.scrollTo(targetElement, { 
+              offset: -navbarHeight, 
+              duration: 1.2 
+            });
+          }
+        }
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('click', handleAnchorClick);
 
-    // Magnetic Button Effect
+    // Device Capability Checks (Disables hover interactive computations on Mobile/Touch screens)
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+    
+    // Cached Bounding Rects to avoid layout thrashing inside mousemove loops
+    const cachedRects = new Map();
+
+    const handleHoverEnter = (e) => {
+      cachedRects.set(e.currentTarget, e.currentTarget.getBoundingClientRect());
+    };
+
+    const handleHoverLeave = (e) => {
+      cachedRects.delete(e.currentTarget);
+      e.currentTarget.style.transform = '';
+    };
+
+    // Magnetic Button Effect (Desktop only)
     const handleMagneticMove = (e) => {
       const el = e.currentTarget;
-      const rect = el.getBoundingClientRect();
+      const rect = cachedRects.get(el) || el.getBoundingClientRect();
       const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
       const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
       el.style.transform = `translate(${x}px, ${y}px)`;
     };
-    const handleMagneticLeave = (e) => {
-      e.currentTarget.style.transform = `translate(0px, 0px)`;
-    };
 
-    const magneticElements = document.querySelectorAll('.btn-primary, .btn-ghost, .nav-logo');
-    magneticElements.forEach(el => {
-      el.addEventListener('mousemove', handleMagneticMove);
-      el.addEventListener('mouseleave', handleMagneticLeave);
-    });
-
-    // 3D Tilt Effect for Project Cards & Contact Items
+    // 3D Tilt Effect (Desktop only)
     const handleTiltMove = (e, factorX, factorY) => {
       const el = e.currentTarget;
-      const rect = el.getBoundingClientRect();
+      const rect = cachedRects.get(el) || el.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const centerX = rect.width / 2;
@@ -140,27 +174,42 @@ function App() {
       el.style.setProperty('--mouse-y', `${y}px`);
       el.style.transform = `perspective(1000px) scale3d(1.04, 1.04, 1.04) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     };
+
     const handleTiltLeave = (e) => {
-      e.currentTarget.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
+      cachedRects.delete(e.currentTarget);
+      e.currentTarget.style.transform = 'perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)';
     };
 
+    const magneticElements = document.querySelectorAll('.btn-primary, .btn-ghost, .nav-logo');
     const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-      card.addEventListener('mousemove', (e) => handleTiltMove(e, -10, 10));
-      card.addEventListener('mouseleave', handleTiltLeave);
-    });
-
     const certCards = document.querySelectorAll('.cert-card');
-    certCards.forEach(card => {
-      card.addEventListener('mousemove', (e) => handleTiltMove(e, -8, 8));
-      card.addEventListener('mouseleave', handleTiltLeave);
-    });
-
     const contactItems = document.querySelectorAll('.contact-item');
-    contactItems.forEach(item => {
-      item.addEventListener('mousemove', (e) => handleTiltMove(e, -6, 4));
-      item.addEventListener('mouseleave', handleTiltLeave);
-    });
+
+    if (!isTouchDevice) {
+      magneticElements.forEach(el => {
+        el.addEventListener('mouseenter', handleHoverEnter);
+        el.addEventListener('mousemove', handleMagneticMove);
+        el.addEventListener('mouseleave', handleHoverLeave);
+      });
+
+      projectCards.forEach(card => {
+        card.addEventListener('mouseenter', handleHoverEnter);
+        card.addEventListener('mousemove', (e) => handleTiltMove(e, -10, 10));
+        card.addEventListener('mouseleave', handleTiltLeave);
+      });
+
+      certCards.forEach(card => {
+        card.addEventListener('mouseenter', handleHoverEnter);
+        card.addEventListener('mousemove', (e) => handleTiltMove(e, -8, 8));
+        card.addEventListener('mouseleave', handleTiltLeave);
+      });
+
+      contactItems.forEach(item => {
+        item.addEventListener('mouseenter', handleHoverEnter);
+        item.addEventListener('mousemove', (e) => handleTiltMove(e, -6, 4));
+        item.addEventListener('mouseleave', handleTiltLeave);
+      });
+    }
 
     // Cleanup
     return () => {
@@ -168,9 +217,32 @@ function App() {
       lenisInstance.destroy();
       document.removeEventListener('contextmenu', disableContextMenu);
       document.removeEventListener('keydown', disableDevTools);
-      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('click', handleAnchorClick);
       sections.forEach(section => observer.unobserve(section));
       sections.forEach(section => revealObserver.unobserve(section));
+
+      if (!isTouchDevice) {
+        magneticElements.forEach(el => {
+          el.removeEventListener('mouseenter', handleHoverEnter);
+          el.removeEventListener('mousemove', handleMagneticMove);
+          el.removeEventListener('mouseleave', handleHoverLeave);
+        });
+
+        projectCards.forEach(card => {
+          card.removeEventListener('mouseenter', handleHoverEnter);
+          card.removeEventListener('mouseleave', handleTiltLeave);
+        });
+
+        certCards.forEach(card => {
+          card.removeEventListener('mouseenter', handleHoverEnter);
+          card.removeEventListener('mouseleave', handleTiltLeave);
+        });
+
+        contactItems.forEach(item => {
+          item.removeEventListener('mouseenter', handleHoverEnter);
+          item.removeEventListener('mouseleave', handleTiltLeave);
+        });
+      }
     };
   }, []);
 
@@ -207,6 +279,9 @@ function App() {
       
       <div className="divider"><hr /></div>
       <Projects />
+      
+      <div className="divider"><hr /></div>
+      <Education />
       
       <div className="divider"><hr /></div>
       <Contact />

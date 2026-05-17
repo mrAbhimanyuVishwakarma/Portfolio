@@ -16,9 +16,26 @@
 
   html {
     background: #090b10;
-    scroll-behavior: smooth;
+    scroll-behavior: auto !important;
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis Smooth Scroll Optimizations */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+  
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overflow: clip;
+  }
+  
+  .lenis.lenis-stopped {
+    overflow: hidden;
   }
 
   body {
@@ -241,6 +258,34 @@
   .mobile-menu.is-open {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  .mobile-menu-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(247, 243, 239, 0.06);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    z-index: 100;
+  }
+
+  .mobile-menu-close:hover {
+    background: rgba(247, 243, 239, 0.12);
+    border-color: rgba(247, 243, 239, 0.26);
+  }
+
+  .mobile-menu-close svg {
+    width: 20px;
+    height: 20px;
   }
 
   .mobile-menu a {
@@ -933,6 +978,17 @@
       border-radius: 999px;
       background: rgba(8, 10, 16, 0.88);
       border: 1px solid rgba(247, 243, 239, 0.18);
+    }
+
+    .video-bg {
+      display: none !important;
+    }
+
+    body::before {
+      background-image: url('./2026-Racing-Bulls-VCARB-03-003-2160.webp') !important;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     .hero {
