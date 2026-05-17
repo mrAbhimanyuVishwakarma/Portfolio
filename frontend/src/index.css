@@ -266,8 +266,9 @@
     margin: 0 auto;
     padding: 7rem 2.5rem 5rem;
     opacity: 0;
-    transform: translateY(24px);
-    animation: fadeUp 0.7s ease forwards;
+    transform: perspective(1200px) rotateX(-10deg) translateY(40px) scale(0.96);
+    transform-origin: top center;
+    animation: fadeUp3D 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 0.08s;
   }
 
@@ -404,14 +405,15 @@
     margin: 0 auto;
     padding: 4rem 2.5rem;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: perspective(1200px) rotateX(-12deg) translateY(50px) scale(0.96);
+    transform-origin: top center;
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
   }
 
   .section.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1);
   }
 
   .section-label {
@@ -1019,6 +1021,13 @@
 
 @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
+  }
+
+@keyframes fadeUp3D {
+    to { 
+      opacity: 1; 
+      transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1); 
+    }
   }
 
   @keyframes heartbeat {
