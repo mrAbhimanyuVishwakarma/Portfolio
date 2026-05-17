@@ -201,16 +201,15 @@ const navToggle = document.querySelector('.nav-toggle');
   const typewriterObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.querySelectorAll('.hero-bio, .project-desc, .contact-handle').forEach(el => {
-          const isHero = el.classList.contains('hero-bio');
-          setupTypewriter(el, isHero ? 800 : 0); // Wait for hero fade-in animation
+        entry.target.querySelectorAll('.project-desc, .contact-handle').forEach(el => {
+          setupTypewriter(el, 0);
         });
         typewriterObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.4 });
 
-  document.querySelectorAll('.hero, #projects, #contact').forEach(section => typewriterObserver.observe(section));
+  document.querySelectorAll('#projects, #contact').forEach(section => typewriterObserver.observe(section));
 
   // Copy Email to Clipboard Logic
   const copyEmailBtns = document.querySelectorAll('.copy-email');
