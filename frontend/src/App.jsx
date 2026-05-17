@@ -9,6 +9,7 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
+import Certificates from './components/Certificates';
 import Lenis from 'lenis';
 
 function App() {
@@ -149,6 +150,12 @@ function App() {
       card.addEventListener('mouseleave', handleTiltLeave);
     });
 
+    const certCards = document.querySelectorAll('.cert-card');
+    certCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => handleTiltMove(e, -8, 8));
+      card.addEventListener('mouseleave', handleTiltLeave);
+    });
+
     const contactItems = document.querySelectorAll('.contact-item');
     contactItems.forEach(item => {
       item.addEventListener('mousemove', (e) => handleTiltMove(e, -6, 4));
@@ -194,6 +201,9 @@ function App() {
       
       <div className="divider"><hr /></div>
       <Skills />
+      
+      <div className="divider"><hr /></div>
+      <Certificates />
       
       <div className="divider"><hr /></div>
       <Projects />

@@ -268,13 +268,17 @@ const navToggle = document.querySelector('.nav-toggle');
             // Call the GitHub API
             const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
             
-            if (response.status === 404) {
+            if (response.status === 200) {
+              badge.textContent = 'Public';
+              badge.className = 'project-badge public repo-visibility-badge';
+            } else if (response.status === 404) {
               // If 404, the repo is private (or deleted)
               badge.textContent = 'Private';
               badge.className = 'project-badge private repo-visibility-badge';
               
               // Disable the link so users don't hit a 404 page
               card.removeAttribute('href');
+              card.style.cursor = 'default';
               const actionText = card.querySelector('.project-action');
               if (actionText) actionText.textContent = 'Private Repository';
             }
