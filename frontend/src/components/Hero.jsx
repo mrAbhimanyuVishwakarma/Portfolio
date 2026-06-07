@@ -38,7 +38,7 @@ const Hero = () => {
   return (
     <section className="hero">
       <div className="hero-shell">
-        <span className="hero-tag">Available for opportunities</span>
+
         <h1>Abhimanyu<br /><em>Vishwakarma</em></h1>
         <div className="hero-actions">
           <a href="#" className="btn-primary copy-email" onClick={copyEmail}>
