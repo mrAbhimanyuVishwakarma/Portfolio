@@ -8,26 +8,21 @@ const Experience = () => {
         <div className="exp-card">
           <div className="exp-header">
             <div className="exp-left">
-              <p className="exp-role">Software Engineer <span className="exp-company">@ Cognizant</span></p>
-              <p className="exp-client">Client: Travelers Insurance (Enterprise Insurance Platform)</p>
+              <p className="exp-role">Software Development Engineer (Hybrid) <span className="exp-company">@ Cognizant</span></p>
+              <p className="exp-client">Client: Travelers Insurance</p>
             </div>
-            <span className="exp-date">July 2024 – Present</span>
+            <span className="exp-date">Jul 2025 – Present</span>
           </div>
           <ul className="exp-bullets">
-            <li>Developing, designing, and maintaining business logic and automation rules using <strong>Java</strong> and <strong>IBM ODM</strong> rule designer (<strong>Eclipse</strong>), directly impacting insurance decision workflows for client.</li>
-            <li>Integrated a <strong>AI-driven automation tooling using Python</strong> and <strong>prompt engineering</strong> to accelerate rule development and testing cycles, significantly reducing manual effort across the team. This reduces 40%of code duplicacy and manual efforts.(VS Code)</li>
-            <li>Owning team <strong>PR reviews</strong> and <strong>UAT deployments</strong> each sprint, managing <strong>Jira</strong> board per iteration while maintaining application health and stability.</li>
-            <li>Collaborated with QA teams to support unit testing, integration testing, and user acceptance testing(UAT), ensuring high-quality feature delivery faster and more realible using <strong>python script automation</strong> in SOAP for SOAP UI and Postman </li>
-            <li>Applied <strong>REST API integration</strong> and <strong>CI/CD pipeline</strong> practices for deployment and monitoring of backend services.</li>
+            <li>Owning team <strong>GitHub PR Reviews</strong> and <strong>UAT deployments</strong>, managing <strong>Jira board</strong> while maintaining application health and stability.</li>
+            <li>Designed and integrated an <strong>AI-driven Python automation layer</strong> to handle Jira intake, rule changes, and XML testing; manual efforts and code duplication by 40% reduction. Collaborated with other teams to implement <strong>Python automation</strong> support for unit testing, integration testing, and user acceptance testing (UAT), ensuring high-quality and faster delivery in <strong>SOAP</strong>.</li>
+            <li>Applied <strong>REST API integration</strong> and <strong>CI/CD practices</strong> for monitoring and deployment of backend services.</li>
           </ul>
           <div className="exp-tags">
-            <span className="exp-tag">Java</span>
-            <span className="exp-tag">Python using AI</span>
-            <span className="exp-tag">IBM ODM</span>
+            <span className="exp-tag">Python (scripting)</span>
             <span className="exp-tag">REST APIs</span>
             <span className="exp-tag">CI/CD</span>
-            <span className="exp-tag">Agile / Jira</span>
-            <span className="exp-tag">VS Code | Eclipse</span>
+            <span className="exp-tag">Jira</span>
             <span className="exp-tag">SOAP</span>
           </div>
         </div>
@@ -35,22 +30,40 @@ const Experience = () => {
         <div className="exp-card">
           <div className="exp-header">
             <div className="exp-left">
-              <p className="exp-role">GenC Intern <span className="exp-company">@ Cognizant</span></p>
-              <p className="exp-client">TIBCO BusinessWorks 6 Training Program</p>
+              <p className="exp-role">Junior Software Developer <span className="exp-company">@ Cognizant</span></p>
             </div>
-            <span className="exp-date">Jan 2024 – June 2024</span>
+            <span className="exp-date">Jul 2024 – Jun 2025</span>
           </div>
           <ul className="exp-bullets">
-            <li>Completed enterprise integration training with <strong>TIBCO BW6</strong>, working with JMS, HTTP, SOAP/REST web services, XML/XSD, and data mapping.</li>
-            <li>Implemented process orchestration, logging, and exception handling; gained exposure to TIBCO EMS, JMS, and JDBC.</li>
+            <li>Developing design and maintaining business logic and automation rules using <strong>Java</strong> and <strong>IBM ODM</strong> rule designer (<strong>Eclipse</strong>), directly impacting insurance decision workflows for clients.</li>
+            <li>Kept post-deployment bug rate under <strong>0.1%</strong> by writing clean, well-tested rule logic before every release.</li>
+            <li>Picked up the full sprint workflow from day one writing code, getting it reviewed, testing it, and deploying it.</li>
           </ul>
           <div className="exp-tags">
             <span className="exp-tag">Java</span>
-            <span className="exp-tag">TIBCO BW6</span>
+            <span className="exp-tag">IBM ODM</span>
+            <span className="exp-tag">Eclipse</span>
+          </div>
+        </div>
+
+        <div className="exp-card">
+          <div className="exp-header">
+            <div className="exp-left">
+              <p className="exp-role">Data Analyst Intern <span className="exp-company">@ Cognizant</span></p>
+              <p className="exp-client">GenC Intern</p>
+            </div>
+            <span className="exp-date">Jan 2024 – Jun 2024</span>
+          </div>
+          <ul className="exp-bullets">
+            <li>Worked with tools and protocols such as <strong>TIBCO EMS, JMS, HTTP, SOAP/REST API, XML/XSD</strong>, and data mapping. Implemented process orchestration, logging, and exception handling.</li>
+            <li>Used <strong>MySQL</strong> alongside <strong>JDBC</strong> to handle real data during integration flows and understood backend.</li>
+          </ul>
+          <div className="exp-tags">
+            <span className="exp-tag">TIBCO EMS</span>
             <span className="exp-tag">JMS</span>
             <span className="exp-tag">MySQL</span>
-            <span className="exp-tag">Web Services</span>
-            <span className="exp-tag">SOAP UI | Postman</span>
+            <span className="exp-tag">JDBC</span>
+            <span className="exp-tag">XML/XSD</span>
           </div>
         </div>
       </div>
