@@ -5,7 +5,7 @@ const Projects = () => {
     {
       id: "01",
       title: "E-Commerce-Order-Management System (AxeDrobe)",
-      desc: "Created a complete e-commerce website using Java, Spring Boot, and Docker. Codes are into independent pieces (like Users, Products, and Orders) so that if one part crashes, the rest of the website stays online. Used Apache Kafka to handle heavy tasks in the background. Web application frontend using React and Kotlin.",
+      desc: "I built a complete online shopping website. I split the code into separate parts (like Users, Products, and Orders) so if one part breaks, the rest of the site keeps working. I also used special tools to handle heavy tasks in the background without slowing down the website.",
       url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
       tech: ["Java", "Spring Boot", "Docker", "Apache Kafka", "React", "Kotlin"],
       visibility: "Public"
@@ -13,9 +13,17 @@ const Projects = () => {
     {
       id: "02",
       title: "AuraTube",
-      desc: "Automatically transform YouTube videos into viral-ready short-form clips with AI-powered analysis, stylish captions, background music, and direct YouTube uploads.",
+      desc: "A smart tool that uses AI to automatically turn long YouTube videos into fun, short clips. It adds cool captions and background music, and can even upload them directly to YouTube for you.",
       url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
       tech: ["Python", "AI/ML", "Video Editing", "Automation"],
+      visibility: "Public"
+    },
+    {
+      id: "03",
+      title: "Developer Portfolio",
+      desc: "My personal website to show off my work! It has cool 3D effects when you move your mouse, smooth scrolling, and it automatically checks my GitHub to see which projects are public.",
+      url: "https://github.com/mrAbhimanyuVishwakarma/Portfolio",
+      tech: ["React", "Vite", "Lenis Scroll", "CSS"],
       visibility: "Public"
     }
   ]);
@@ -74,7 +82,6 @@ const Projects = () => {
               <span className="project-number">{repo.id}</span>
               <div className="project-badges">
                 <span className={`project-badge ${repo.visibility === 'Public' ? 'public' : 'private'} repo-visibility-badge`}>{repo.visibility}</span>
-                <span className="project-badge">{repo.id === "01" ? "Featured" : "In progress"}</span>
               </div>
             </div>
             <p className="project-title">{repo.title}</p>
