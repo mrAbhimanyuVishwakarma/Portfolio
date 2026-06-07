@@ -4,18 +4,18 @@ const Projects = () => {
   const [repos, setRepos] = useState([
     {
       id: "01",
-      title: "ClipStudio.AI",
-      desc: "Automatically transform YouTube videos into viral-ready short-form clips with AI-powered analysis, stylish captions, background music, and direct YouTube uploads.",
-      url: "https://github.com/mrAbhimanyuVishwakarma/Full_Youtube_video-shorts_maker",
-      tech: ["Python", "AI/ML", "Video Editing", "Automation"],
+      title: "E-Commerce-Order-Management System (AxeDrobe)",
+      desc: "Created a complete e-commerce website using Java, Spring Boot, and Docker. Codes are into independent pieces (like Users, Products, and Orders) so that if one part crashes, the rest of the website stays online. Used Apache Kafka to handle heavy tasks in the background. Web application frontend using React and Kotlin.",
+      url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
+      tech: ["Java", "Spring Boot", "Docker", "Apache Kafka", "React", "Kotlin"],
       visibility: "Public"
     },
     {
       id: "02",
-      title: "Student.AI",
-      desc: "AI-powered educational platform featuring knowledge extraction from textbooks, assignments generations, projects report generations and personalized study guidance.",
-      url: "https://github.com/mrAbhimanyuVishwakarma/Student.ai",
-      tech: ["Python", "NodeJS", "MongoDB", "React", "AI/ML"],
+      title: "AuraTube",
+      desc: "Automatically transform YouTube videos into viral-ready short-form clips with AI-powered analysis, stylish captions, background music, and direct YouTube uploads.",
+      url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
+      tech: ["Python", "AI/ML", "Video Editing", "Automation"],
       visibility: "Public"
     }
   ]);
