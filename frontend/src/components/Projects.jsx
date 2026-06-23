@@ -7,6 +7,7 @@ const Projects = () => {
       title: "E-Commerce-Order-Management System (AxeDrobe)",
       desc: "I built a complete online shopping website. I split the code into separate parts (like Users, Products, and Orders) so if one part breaks, the rest of the site keeps working. I also used special tools to handle heavy tasks in the background without slowing down the website.",
       url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
+      liveUrl: "https://axedrobe-frontend.pages.dev/",
       tech: ["Java", "Spring Boot", "Docker", "Apache Kafka", "React", "Kotlin"],
       visibility: "Public"
     },
@@ -15,6 +16,7 @@ const Projects = () => {
       title: "AuraTube",
       desc: "A smart tool that uses AI to automatically turn long YouTube videos into fun, short clips. It adds cool captions and background music, and can even upload them directly to YouTube for you.",
       url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
+      liveUrl: "https://aura-tube-eight.vercel.app/",
       tech: ["Python", "AI/ML", "Video Editing", "Automation"],
       visibility: "Public"
     },
@@ -23,6 +25,7 @@ const Projects = () => {
       title: "Developer Portfolio",
       desc: "My personal website to show off my work! It has cool 3D effects when you move your mouse, smooth scrolling, and it automatically checks my GitHub to see which projects are public.",
       url: "https://github.com/mrAbhimanyuVishwakarma/Portfolio",
+      liveUrl: "https://portfolio-beta-amber-6xpiu6ljay.vercel.app/",
       tech: ["React", "Vite", "Lenis Scroll", "CSS"],
       visibility: "Public"
     }
@@ -65,18 +68,9 @@ const Projects = () => {
       <p className="section-label">Projects</p>
       <div className="projects-grid">
         {repos.map((repo, idx) => (
-          <a
+          <div
             key={idx}
-            href={repo.url || undefined}
-            target={repo.url ? "_blank" : undefined}
-            rel={repo.url ? "noopener noreferrer" : undefined}
             className={`project-card ${!repo.url ? 'private-card' : ''}`}
-            style={!repo.url ? { cursor: 'default' } : {}}
-            onClick={(e) => {
-              if (!repo.url) {
-                e.preventDefault();
-              }
-            }}
           >
             <div className="project-header">
               <span className="project-number">{repo.id}</span>
@@ -89,8 +83,17 @@ const Projects = () => {
             <div className="project-tech">
               {repo.tech.map((t, i) => <span key={i}>{t}</span>)}
             </div>
-            <span className="project-action">{repo.url ? "View Repository →" : "Private Repository"}</span>
-          </a>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '8px' }}>
+              {repo.liveUrl && (
+                <a href={repo.liveUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Live →</a>
+              )}
+              {repo.url ? (
+                <a href={repo.url} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Repository →</a>
+              ) : (
+                <span className="project-action" style={{ marginTop: 0, paddingTop: 0 }}>Private Repository</span>
+              )}
+            </div>
+          </div>
         ))}
       </div>
     </section>
