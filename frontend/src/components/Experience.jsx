@@ -37,7 +37,7 @@ const Experience = () => {
           <ul className="exp-bullets">
             <li>Developing design and maintaining business logic and automation rules using <strong>Java</strong> and <strong>IBM ODM</strong> rule designer (<strong>Eclipse</strong>), directly impacting insurance decision workflows for clients.</li>
             <li>Kept post-deployment bug rate under <strong>0.1%</strong> by writing clean, well-tested rule logic before every release.</li>
-            <li>Picked up the full sprint workflow from day one writing code, getting it reviewed, testing it, and deploying it.</li>
+            <li>Adapted to the full sprint workflow from day one, encompassing code development, peer review, testing, and production deployment.</li>
           </ul>
           <div className="exp-tags">
             <span className="exp-tag">Java</span>
