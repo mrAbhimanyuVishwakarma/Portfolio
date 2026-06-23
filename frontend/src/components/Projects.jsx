@@ -5,7 +5,7 @@ const Projects = () => {
     {
       id: "01",
       title: "E-Commerce-Order-Management System (AxeDrobe)",
-      desc: "I built a complete online shopping website. I split the code into separate parts (like Users, Products, and Orders) so if one part breaks, the rest of the site keeps working. I also used special tools to handle heavy tasks in the background without slowing down the website.",
+      desc: "A microservices-based e-commerce platform featuring distributed architecture for Users, Products, and Orders. Built with Spring Boot and Kafka for asynchronous event-driven communication to ensure high availability and robust background task processing.",
       url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
       liveUrl: "https://axedrobe-frontend.pages.dev/",
       tech: ["Java", "Spring Boot", "Docker", "Apache Kafka", "React", "Kotlin"],
@@ -14,7 +14,7 @@ const Projects = () => {
     {
       id: "02",
       title: "AuraTube",
-      desc: "A smart tool that uses AI to automatically turn long YouTube videos into fun, short clips. It adds cool captions and background music, and can even upload them directly to YouTube for you.",
+      desc: "An automated video processing pipeline leveraging AI to extract engaging short clips from long-form YouTube content. Features include automated captioning, background music synchronization, and direct YouTube upload integration.",
       url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
       liveUrl: "https://aura-tube-eight.vercel.app/",
       tech: ["Python", "AI/ML", "Video Editing", "Automation"],
@@ -23,7 +23,7 @@ const Projects = () => {
     {
       id: "03",
       title: "Developer Portfolio",
-      desc: "My personal website to show off my work! It has cool 3D effects when you move your mouse, smooth scrolling, and it automatically checks my GitHub to see which projects are public.",
+      desc: "A highly interactive personal portfolio built with React and Vite. Features custom 3D mouse tracking animations, smooth scrolling with Lenis, and dynamic GitHub API integration to automatically sync and display public repositories.",
       url: "https://github.com/mrAbhimanyuVishwakarma/Portfolio",
       liveUrl: "https://portfolio-beta-amber-6xpiu6ljay.vercel.app/",
       tech: ["React", "Vite", "Lenis Scroll", "CSS"],
