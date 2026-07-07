@@ -4,20 +4,20 @@ const Projects = () => {
   const [repos, setRepos] = useState([
     {
       id: "01",
-      title: "E-Commerce-Order-Management System (AxeDrobe)",
-      desc: "A microservices-based e-commerce platform featuring distributed architecture for Users, Products, and Orders. Built with Spring Boot and Kafka for asynchronous event-driven communication to ensure high availability and robust background task processing.",
+      title: "AxeDrobe (E-Commerce Order Management)",
+      desc: "Built full-stack e-commerce order management system with independent user, product, purchase, inventory, notification modules. Implemented Fast APIs using Java, Spring Boot, Typescript, MySQL, JPA-Hibernate, JWT authentication, oauth login, Kafka event flow, Docker setup. Integrated a React frontend with server-side to support product browsing, checkout placement, inventory updates, and scalable SIP communication.",
       url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
       liveUrl: "https://axedrobe-frontend.pages.dev/",
-      tech: ["Java", "Spring Boot", "Docker", "Apache Kafka", "React", "Kotlin"],
+      tech: ["Java", "Spring Boot", "React", "CSS", "Kafka", "MySQL"],
       visibility: "Public"
     },
     {
       id: "02",
       title: "AuraTube",
-      desc: "An automated video processing pipeline leveraging AI to extract engaging short clips from long-form YouTube content. Features include automated captioning, background music synchronization, and direct YouTube upload integration.",
+      desc: "Built a full-stack video utility application using React front-end development and FastAPI layer for YouTube video and playlist workflow execution. Integrated yt-dlp, FFmpeg, Google APIs, and Server-Sent Events to improve video processing, real-time progress tracking, and Google Drive upload.",
       url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
       liveUrl: "https://aura-tube-eight.vercel.app/",
-      tech: ["Python", "AI/ML", "Video Editing", "Automation"],
+      tech: ["Python", "FastAPI", "Angular", "Node.js", "React"],
       visibility: "Public"
     },
     {

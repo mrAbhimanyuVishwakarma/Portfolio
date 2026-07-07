@@ -275,10 +275,10 @@ function App() {
       <Skills />
       
       <div className="divider"><hr /></div>
-      <Certificates />
+      <Projects />
       
       <div className="divider"><hr /></div>
-      <Projects />
+      <Certificates />
       
       <div className="divider"><hr /></div>
       <Education />
