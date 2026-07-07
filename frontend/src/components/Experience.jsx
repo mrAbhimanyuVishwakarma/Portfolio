@@ -8,36 +8,35 @@ const Experience = () => {
         <div className="exp-card">
           <div className="exp-header">
             <div className="exp-left">
-              <p className="exp-role">Software Development Engineer (Hybrid) <span className="exp-company">@ Cognizant</span></p>
+              <p className="exp-role">Software Development Engineer <span className="exp-company">@ Cognizant</span></p>
               <p className="exp-client">Client: Travelers Insurance</p>
             </div>
             <span className="exp-date">Jul 2025 – Present</span>
           </div>
           <ul className="exp-bullets">
-            <li>Owning team <strong>GitHub PR Reviews</strong> and <strong>UAT deployments</strong>, managing <strong>Jira board</strong> while maintaining application health and stability.</li>
-            <li>Designed and integrated an <strong>AI-driven Python automation layer</strong> to handle Jira intake, rule changes, and XML testing; manual efforts and code duplication by 40% reduction. Collaborated with other teams to implement <strong>Python automation</strong> support for unit testing, integration testing, and user acceptance testing (UAT), ensuring high-quality and faster delivery in <strong>SOAP</strong>.</li>
-            <li>Applied <strong>REST API integration</strong> and <strong>CI/CD practices</strong> for monitoring and deployment of backend services.</li>
+            <li>Created a <strong>Spring Boot</strong> project for an application upgrade requirement, containerized the setup using <strong>Docker</strong>, configured <strong>Maven</strong> dependencies, HTTP, and environment profiles to assist testing, deployment, migration <strong>30% faster</strong>.</li>
+            <li>Built automation tools for code automation, <strong>PR review</strong>, and TCO production checkout, reducing time by <strong>55%</strong>. Designed a <strong>Python-based AI automation layer</strong> for Jira intake, rule changes, artifact setup, and XML, JSON and <strong>SOAP</strong> testing, reducing manual effort by <strong>40%</strong> with an independent <strong>PowerShell</strong> and <strong>Swagger UI</strong> tool.</li>
+            <li>Managed <strong>PR reviews, UAT deployments</strong>, Jira tracking, release monitor, API endpoints integration, <strong>CI/CD</strong>, monitoring and debugging (root cause analysis); troubleshooting <strong>14 major bugs/issues</strong> along with the team infrastructure-as-code.</li>
           </ul>
           <div className="exp-tags">
-            <span className="exp-tag">Python (scripting)</span>
+            <span className="exp-tag">Spring Boot</span>
+            <span className="exp-tag">Docker</span>
+            <span className="exp-tag">Python</span>
             <span className="exp-tag">REST APIs</span>
             <span className="exp-tag">CI/CD</span>
             <span className="exp-tag">Jira</span>
-            <span className="exp-tag">SOAP</span>
           </div>
         </div>
 
         <div className="exp-card">
           <div className="exp-header">
             <div className="exp-left">
-              <p className="exp-role">Junior Software Developer <span className="exp-company">@ Cognizant</span></p>
+              <p className="exp-role">Junior SDE <span className="exp-company">@ Cognizant</span></p>
             </div>
             <span className="exp-date">Jul 2024 – Jun 2025</span>
           </div>
           <ul className="exp-bullets">
-            <li>Developing design and maintaining business logic and automation rules using <strong>Java</strong> and <strong>IBM ODM</strong> rule designer (<strong>Eclipse</strong>), directly impacting insurance decision workflows for clients.</li>
-            <li>Kept post-deployment bug rate under <strong>0.1%</strong> by writing clean, well-tested rule logic before every release.</li>
-            <li>Adapted to the full sprint workflow from day one, encompassing code development, peer review, testing, and production deployment.</li>
+            <li>Writing clean <strong>Java</strong> code for business rules, decision tables, validations, and server-side work flow using <strong>IBM ODM Rule Designer</strong> while maintaining post-deployment bug rate under <strong>0.1%</strong> through impact analysis, clean code, routing, testing, code review, and release with continuous improvement solutions.</li>
           </ul>
           <div className="exp-tags">
             <span className="exp-tag">Java</span>
@@ -49,14 +48,13 @@ const Experience = () => {
         <div className="exp-card">
           <div className="exp-header">
             <div className="exp-left">
-              <p className="exp-role">Data Analyst Intern <span className="exp-company">@ Cognizant</span></p>
-              <p className="exp-client">GenC Intern</p>
+              <p className="exp-role">Software Trainee <span className="exp-company">@ Cognizant</span></p>
             </div>
             <span className="exp-date">Jan 2024 – Jun 2024</span>
           </div>
           <ul className="exp-bullets">
-            <li>Worked with tools and protocols such as <strong>TIBCO EMS, JMS, HTTP, SOAP/REST API, XML/XSD</strong>, and data mapping. Implemented process orchestration, logging, and exception handling.</li>
-            <li>Used <strong>MySQL</strong> alongside <strong>JDBC</strong> to handle real data during integration flows and understood backend.</li>
+            <li>Worked on <strong>JMS, HTTP, SOAP web services, XML, XSD</strong>, data mapping, <strong>TIBCO EMS</strong>, logging, and exception handling.</li>
+            <li>Used <strong>MySQL</strong> and <strong>JDBC</strong> for data validation and integration flows, parsing up to <strong>100,000 records</strong> per week.</li>
           </ul>
           <div className="exp-tags">
             <span className="exp-tag">TIBCO EMS</span>
