@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Football.css';
 
+// Dynamically load all skin images from the Mini Game folders
+const footballImports = import.meta.glob('../assets/Mini Game/Football/*.{png,jpg,jpeg,svg}', { eager: true, import: 'default' });
+const basketballImports = import.meta.glob('../assets/Mini Game/Basketball/*.{png,jpg,jpeg,svg}', { eager: true, import: 'default' });
+
+const skins = [
+  ...Object.values(footballImports).map(url => ({ type: 'football', url })),
+  ...Object.values(basketballImports).map(url => ({ type: 'basketball', url }))
+];
+
 const Football = () => {
   const wrapperRef = useRef(null);
   const ballRef = useRef(null);
@@ -18,12 +27,6 @@ const Football = () => {
   const [skinIndex, setSkinIndex] = useState(0);
 
   const lastTapTimeRef = useRef(0);
-
-  const skins = [
-    { type: 'football', url: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg" }, // Football
-    { type: 'football', url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='white' stroke='%23ccc' stroke-width='1'/><path d='M30 30 Q50 10 70 30 T70 70 T30 70 T30 30' fill='none' stroke='%23ff004d' stroke-width='6'/><path d='M20 50 Q50 80 80 50' fill='none' stroke='%2300f0ba' stroke-width='6'/><text x='50' y='58' font-size='22' font-family='Arial, sans-serif' font-weight='900' text-anchor='middle' fill='%23111'>2026</text></svg>" }, // FIFA 2026
-    { type: 'basketball', url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23ff7a00'/><path d='M50 2 L50 98 M2 50 L98 50 M15 15 Q40 50 15 85 M85 15 Q60 50 85 85' fill='none' stroke='%23333' stroke-width='2.5'/></svg>" } // Basketball
-  ];
 
   const ballSize = 60; // Size of the football in pixels
   const goalWidth = 250;
