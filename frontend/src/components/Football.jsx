@@ -9,6 +9,8 @@ const Football = () => {
   const isMovingRef = useRef(false);
   const animationRef = useRef(null);
   const chargeStartTimeRef = useRef(0);
+  const swipeStartRef = useRef({ x: 0, y: 0, time: 0 });
+  const isSwipingRef = useRef(false);
   
   const [isCharging, setIsCharging] = useState(false);
   const [showGoal, setShowGoal] = useState(false);
@@ -44,39 +46,68 @@ const Football = () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
     
     velocityRef.current = { x: 0, y: 0 };
-    chargeStartTimeRef.current = Date.now();
-    setIsCharging(true);
+    
+    if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+      swipeStartRef.current = { x: e.clientX, y: e.clientY, time: Date.now() };
+      isSwipingRef.current = true;
+    } else {
+      chargeStartTimeRef.current = Date.now();
+      setIsCharging(true);
+    }
     setShowGoal(true);
   };
 
   const handlePointerUp = (e) => {
-    e.preventDefault();
-    if (!isCharging) return;
-    setIsCharging(false);
+    if (e.cancelable) e.preventDefault();
 
-    // Calculate charge power (max 1.5 seconds)
-    const holdDuration = Math.min(Date.now() - chargeStartTimeRef.current, 1500);
-    // Base power + power based on time
-    const powerMultiplier = 0.5 + (holdDuration / 1500) * 1.5; 
+    if (isSwipingRef.current && (e.pointerType === 'touch' || e.pointerType === 'pen')) {
+      isSwipingRef.current = false;
+      const endX = e.clientX;
+      const endY = e.clientY;
+      const dx = endX - swipeStartRef.current.x;
+      const dy = endY - swipeStartRef.current.y;
+      const dt = Math.max(1, Date.now() - swipeStartRef.current.time);
+      
+      if (dt > 1000 || (Math.abs(dx) < 10 && Math.abs(dy) < 10)) {
+         setShowGoal(false);
+         return; 
+      }
 
-    // Calculate vector from ball center to cursor
-    const rect = ballRef.current.getBoundingClientRect();
-    const ballCenterX = rect.left + ballSize / 2;
-    const ballCenterY = rect.top + ballSize / 2;
-    
-    const dx = e.clientX - ballCenterX;
-    const dy = e.clientY - ballCenterY;
-    
-    // Normalize vector
-    const distance = Math.sqrt(dx * dx + dy * dy) || 1;
-    const nx = dx / distance;
-    const ny = dy / distance;
-    
-    // Shoot in OPPOSITE direction of cursor relative to ball center
-    // Scale speed based on screen size so it isn't too fast on mobile
-    const baseSpeed = window.innerWidth < 768 ? 22 : 35;
-    const speed = baseSpeed * powerMultiplier;
-    velocityRef.current = { x: -nx * speed, y: -ny * speed };
+      const swipeMultiplier = 15; 
+      let vx = (dx / dt) * swipeMultiplier;
+      let vy = (dy / dt) * swipeMultiplier;
+      
+      const maxSpeed = window.innerWidth < 768 ? 35 : 50;
+      const currentSpeed = Math.sqrt(vx * vx + vy * vy);
+      if (currentSpeed > maxSpeed) {
+         vx = (vx / currentSpeed) * maxSpeed;
+         vy = (vy / currentSpeed) * maxSpeed;
+      }
+      
+      velocityRef.current = { x: vx, y: vy };
+    } else if (isCharging) {
+      setIsCharging(false);
+
+      const holdDuration = Math.min(Date.now() - chargeStartTimeRef.current, 1500);
+      const powerMultiplier = 0.5 + (holdDuration / 1500) * 1.5; 
+
+      const rect = ballRef.current.getBoundingClientRect();
+      const ballCenterX = rect.left + ballSize / 2;
+      const ballCenterY = rect.top + ballSize / 2;
+      
+      const dx = e.clientX - ballCenterX;
+      const dy = e.clientY - ballCenterY;
+      
+      const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+      const nx = dx / distance;
+      const ny = dy / distance;
+      
+      const baseSpeed = window.innerWidth < 768 ? 22 : 35;
+      const speed = baseSpeed * powerMultiplier;
+      velocityRef.current = { x: -nx * speed, y: -ny * speed };
+    } else {
+      return;
+    }
 
     setShowGoal(true);
     isMovingRef.current = true;
@@ -86,7 +117,7 @@ const Football = () => {
   // If pointer leaves the ball while dragging, we still want to fire
   useEffect(() => {
     const handleGlobalPointerUp = (e) => {
-      if (isCharging) handlePointerUp(e);
+      if (isCharging || isSwipingRef.current) handlePointerUp(e);
     };
     window.addEventListener('pointerup', handleGlobalPointerUp);
     return () => window.removeEventListener('pointerup', handleGlobalPointerUp);
