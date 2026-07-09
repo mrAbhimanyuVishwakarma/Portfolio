@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
 import Certificates from './components/Certificates';
 import Education from './components/Education';
+import Football from './components/Football';
 import Lenis from 'lenis';
 
 function App() {
@@ -298,6 +299,8 @@ function App() {
           <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
       </button>
+
+      <Football />
     </>
   );
 }
