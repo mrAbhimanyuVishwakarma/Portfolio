@@ -73,8 +73,9 @@ const Football = () => {
     const ny = dy / distance;
     
     // Shoot in OPPOSITE direction of cursor relative to ball center
-    // Speed multiplier scales up to 45
-    const speed = 35 * powerMultiplier;
+    // Scale speed based on screen size so it isn't too fast on mobile
+    const baseSpeed = window.innerWidth < 768 ? 22 : 35;
+    const speed = baseSpeed * powerMultiplier;
     velocityRef.current = { x: -nx * speed, y: -ny * speed };
 
     setShowGoal(true);
