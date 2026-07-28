@@ -1349,3 +1349,221 @@
 .nav--hidden {
   transform: translateY(-100%) !important;
 }
+
+/* Custom LinkedIn Card */
+.custom-linkedin-card {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  width: 280px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+  margin: 0 auto;
+}
+.custom-linkedin-card:hover {
+  background: var(--surface-hover);
+  border-color: #00E5FF;
+  box-shadow: 
+    0 0 8px rgba(0, 229, 255, 0.3),
+    0 0 20px rgba(0, 229, 255, 0.18),
+    0 0 40px rgba(0, 229, 255, 0.1),
+    inset 0 0 12px rgba(0, 229, 255, 0.15),
+    0 16px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-5px);
+}
+.card-image-container {
+  width: 100%;
+  height: 250px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+  position: relative;
+  border-radius: 18px 18px 0 0;
+}
+.card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border);
+}
+.card-content {
+  padding: 18px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+.card-title-area {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.card-title-area h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--text);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.verified-badge {
+  color: var(--muted);
+  width: 18px;
+  height: 18px;
+}
+.premium-badge {
+  color: #C8B67D;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+}
+.badge-wrapper {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+.badge-wrapper:hover .badge-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+.badge-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0f172a;
+  color: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 9999;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+}
+.card-bio {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+.contact-info-wrapper .contact-info-popup {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #0f172a;
+  color: #f1f5f9;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+  z-index: 9999;
+  width: max-content;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  text-align: left;
+}
+.contact-info-wrapper:hover .contact-info-popup {
+  visibility: visible;
+  opacity: 1;
+}
+.popup-header {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.popup-item {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.popup-item:last-child {
+  margin-bottom: 0;
+}
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.card-stats {
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat svg {
+  width: 15px;
+  height: 15px;
+  color: var(--muted);
+}
+.hire-me-btn {
+  background: var(--text);
+  color: #0b0d13;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease-out, opacity 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+.hire-me-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.25);
+}
+
+/* Small contact bars */
+.contact-item.small-bar {
+  padding: 0.75rem 1.25rem;
+}
+.contact-item.small-bar .contact-icon {
+  width: 32px;
+  height: 32px;
+}
+.contact-item.small-bar .contact-icon svg {
+  width: 16px;
+  height: 16px;
+}
+.contact-item.small-bar .contact-name {
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+.contact-item.small-bar .contact-handle {
+  font-size: 0.8rem;
+  min-height: auto;
+  line-height: 1.2;
+}
+.contact-item.small-bar .contact-left > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
