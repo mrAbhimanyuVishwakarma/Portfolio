@@ -16,7 +16,6 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
       </button>
 
       <a href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
-      <a href="#about" onClick={() => setIsMenuOpen(false)}>About Us</a>
       <a href="#work" onClick={() => setIsMenuOpen(false)}>My Work</a>
       <p className="mobile-menu-meta">Backend Engineer • Open to opportunities</p>
     </div>

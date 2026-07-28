@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './index.css';
 import Navbar from './components/Navbar';
 import MobileMenu from './components/MobileMenu';
-import Hero from './components/Hero';
-import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -91,16 +89,24 @@ function App() {
 
     // Scroll to Top & Autohide Navbar Logic using Lenis hook (Highly Optimized)
     let lastScrollY = 0;
+    let navElement = document.querySelector('nav');
+    let scrollState = false;
+    
     const handleLenisScroll = (e) => {
       const currentScrollY = e.scroll;
-      setShowScrollTop(currentScrollY > 400);
+      
+      const shouldShowScroll = currentScrollY > 400;
+      if (shouldShowScroll !== scrollState) {
+        scrollState = shouldShowScroll;
+        setShowScrollTop(shouldShowScroll);
+      }
 
-      const nav = document.querySelector('nav');
-      if (nav) {
-        if (currentScrollY > lastScrollY && currentScrollY > nav.offsetHeight) {
-          nav.classList.add('nav--hidden');
+      if (!navElement) navElement = document.querySelector('nav');
+      if (navElement) {
+        if (currentScrollY > lastScrollY && currentScrollY > navElement.offsetHeight) {
+          navElement.classList.add('nav--hidden');
         } else {
-          nav.classList.remove('nav--hidden');
+          navElement.classList.remove('nav--hidden');
         }
       }
       lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
@@ -178,8 +184,34 @@ function App() {
       e.currentTarget.style.transform = 'perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)';
     };
 
+    // Parallax Window Effect for Project Images (Desktop only)
+    const handleWindowParallax = (e) => {
+      const el = e.currentTarget;
+      const img = el.querySelector('img');
+      if (!img) return;
+
+      const rect = cachedRects.get(el) || el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -6; 
+      const rotateY = ((x - centerX) / centerX) * 6;
+      const translateX = ((x - centerX) / centerX) * -3;
+      const translateY = ((y - centerY) / centerY) * -3;
+      
+      img.style.transform = `scale3d(1.03, 1.03, 1.03) translate3d(${translateX}px, ${translateY}px, 0) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    };
+
+    const handleWindowLeave = (e) => {
+      cachedRects.delete(e.currentTarget);
+      const img = e.currentTarget.querySelector('img');
+      if (img) img.style.transform = '';
+    };
+
     const magneticElements = document.querySelectorAll('.btn-primary, .btn-ghost, .nav-logo');
-    const projectCards = document.querySelectorAll('.project-card');
+    const projectImageContainers = document.querySelectorAll('.project-image-container');
     const certCards = document.querySelectorAll('.cert-card');
     const contactItems = document.querySelectorAll('.contact-item');
 
@@ -190,10 +222,10 @@ function App() {
         el.addEventListener('mouseleave', handleHoverLeave);
       });
 
-      projectCards.forEach(card => {
-        card.addEventListener('mouseenter', handleHoverEnter);
-        card.addEventListener('mousemove', (e) => handleTiltMove(e, -10, 10));
-        card.addEventListener('mouseleave', handleTiltLeave);
+      projectImageContainers.forEach(container => {
+        container.addEventListener('mouseenter', handleHoverEnter);
+        container.addEventListener('mousemove', handleWindowParallax);
+        container.addEventListener('mouseleave', handleWindowLeave);
       });
 
       certCards.forEach(card => {
@@ -226,9 +258,10 @@ function App() {
           el.removeEventListener('mouseleave', handleHoverLeave);
         });
 
-        projectCards.forEach(card => {
-          card.removeEventListener('mouseenter', handleHoverEnter);
-          card.removeEventListener('mouseleave', handleTiltLeave);
+        projectImageContainers.forEach(container => {
+          container.removeEventListener('mouseenter', handleHoverEnter);
+          container.removeEventListener('mousemove', handleWindowParallax);
+          container.removeEventListener('mouseleave', handleWindowLeave);
         });
 
         certCards.forEach(card => {
@@ -263,8 +296,6 @@ function App() {
       <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       
       <SocialSidebar />
-
-      <Hero />
       
       <div className="divider"><hr /></div>
       <Contact />
