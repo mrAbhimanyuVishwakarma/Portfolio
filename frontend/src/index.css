@@ -354,7 +354,7 @@
     margin-bottom: 2rem;
   }
 
-  .hero h1 {
+  .hero-shell h1 {
     font-family: 'DM Serif Display', serif;
     font-size: clamp(3rem, 6vw, 5.5rem);
     line-height: 1.02;
@@ -364,7 +364,7 @@
     text-shadow: 0 14px 38px rgba(0, 0, 0, 0.52);
   }
 
-  .hero h1 em {
+  .hero-shell h1 em {
     font-style: italic;
     color: rgba(255, 255, 255, 0.8);
   }
@@ -450,7 +450,6 @@
     transform: perspective(1200px) rotateX(-12deg) translateY(50px) scale(0.96);
     transform-origin: top center;
     transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
   }
 
   .section.is-visible {
@@ -499,8 +498,8 @@
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .project-card {
@@ -510,14 +509,83 @@
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
     background: var(--surface);
     backdrop-filter: blur(14px);
-    padding: 1.75rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    gap: 10px;
     transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
     transform-style: preserve-3d;
-    will-change: transform;
+  }
+
+  .project-image-container {
+    margin: 16px 16px 0 16px;
+    width: calc(100% - 32px);
+    border-radius: 14px;
+    aspect-ratio: 16 / 9;
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    transition: transform 0.15s ease-out;
+  }
+
+  .project-image-container a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    position: relative;
+  }
+  
+  .project-image-container a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 2px transparent, inset 0 0 15px transparent;
+    transition: box-shadow 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+  
+  .project-image-container a:hover::after {
+    box-shadow: inset 0 0 0 2px #00E5FF, inset 0 0 20px rgba(0, 229, 255, 0.4);
+  }
+
+  .project-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-radius: inherit;
+  }
+  
+  .project-image-container a:hover img {
+    transform: scale(1.02);
+  }
+
+  .project-content {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .project-card {
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .project-image-container {
+      margin: 16px 0 16px 16px;
+      width: 50%;
+      height: auto;
+    }
+    .project-content {
+      width: 50%;
+    }
   }
 
   /* Dynamic mouse spotlight glare */
@@ -546,6 +614,14 @@
       0 0 40px rgba(0, 229, 255, 0.1),
       inset 0 0 12px rgba(0, 229, 255, 0.15),
       0 16px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-5px);
+  }
+
+  /* When hovering over the image link, turn off the card's glow but keep it elevated */
+  .project-card:has(.project-image-container a:hover) {
+    background: var(--surface-hover);
+    border-color: var(--border);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
   }
 
   .project-card:hover::before {
@@ -594,8 +670,8 @@
   }
 
   .project-title {
-    font-family: 'DM Serif Display', serif;
     font-size: 20px;
+    font-weight: 600;
     color: var(--text);
     line-height: 1.2;
   }
@@ -642,7 +718,6 @@
     gap: 14px;
     transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
     transform-style: preserve-3d;
-    will-change: transform;
   }
 
   .cert-card::before {
@@ -797,7 +872,6 @@
     transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
     gap: 1rem;
     transform-style: preserve-3d;
-    will-change: transform;
   }
 
   .contact-item::before {
@@ -1354,18 +1428,18 @@
 .custom-linkedin-card {
   position: relative;
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 23px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
   background: var(--surface);
   backdrop-filter: blur(14px);
-  width: 280px;
+  width: 100%;
+  max-width: 364px;
   font-family: 'DM Sans', sans-serif;
   color: var(--text);
   display: flex;
   flex-direction: column;
   transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
   transform-style: preserve-3d;
-  will-change: transform;
   margin: 0 auto;
 }
 .custom-linkedin-card:hover {
@@ -1380,24 +1454,24 @@
   transform: translateY(-5px);
 }
 .card-image-container {
-  width: 100%;
-  height: 250px;
+  width: calc(100% - 32px);
+  margin: 16px 16px 0 16px;
+  aspect-ratio: 28 / 25;
   background: rgba(255, 255, 255, 0.03);
   overflow: hidden;
   position: relative;
-  border-radius: 18px 18px 0 0;
+  border-radius: 14px;
 }
 .card-image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-bottom: 1px solid var(--border);
 }
 .card-content {
-  padding: 18px 20px 24px;
+  padding: 23px 26px 31px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   position: relative;
   z-index: 2;
 }
@@ -1408,21 +1482,21 @@
 }
 .card-title-area h3 {
   font-family: 'DM Serif Display', serif;
-  font-size: 20px;
+  font-size: 26px;
   color: var(--text);
   margin: 0;
   letter-spacing: -0.01em;
 }
 .verified-badge {
   color: var(--muted);
-  width: 18px;
-  height: 18px;
+  width: 23px;
+  height: 23px;
 }
 .premium-badge {
   color: #C8B67D;
-  width: 16px;
-  height: 16px;
-  margin-left: 2px;
+  width: 21px;
+  height: 21px;
+  margin-left: 3px;
 }
 .badge-wrapper {
   position: relative;
@@ -1442,9 +1516,9 @@
   transform: translateX(-50%);
   background-color: #0f172a;
   color: #f1f5f9;
-  padding: 6px 10px;
+  padding: 8px 13px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 16px;
   font-family: 'DM Sans', sans-serif;
   white-space: nowrap;
   pointer-events: none;
@@ -1455,7 +1529,7 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.8);
 }
 .card-bio {
-  font-size: 13px;
+  font-size: 17px;
   color: var(--muted);
   line-height: 1.6;
   margin: 0;
@@ -1484,13 +1558,13 @@
 }
 .popup-header {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   margin-bottom: 8px;
   padding-bottom: 4px;
   border-bottom: 1px solid var(--border);
 }
 .popup-item {
-  font-size: 12px;
+  font-size: 16px;
   margin-bottom: 4px;
 }
 .popup-item:last-child {
@@ -1500,14 +1574,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 13px;
   border-top: 1px solid var(--border);
-  padding-top: 16px;
+  padding-top: 21px;
 }
 .card-stats {
   display: flex;
-  gap: 14px;
-  font-size: 13px;
+  gap: 18px;
+  font-size: 17px;
   color: var(--text);
   font-weight: 600;
 }
@@ -1517,8 +1591,8 @@
   gap: 6px;
 }
 .stat svg {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   color: var(--muted);
 }
 .hire-me-btn {
@@ -1526,8 +1600,8 @@
   color: #0b0d13;
   border: none;
   border-radius: 999px;
-  padding: 8px 18px;
-  font-size: 12px;
+  padding: 10px 23px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;

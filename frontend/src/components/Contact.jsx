@@ -46,13 +46,13 @@ const Contact = () => {
   };
 
   return (
-    <section className="section" id="about">
-      <p className="section-label">About Us</p>
+    <section className="section">
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '1007px', margin: '0 auto', marginTop: '2.5rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '1150px', margin: '0 auto', marginTop: '2.5rem' }}>
+        {/* 👇 TO ADJUST OVERALL WIDTH manually, change maxWidth: '1150px' above */}
 
         {/* Left Side: Custom LinkedIn Card */}
-        <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ flex: '1 1 420px', display: 'flex', justifyContent: 'center' }}>
           <div className="custom-linkedin-card" style={{ margin: '0' }}>
             <div className="card-image-container">
               <img src="/mrAbhimanyu.png" alt="Profile" />
@@ -69,14 +69,14 @@ const Contact = () => {
                 </div>
                 <div className="badge-wrapper">
                   <svg className="premium-badge" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                   </svg>
                   <div className="badge-tooltip">LinkedIn Premium</div>
                 </div>
               </div>
               <div className="card-bio">
-                <div style={{ color: 'var(--text)', fontSize: '14px', marginBottom: '4px' }}>Software Development Engineer</div>
-                <div style={{ color: 'var(--muted)', fontSize: '13px' }}>
+                <div style={{ color: 'var(--text)', fontSize: '18px', marginBottom: '5px' }}>Software Development Engineer</div>
+                <div style={{ color: 'var(--muted)', fontSize: '17px' }}>
                   Bengaluru, Karnataka, India
                   <div style={{ marginTop: '6px' }}>
                     <div className="contact-info-wrapper" style={{ position: 'relative', display: 'inline-block' }}>
@@ -118,12 +118,27 @@ const Contact = () => {
         </div>
 
         {/* Right Side: Contact Items & Summary */}
-        <div style={{ flex: '1 1 450px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {/* 👇 TO ADJUST RIGHT-SIDE WIDTH manually, change the 580px value below (e.g. to 600px or 700px) */}
+        <div style={{ flex: '1.2 1 630px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
-          <div className="about-summary" style={{ marginBottom: '0.5rem' }}>
-            <p style={{ color: 'var(--muted)', lineHeight: '1.6', fontSize: '0.95rem' }}>
-              <span style={{ fontSize: '1.4rem', color: 'var(--text)', fontWeight: 'bold', lineHeight: 1 }}>S</span>oftware Development Engineer specializing in full stack development, backend development, scalable architectures, and automation workflows. Proven ability to design robust APIs, optimize performance, and solve complex algorithmic challenges. Always eager to explore new technologies and build products that make a real impact.
-            </p>
+          <div className="hero-shell" style={{ maxWidth: '100%', padding: '2rem' }}>
+            <h1>Abhimanyu<br /><em>Vishwakarma</em></h1>
+
+            <div className="about-summary" style={{ margin: '1rem 0' }}>
+              <p style={{ color: 'var(--muted)', lineHeight: '1.6', fontSize: '0.95rem' }}>
+                <span style={{ fontSize: '1.4rem', color: 'var(--text)', lineHeight: 1 }}>S</span>oftware Development Engineer specializing in full stack development, backend development, scalable architectures, and automation workflows. Proven ability to design robust APIs, optimize performance, and solve complex algorithmic challenges. Always eager to explore new technologies and build products that make a real impact.
+              </p>
+            </div>
+
+            <div className="hero-actions">
+              <a href="./Abhimanyu_Vishwakarma_Resume.pdf" download className="btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                Resume
+              </a>
+              <a href="#privacy-policy" className="btn-ghost">
+                Privacy Policy
+              </a>
+            </div>
           </div>
 
           <a href="mailto:abhimanyuvishwakarma9228@gmail.com" className="contact-item copy-email small-bar" onClick={copyEmail}>

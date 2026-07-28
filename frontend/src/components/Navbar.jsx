@@ -6,7 +6,6 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
       <a className="nav-title" href="#">Abhimanyu Vishwakarma</a>
       <ul className="nav-links">
         <li><a href="#">Home</a></li>
-        <li><a href="#about">About Us</a></li>
         <li><a href="#work">My Work</a></li>
       </ul>
       <button 

@@ -9,7 +9,8 @@ const Projects = () => {
       url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
       liveUrl: "https://axedrobe-frontend.pages.dev/",
       tech: ["Java", "Spring Boot", "React", "CSS", "Kafka", "MySQL"],
-      visibility: "Public"
+      visibility: "Public",
+      image: "axedrobe.png"
     },
     {
       id: "02",
@@ -18,18 +19,11 @@ const Projects = () => {
       url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
       liveUrl: "https://aura-tube-eight.vercel.app/",
       tech: ["Python", "FastAPI", "Angular", "Node.js", "React"],
-      visibility: "Public"
-    },
-    {
-      id: "03",
-      title: "Developer Portfolio",
-      desc: "A highly interactive personal portfolio built with React and Vite. Features custom 3D mouse tracking animations, smooth scrolling with Lenis, and dynamic GitHub API integration to automatically sync and display public repositories.",
-      url: "https://github.com/mrAbhimanyuVishwakarma/Portfolio",
-      liveUrl: "https://portfolio-beta-amber-6xpiu6ljay.vercel.app/",
-      tech: ["React", "Vite", "Lenis Scroll", "CSS"],
-      visibility: "Public"
+      visibility: "Public",
+      image: "auratube.png"
     }
   ]);
+  // Only keeping 2 projects as requested
 
   useEffect(() => {
     const checkRepoVisibility = async () => {
@@ -72,26 +66,38 @@ const Projects = () => {
             key={idx}
             className={`project-card ${!repo.url ? 'private-card' : ''}`}
           >
-            <div className="project-header">
-              <span className="project-number">{repo.id}</span>
-              <div className="project-badges">
-                <span className={`project-badge ${repo.visibility === 'Public' ? 'public' : 'private'} repo-visibility-badge`}>{repo.visibility}</span>
+            <div className="project-image-container">
+              <a 
+                href={repo.liveUrl || repo.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{ display: 'block', width: '100%', height: '100%' }}
+              >
+                <img src={`/${repo.image}`} alt={repo.title} />
+              </a>
+            </div>
+            <div className="project-content">
+              <div className="project-header">
+                <span className="project-number">{repo.id}</span>
+                <div className="project-badges">
+                  <span className={`project-badge ${repo.visibility === 'Public' ? 'public' : 'private'} repo-visibility-badge`}>{repo.visibility}</span>
+                </div>
               </div>
-            </div>
-            <p className="project-title">{repo.title}</p>
-            <p className="project-desc">{repo.desc}</p>
-            <div className="project-tech">
-              {repo.tech.map((t, i) => <span key={i}>{t}</span>)}
-            </div>
-            <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '8px' }}>
-              {repo.liveUrl && (
-                <a href={repo.liveUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Live →</a>
-              )}
-              {repo.url ? (
-                <a href={repo.url} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Repository →</a>
-              ) : (
-                <span className="project-action" style={{ marginTop: 0, paddingTop: 0 }}>Private Repository</span>
-              )}
+              <p className="project-title">{repo.title}</p>
+              <p className="project-desc">{repo.desc}</p>
+              <div className="project-tech">
+                {repo.tech.map((t, i) => <span key={i}>{t}</span>)}
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '8px' }}>
+                {repo.liveUrl && (
+                  <a href={repo.liveUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Live →</a>
+                )}
+                {repo.url ? (
+                  <a href={repo.url} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Repository →</a>
+                ) : (
+                  <span className="project-action" style={{ marginTop: 0, paddingTop: 0 }}>Private Repository</span>
+                )}
+              </div>
             </div>
           </div>
         ))}
