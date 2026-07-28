@@ -1,6 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const SocialSidebar = () => {
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    const video = document.querySelector('.video-bg');
+    if (video) {
+      setIsPlaying(!video.paused);
+      const handlePlay = () => setIsPlaying(true);
+      const handlePause = () => setIsPlaying(false);
+      video.addEventListener('play', handlePlay);
+      video.addEventListener('pause', handlePause);
+      return () => {
+        video.removeEventListener('play', handlePlay);
+        video.removeEventListener('pause', handlePause);
+      };
+    }
+  }, []);
+
+  const toggleVideo = () => {
+    const video = document.querySelector('.video-bg');
+    if (video) {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
+  };
+
   return (
     <>
       <div className="social-sidebar left">
@@ -13,6 +41,17 @@ const SocialSidebar = () => {
           </a>
         </div>
         <div className="vertical-line"></div>
+        <button 
+          className="video-toggle-btn" 
+          onClick={toggleVideo} 
+          aria-label={isPlaying ? "Pause background video" : "Play background video"}
+        >
+          {isPlaying ? (
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          )}
+        </button>
       </div>
 
       <div className="social-sidebar right">
