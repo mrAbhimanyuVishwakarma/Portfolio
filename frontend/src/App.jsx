@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from './context/ThemeContext';
 import './index.css';
 import Navbar from './components/Navbar';
 import MobileMenu from './components/MobileMenu';
@@ -13,6 +14,14 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [lenis, setLenis] = useState(null);
+  
+  const { theme } = useTheme();
+
+  // Add your future light-mode background video paths here
+  const LIGHT_MODE_VIDEO_WEBM = '';
+  const LIGHT_MODE_VIDEO_MP4 = './f1-wallpaper_light.mp4';
+  // Fallbacks if no light mode video is provided
+  const hasLightVideo = LIGHT_MODE_VIDEO_WEBM || LIGHT_MODE_VIDEO_MP4;
 
   useEffect(() => {
     // Lenis Smooth Scroll Setup
@@ -103,11 +112,8 @@ function App() {
 
       if (!navElement) navElement = document.querySelector('nav');
       if (navElement) {
-        if (currentScrollY > lastScrollY && currentScrollY > navElement.offsetHeight) {
-          navElement.classList.add('nav--hidden');
-        } else {
-          navElement.classList.remove('nav--hidden');
-        }
+        // Ensure the navbar is never hidden
+        navElement.classList.remove('nav--hidden');
       }
       lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
     };
@@ -287,9 +293,26 @@ function App() {
 
   return (
     <>
-      <video className="video-bg" autoPlay loop muted playsInline poster="./2026-Racing-Bulls-VCARB-03-003-2160.webp">
-        <source src="./f1-wallpaper.webm" type="video/webm" />
-        <source src="./f1-wallpaper.mp4" type="video/mp4" />
+      <video 
+        key={theme} 
+        className="video-bg" 
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+        poster={theme === 'light' && hasLightVideo ? "" : "./2026-Racing-Bulls-VCARB-03-003-2160.webp"}
+      >
+        {theme === 'light' && hasLightVideo ? (
+          <>
+            {LIGHT_MODE_VIDEO_WEBM && <source src={LIGHT_MODE_VIDEO_WEBM} type="video/webm" />}
+            {LIGHT_MODE_VIDEO_MP4 && <source src={LIGHT_MODE_VIDEO_MP4} type="video/mp4" />}
+          </>
+        ) : (
+          <>
+            <source src="./f1-wallpaper.webm" type="video/webm" />
+            <source src="./f1-wallpaper_dark.mp4" type="video/mp4" />
+          </>
+        )}
       </video>
 
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />

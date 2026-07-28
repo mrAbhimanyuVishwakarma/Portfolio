@@ -1,4 +1,5 @@
 import React from 'react';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
   return (
@@ -8,6 +9,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
         <li><a href="#">Home</a></li>
         <li><a href="#work">My Work</a></li>
       </ul>
+      <ThemeToggle />
       <button 
         className="nav-toggle" 
         type="button" 
