@@ -64,8 +64,8 @@ const Projects = () => {
   }, []); // Run once on mount
 
   return (
-    <section className="section" id="projects">
-      <p className="section-label">Projects</p>
+    <section className="section" id="work">
+      <p className="section-label">My Work</p>
       <div className="projects-grid">
         {repos.map((repo, idx) => (
           <div

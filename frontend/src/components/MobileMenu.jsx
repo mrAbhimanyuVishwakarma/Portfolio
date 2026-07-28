@@ -15,12 +15,9 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
         </svg>
       </button>
 
-      <a href="#experience" onClick={() => setIsMenuOpen(false)}>Experience</a>
-      <a href="#skills" onClick={() => setIsMenuOpen(false)}>Skills</a>
-      <a href="#certifications" onClick={() => setIsMenuOpen(false)}>Certificates</a>
-      <a href="#projects" onClick={() => setIsMenuOpen(false)}>Projects</a>
-      <a href="#education" onClick={() => setIsMenuOpen(false)}>Education</a>
-      <a href="#contact" onClick={() => setIsMenuOpen(false)}>Contact</a>
+      <a href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
+      <a href="#about" onClick={() => setIsMenuOpen(false)}>About Us</a>
+      <a href="#work" onClick={() => setIsMenuOpen(false)}>My Work</a>
       <p className="mobile-menu-meta">Backend Engineer • Open to opportunities</p>
     </div>
   );

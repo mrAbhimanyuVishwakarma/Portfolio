@@ -4,13 +4,10 @@ import Navbar from './components/Navbar';
 import MobileMenu from './components/MobileMenu';
 import Hero from './components/Hero';
 import Experience from './components/Experience';
-import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
-import Certificates from './components/Certificates';
-import Education from './components/Education';
 import Football from './components/Football';
 import Lenis from 'lenis';
 
@@ -51,19 +48,19 @@ function App() {
     const ogDescription = document.querySelector('meta[property="og:description"]');
     if (ogDescription) ogDescription.setAttribute("content", "Backend engineer with a passion for building scalable systems and clean APIs.");
 
-    // Code Protection Deterrents
-    const disableContextMenu = (e) => e.preventDefault();
-    const disableDevTools = (e) => {
-      if (
-        e.key === 'F12' || 
-        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || 
-        (e.ctrlKey && e.key === 'U') 
-      ) {
-        e.preventDefault();
-      }
-    };
-    document.addEventListener('contextmenu', disableContextMenu);
-    document.addEventListener('keydown', disableDevTools);
+    // Code Protection Deterrents (Removed to allow inspection)
+    // const disableContextMenu = (e) => e.preventDefault();
+    // const disableDevTools = (e) => {
+    //   if (
+    //     e.key === 'F12' || 
+    //     (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || 
+    //     (e.ctrlKey && e.key === 'U') 
+    //   ) {
+    //     e.preventDefault();
+    //   }
+    // };
+    // document.addEventListener('contextmenu', disableContextMenu);
+    // document.addEventListener('keydown', disableDevTools);
 
     // Scroll Observer for active nav items
     const sections = document.querySelectorAll('.section');
@@ -216,8 +213,8 @@ function App() {
     return () => {
       cancelAnimationFrame(rafId);
       lenisInstance.destroy();
-      document.removeEventListener('contextmenu', disableContextMenu);
-      document.removeEventListener('keydown', disableDevTools);
+      // document.removeEventListener('contextmenu', disableContextMenu);
+      // document.removeEventListener('keydown', disableDevTools);
       document.removeEventListener('click', handleAnchorClick);
       sections.forEach(section => observer.unobserve(section));
       sections.forEach(section => revealObserver.unobserve(section));
@@ -270,22 +267,10 @@ function App() {
       <Hero />
       
       <div className="divider"><hr /></div>
-      <Experience />
-      
-      <div className="divider"><hr /></div>
-      <Skills />
+      <Contact />
       
       <div className="divider"><hr /></div>
       <Projects />
-      
-      <div className="divider"><hr /></div>
-      <Certificates />
-      
-      <div className="divider"><hr /></div>
-      <Education />
-      
-      <div className="divider"><hr /></div>
-      <Contact />
       
       <Footer />
 
