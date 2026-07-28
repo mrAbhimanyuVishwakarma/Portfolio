@@ -19,7 +19,7 @@ function App() {
 
   // Add your future light-mode background video paths here
   const LIGHT_MODE_VIDEO_WEBM = '';
-  const LIGHT_MODE_VIDEO_MP4 = './f1-wallpaper_light.mp4';
+  const LIGHT_MODE_VIDEO_MP4 = '/Background/Web/2.f1-wallpaper_light.mp4';
   // Fallbacks if no light mode video is provided
   const hasLightVideo = LIGHT_MODE_VIDEO_WEBM || LIGHT_MODE_VIDEO_MP4;
 
@@ -300,7 +300,7 @@ function App() {
         loop 
         muted 
         playsInline 
-        poster={theme === 'light' && hasLightVideo ? "" : "./2026-Racing-Bulls-VCARB-03-003-2160.webp"}
+        poster={theme === 'light' && hasLightVideo ? "/Background/Mobile/2.mobile_light.jpg" : "/Background/Mobile/1.mobile_dark.jpg"}
       >
         {theme === 'light' && hasLightVideo ? (
           <>
@@ -309,8 +309,7 @@ function App() {
           </>
         ) : (
           <>
-            <source src="./f1-wallpaper.webm" type="video/webm" />
-            <source src="./f1-wallpaper_dark.mp4" type="video/mp4" />
+            <source src="/Background/Web/1.f1-wallpaper_dark.mp4" type="video/mp4" />
           </>
         )}
       </video>
