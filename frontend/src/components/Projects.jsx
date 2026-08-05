@@ -90,9 +90,22 @@ const Projects = () => {
       ],
       url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
       liveUrl: "https://aura-tube-eight.vercel.app/",
-      tech: ["Python", "FastAPI", "Angular", "Node.js", "React"],
+      tech: ["Python", "JavaScript", "Docker", "Oauth 2.0", "CSS", "React"],
       visibility: "Public",
       images: getProjectImages("auratube")
+    },
+    {
+      title: "AxePower",
+      desc: [
+        "Built a modern Windows desktop application to automatically optimize laptop power plans based on charger connection status, featuring Eco, Smart, and Beast modes.",
+        "Developed using C#, WPF, and .NET 8 with a premium Fluent Dark UI. Implemented strict MVVM architecture, background auto-switching, and safe powercfg modifications."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download",
+      liveUrl: null,
+      downloadUrl: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download/releases",
+      tech: ["C#", ".NET 8"],
+      visibility: "Public",
+      images: getProjectImages("axepower")
     }
   ]);
 
@@ -110,7 +123,7 @@ const Projects = () => {
               if (response.status === 200) {
                 return { ...repo, visibility: 'Public' };
               } else if (response.status === 404) {
-                return { ...repo, visibility: 'Private', url: null };
+                return { ...repo, visibility: 'Private' };
               }
             }
           } catch (error) {
@@ -155,11 +168,16 @@ const Projects = () => {
                 {repo.tech.map((t, i) => <span key={i}>{t}</span>)}
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '8px' }}>
+                {repo.downloadUrl && (
+                  <a href={repo.downloadUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Download →</a>
+                )}
                 {repo.liveUrl && (
                   <a href={repo.liveUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Live →</a>
                 )}
                 {repo.url ? (
-                  <a href={repo.url} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>GitHub →</a>
+                  <a href={repo.url} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>
+                    {repo.visibility === 'Private' ? 'Private GitHub →' : 'GitHub →'}
+                  </a>
                 ) : (
                   <span className="project-action" style={{ marginTop: 0, paddingTop: 0 }}>Private GitHub</span>
                 )}
