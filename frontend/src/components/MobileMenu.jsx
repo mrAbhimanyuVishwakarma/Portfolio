@@ -1,6 +1,17 @@
 import React from 'react';
 
 const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
+  const handleResumeDownload = (e) => {
+    e.preventDefault();
+    const link = document.createElement('a');
+    link.href = '/AbhimanyuVishwakarma_Resume.pdf';
+    link.download = 'Abhimanyu_Vishwakarma_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className={`mobile-menu ${isMenuOpen ? 'is-open' : ''}`} id="mobile-menu" aria-hidden={!isMenuOpen}>
       <button 
@@ -16,8 +27,19 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
       </button>
 
       <a href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
+      <a href="/AbhimanyuVishwakarma_Resume.pdf" onClick={handleResumeDownload}>Resume</a>
       <a href="#work" onClick={() => setIsMenuOpen(false)}>My Work</a>
-      <p className="mobile-menu-meta">Backend Engineer • Open to opportunities</p>
+      
+      <div className="mobile-menu-divider"></div>
+      
+      <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>LinkedIn</a>
+      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>GitHub</a>
+      <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>X (Twitter)</a>
+      <a href="mailto:your@email.com" onClick={() => setIsMenuOpen(false)}>MailId</a>
+      
+      <div className="mobile-menu-divider"></div>
+      
+      <a href="#privacy-policy" onClick={() => setIsMenuOpen(false)}>Privacy Policy</a>
     </div>
   );
 };
