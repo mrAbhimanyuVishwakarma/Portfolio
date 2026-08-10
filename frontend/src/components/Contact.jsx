@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Contact = () => {
-  const [followers, setFollowers] = useState('4,793');
+  const [followers, setFollowers] = useState('4,987+');
   const [connections, setConnections] = useState('500+');
 
   useEffect(() => {
