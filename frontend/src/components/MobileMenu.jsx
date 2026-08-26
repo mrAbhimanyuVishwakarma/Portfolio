@@ -14,9 +14,9 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <div className={`mobile-menu ${isMenuOpen ? 'is-open' : ''}`} id="mobile-menu" aria-hidden={!isMenuOpen}>
-      <button 
-        className="mobile-menu-close" 
-        type="button" 
+      <button
+        className="mobile-menu-close"
+        type="button"
         aria-label="Close menu"
         onClick={() => setIsMenuOpen(false)}
       >
@@ -29,16 +29,15 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
       <a href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
       <a href="/AbhimanyuVishwakarma_Resume.pdf" onClick={handleResumeDownload}>Resume</a>
       <a href="#work" onClick={() => setIsMenuOpen(false)}>My Work</a>
-      
+
       <div className="mobile-menu-divider"></div>
-      
-      <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>LinkedIn</a>
-      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>GitHub</a>
-      <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>X (Twitter)</a>
-      <a href="mailto:your@email.com" onClick={() => setIsMenuOpen(false)}>MailId</a>
-      
+
+      <a href="https://www.linkedin.com/in/mrabhimanyu/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>LinkedIn</a>
+      <a href="https://github.com/mrAbhimanyuVishwakarma" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>GitHub</a>
+      <a href="mailto:abhimanyuvishwakarma9228@gmail.com" onClick={() => setIsMenuOpen(false)}>MailId</a>
+
       <div className="mobile-menu-divider"></div>
-      
+
       <a href="#privacy-policy" onClick={() => setIsMenuOpen(false)}>Privacy Policy</a>
     </div>
   );
