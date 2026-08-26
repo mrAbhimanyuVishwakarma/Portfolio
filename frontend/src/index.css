@@ -806,6 +806,147 @@ html[data-theme="light"] .hero-shell h1 em {
   color: var(--accent);
 }
 
+/* More Projects Bar */
+.more-projects-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.25rem 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.more-projects-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 16px rgba(0, 229, 255, 0.12);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.more-projects-bar:hover {
+  background: var(--surface-hover);
+  border-color: #00E5FF;
+  box-shadow:
+    0 0 8px rgba(0, 229, 255, 0.3),
+    0 0 20px rgba(0, 229, 255, 0.18),
+    0 0 40px rgba(0, 229, 255, 0.1),
+    0 16px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
+}
+
+.more-projects-bar:hover::before {
+  opacity: 1;
+}
+
+.more-projects-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.more-projects-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00E5FF;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.more-projects-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.more-projects-bar:hover .more-projects-icon {
+  transform: scale(1.08) rotate(-4deg);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
+
+.more-projects-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.more-projects-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+
+.more-projects-bar:hover .more-projects-title {
+  color: #00E5FF;
+}
+
+.more-projects-subtitle {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.more-projects-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.more-projects-action svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.more-projects-bar:hover .more-projects-action {
+  color: var(--accent);
+}
+
+.more-projects-bar:hover .more-projects-action svg {
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .more-projects-bar {
+    padding: 1rem 1.15rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .more-projects-action {
+    align-self: flex-end;
+  }
+}
+
 /* Certifications Section */
 .certs-grid {
   display: grid;
@@ -1849,6 +1990,13 @@ html[data-theme="light"] .hire-me-btn:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
+html[data-theme="light"] .btn-ghost,
+html[data-theme="light"] a.btn-ghost,
+html[data-theme="light"] .btn-ghost:hover,
+html[data-theme="light"] a.btn-ghost:hover {
+  color: #ffffff !important;
+}
+
 html[data-theme="light"] .contact-item.small-bar:hover {
   border-color: #00E5FF;
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
@@ -1858,6 +2006,7 @@ html[data-theme="light"] .contact-item.small-bar:hover {
 html[data-theme="light"] nav,
 html[data-theme="light"] .hero-shell,
 html[data-theme="light"] .project-card,
+html[data-theme="light"] .more-projects-bar,
 html[data-theme="light"] .cert-card,
 html[data-theme="light"] .exp-card,
 html[data-theme="light"] .skill-category,
@@ -1935,6 +2084,7 @@ html[data-theme="light"] #privacy-policy:hover * {
 
 /* Fix project card hover states bleeding dark mode variables */
 html[data-theme="light"] .project-card:hover,
+html[data-theme="light"] .more-projects-bar:hover,
 html[data-theme="light"] .project-card:has(.project-image-container a:hover) {
   background: #f0f2f5 !important;
   color: #000000;

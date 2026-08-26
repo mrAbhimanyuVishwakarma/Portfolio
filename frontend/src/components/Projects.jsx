@@ -70,17 +70,55 @@ const getProjectImages = (folderName) => {
 const Projects = () => {
   const [repos, setRepos] = useState([
     {
+      title: "AxePower",
+      desc: [
+        "Built a modern Windows desktop application to automatically optimize laptop power plans based on charger connection status, featuring Eco, Smart, and Beast modes.",
+        "Developed using C#, WPF, and .NET 8 with a premium Fluent Dark UI. Implemented strict MVVM architecture, background auto-switching, and safe powercfg modifications."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download.git",
+      liveUrl: "https://axepower.vercel.app",
+      downloadUrl: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download/releases",
+      tech: ["C#", ".NET 8", "WPF", "MVVM"],
+      visibility: "Public",
+      images: getProjectImages("axepower")
+    },
+    {
       title: "AxeDrobe",
       desc: [
         "Built full-stack e-commerce order management system with independent user, product, purchase, inventory, notification modules for end-to-end workflow execution.",
         "Implemented Fast APIs using Java, Spring Boot, Typescript, MySQL, JPA-Hibernate, JWT authentication, oauth login, Kafka event flow communicate, Docker setup, and API documentation.",
-        "Integrated a React frontend with server-side to support product browsing, checkout placement, inventory updates, and scalable SIP communication for the customer."
+        "Integrated a React frontend with server-side to support product browsing, checkout placement, inventory updates, and scalable microservices communication."
       ],
       url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
       liveUrl: "https://axedrobe-frontend.pages.dev/",
-      tech: ["Java", "Spring Boot", "React", "CSS", "Kafka", "MySQL"],
+      tech: ["Java", "Spring Boot", "React", "Kafka", "MySQL", "Docker"],
       visibility: "Public",
       images: getProjectImages("axedrobe")
+    },
+    {
+      title: "Safarnama",
+      desc: [
+        "Architected an immersive cinematic travel music web application recreating nostalgic journey atmospheres (trains, road trips, monsoon scenes) with procedural soundscape synthesis.",
+        "Engineered multi-source playback (YouTube streams & IndexedDB audio storage), algorithmic ambient sound synthesis (rail clatter, horn, rain), and a responsive glassmorphic UI."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/mini-Music-Websites.git",
+      liveUrl: "https://safarnama-music.vercel.app",
+      tech: ["React", "Vite", "Web Audio API", "CSS", "IndexedDB"],
+      visibility: "Public",
+      images: getProjectImages("safarnama")
+    },
+    {
+      title: "SyncNotes",
+      desc: [
+        "Developed a lightweight Chrome browser extension and mobile companion web application for instant sticky notes and synchronized document previews across devices.",
+        "Implemented zero-latency draggable floating UI, autosaving state persistence, PeerJS-powered real-time synchronization, and multi-format document preview support."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/syncnotes-mobilehost",
+      downloadUrl: "https://github.com/mrAbhimanyuVishwakarma/syncnotes-mobilehost/releases",
+      liveUrl: null,
+      tech: ["JavaScript", "Chrome Extension API", "HTML5", "CSS", "PeerJS"],
+      visibility: "Public",
+      images: getProjectImages("syncnotes")
     },
     {
       title: "AuraTube",
@@ -89,23 +127,22 @@ const Projects = () => {
         "Integrated yt-dlp, FFmpeg, Google APIs, and Server-Sent Events to improve video processing, real-time progress tracking, and Google Drive upload."
       ],
       url: "https://github.com/mrAbhimanyuVishwakarma/AuraTube",
-      liveUrl: "https://aura-tube-eight.vercel.app/",
-      tech: ["Python", "JavaScript", "Docker", "Oauth 2.0", "CSS", "React"],
+      liveUrl: null,
+      tech: ["Python", "FastAPI", "JavaScript", "Docker", "OAuth 2.0", "React"],
       visibility: "Public",
       images: getProjectImages("auratube")
     },
     {
-      title: "AxePower",
+      title: "HouseHelp_dgp",
       desc: [
-        "Built a modern Windows desktop application to automatically optimize laptop power plans based on charger connection status, featuring Eco, Smart, and Beast modes.",
-        "Developed using C#, WPF, and .NET 8 with a premium Fluent Dark UI. Implemented strict MVVM architecture, background auto-switching, and safe powercfg modifications."
+        "Engineered a zero-latency, mobile-first web platform connecting households with background-verified domestic help (cooks, housemaids, babysitters, elderly caretakers) in Durgapur.",
+        "Implemented a real-time dynamic pricing calculation engine based on municipal living indices, quick-match booking funnels, and instant WhatsApp booking dispatch."
       ],
-      url: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download",
-      liveUrl: null,
-      downloadUrl: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download/releases",
-      tech: ["C#", ".NET 8"],
+      url: "https://github.com/mrAbhimanyuVishwakarma/Househelp.git",
+      liveUrl: "https://househelp-dgp.vercel.app/",
+      tech: ["JavaScript", "HTML5", "CSS", "Vercel"],
       visibility: "Public",
-      images: getProjectImages("axepower")
+      images: getProjectImages("househelp_dgp")
     }
   ]);
 
@@ -114,7 +151,8 @@ const Projects = () => {
       const updatedRepos = await Promise.all(repos.map(async (repo) => {
         if (repo.url && repo.url.includes('github.com')) {
           try {
-            const urlPath = new URL(repo.url).pathname.split('/').filter(Boolean);
+            const cleanPathname = new URL(repo.url).pathname.replace(/\.git$/, '');
+            const urlPath = cleanPathname.split('/').filter(Boolean);
             if (urlPath.length >= 2) {
               const owner = urlPath[0];
               const repoName = urlPath[1];
@@ -168,11 +206,11 @@ const Projects = () => {
                 {repo.tech.map((t, i) => <span key={i}>{t}</span>)}
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '8px' }}>
-                {repo.downloadUrl && (
-                  <a href={repo.downloadUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Download →</a>
-                )}
                 {repo.liveUrl && (
                   <a href={repo.liveUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Live →</a>
+                )}
+                {repo.downloadUrl && (
+                  <a href={repo.downloadUrl} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>Download →</a>
                 )}
                 {repo.url ? (
                   <a href={repo.url} target="_blank" rel="noopener noreferrer" className="project-action" style={{ marginTop: 0, paddingTop: 0, textDecoration: 'none' }}>
@@ -185,6 +223,31 @@ const Projects = () => {
             </div>
           </div>
         ))}
+        <a
+          href="https://github.com/mrAbhimanyuVishwakarma?tab=repositories"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="more-projects-bar"
+        >
+          <div className="more-projects-left">
+            <div className="more-projects-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+            </div>
+            <div className="more-projects-text-group">
+              <span className="more-projects-title">See more projects from me</span>
+              <span className="more-projects-subtitle">Explore repositories, open-source utilities & experiments on GitHub</span>
+            </div>
+          </div>
+          <div className="more-projects-action">
+            <span>Explore on GitHub</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
       </div>
     </section>
   );
