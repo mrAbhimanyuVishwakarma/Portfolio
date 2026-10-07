@@ -70,19 +70,6 @@ const getProjectImages = (folderName) => {
 const Projects = () => {
   const [repos, setRepos] = useState([
     {
-      title: "AxePower",
-      desc: [
-        "Built a modern Windows desktop application to automatically optimize laptop power plans based on charger connection status, featuring Eco, Smart, and Beast modes.",
-        "Developed using C#, WPF, and .NET 8 with a premium Fluent Dark UI. Implemented strict MVVM architecture, background auto-switching, and safe powercfg modifications."
-      ],
-      url: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download.git",
-      liveUrl: "https://axepower.vercel.app",
-      downloadUrl: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download/releases",
-      tech: ["C#", ".NET 8", "WPF", "MVVM"],
-      visibility: "Public",
-      images: getProjectImages("axepower")
-    },
-    {
       title: "AxeDrobe",
       desc: [
         "Built full-stack e-commerce order management system with independent user, product, purchase, inventory, notification modules for end-to-end workflow execution.",
@@ -94,6 +81,19 @@ const Projects = () => {
       tech: ["Java", "Spring Boot", "React", "Kafka", "MySQL", "Docker"],
       visibility: "Public",
       images: getProjectImages("axedrobe")
+    },
+    {
+      title: "AxePower",
+      desc: [
+        "Built a modern Windows desktop application to automatically optimize laptop power plans based on charger connection status, featuring Eco, Smart, and Beast modes.",
+        "Developed using C#, WPF, and .NET 8 with a premium Fluent Dark UI. Implemented strict MVVM architecture, background auto-switching, and safe powercfg modifications."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download.git",
+      liveUrl: "https://axepower.vercel.app",
+      downloadUrl: "https://github.com/mrAbhimanyuVishwakarma/AxePower_Download/releases",
+      tech: ["C#", ".NET 8", "WPF", "MVVM"],
+      visibility: "Public",
+      images: getProjectImages("axepower")
     },
     {
       title: "Safarnama",
