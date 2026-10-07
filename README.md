@@ -6,23 +6,23 @@
 
 ## 🌐 Live Demo & Quick Links
 
-- **Live Website**: [https://mrabhimanyuvishwakarma.github.io/Portfolio/](https://mrabhimanyuvishwakarma.github.io/Portfolio/) *(or local deployment)*
+- **Live Website**: [mrabhimanyu.vercel.app](https://mrabhimanyu.vercel.app/)
 - **GitHub Profile**: [@mrAbhimanyuVishwakarma](https://github.com/mrAbhimanyuVishwakarma)
-- **LinkedIn**: [Abhimanyu Vishwakarma](https://www.linkedin.com/in/mrabhimanyuvishwakarma/)
+- **LinkedIn**: [Abhimanyu Vishwakarma](https://www.linkedin.com/in/mrabhimanyu/)
 - **Email**: [abhimanyuvishwakarma9228@gmail.com](mailto:abhimanyuvishwakarma9228@gmail.com)
 
 ---
 
 ## 🚀 Featured Projects
 
-| Project | Description | Tech Stack | Links |
-|---|---|---|---|
-| **AxePower** | Modern Windows desktop application that automatically switches laptop power plans (Eco, Smart, Beast) based on charging state with safe powercfg integration. | `C#`, `.NET 8`, `WPF`, `MVVM` | [Live](https://axepower.vercel.app) • [Download](https://github.com/mrAbhimanyuVishwakarma/AxePower_Download/releases) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/AxePower_Download.git) |
-| **AxeDrobe** | Full-stack microservices e-commerce order management system with independent inventory, notification, and purchasing modules. | `Java`, `Spring Boot`, `React`, `Kafka`, `MySQL`, `Docker` | [Live](https://axedrobe-frontend.pages.dev/) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System) |
-| **Safarnama** | Immersive cinematic travel music web app recreating nostalgic journey atmospheres (trains, road trips, monsoon scenes) with procedural Web Audio soundscapes. | `React`, `Vite`, `Web Audio API`, `CSS3`, `IndexedDB` | [Live](https://safarnama-music.vercel.app) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/mini-Music-Websites.git) |
-| **SyncNotes** | Lightweight Chrome browser extension & mobile companion web app for floating sticky notes and cross-device document preview synchronization. | `JavaScript`, `Chrome Extension API`, `HTML5`, `PeerJS` | [Download](https://github.com/mrAbhimanyuVishwakarma/syncnotes-mobilehost/releases) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/syncnotes-mobilehost) |
-| **AuraTube** | Full-stack video processing utility with real-time SSE progress tracking, media conversion, and automated Google Drive upload workflows. | `Python`, `FastAPI`, `React`, `JavaScript`, `Docker` | [GitHub](https://github.com/mrAbhimanyuVishwakarma/AuraTube) |
-| **HouseHelp_dgp** | Zero-latency, mobile-first web platform connecting households with verified domestic help, dynamic algorithmic pricing, and instant WhatsApp booking dispatch. | `JavaScript`, `HTML5`, `CSS3`, `Design Tokens`, `Vercel` | [Live](https://househelp-dgp.vercel.app/) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/Househelp.git) |
+| Project                 | Description                                                                                                                                                    | Tech Stack                                                             | Links                                                                                                                                                                                             |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AxePower**      | Modern Windows desktop application that automatically switches laptop power plans (Eco, Smart, Beast) based on charging state with safe powercfg integration.  | `C#`, `.NET 8`, `WPF`, `MVVM`                                  | [Live](https://axepower.vercel.app) • [Download](https://github.com/mrAbhimanyuVishwakarma/AxePower_Download/releases) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/AxePower_Download.git) |
+| **AxeDrobe**      | Full-stack microservices e-commerce order management system with independent inventory, notification, and purchasing modules.                                  | `Java`, `Spring Boot`, `React`, `Kafka`, `MySQL`, `Docker` | [Live](https://axedrobe.vercel.app/) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System)                                                              |
+| **Safarnama**     | Immersive cinematic travel music web app recreating nostalgic journey atmospheres (trains, road trips, monsoon scenes) with procedural Web Audio soundscapes.  | `React`, `Vite`, `Web Audio API`, `CSS3`, `IndexedDB`        | [Live](https://safarnama-music.vercel.app) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/mini-Music-Websites.git)                                                                           |
+| **SyncNotes**     | Lightweight Chrome browser extension & mobile companion web app for floating sticky notes and cross-device document preview synchronization.                   | `JavaScript`, `Chrome Extension API`, `HTML5`, `PeerJS`        | [Download](https://github.com/mrAbhimanyuVishwakarma/syncnotes-mobilehost/releases) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/syncnotes-mobilehost)                                     |
+| **AuraTube**      | Full-stack video processing utility with real-time SSE progress tracking, media conversion, and automated Google Drive upload workflows.                       | `Python`, `FastAPI`, `React`, `JavaScript`, `Docker`         | [GitHub](https://github.com/mrAbhimanyuVishwakarma/AuraTube)                                                                                                                                       |
+| **HouseHelp_dgp** | Zero-latency, mobile-first web platform connecting households with verified domestic help, dynamic algorithmic pricing, and instant WhatsApp booking dispatch. | `JavaScript`, `HTML5`, `CSS3`, `Design Tokens`, `Vercel`     | [Live](https://househelp-dgp.vercel.app/) • [GitHub](https://github.com/mrAbhimanyuVishwakarma/Househelp.git)                                                                                      |
 
 ---
 
@@ -65,6 +65,7 @@
 ```
 
 ### Core Technologies:
+
 - **Frontend Framework**: React 19
 - **Build Tool**: Vite 8
 - **Smooth Scrolling**: Lenis (`@studio-freight/lenis`)
@@ -114,6 +115,7 @@ Portfolio/
 ## 💻 Local Development Setup
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) (version 18 or higher)
 - npm, pnpm, or yarn
 
@@ -151,5 +153,5 @@ npm run preview
 
 ## 📄 License & Attribution
 
-Designed and engineered with passion by **Abhimanyu Vishwakarma**.  
+Designed and engineered with passion by **Abhimanyu Vishwakarma**.
 All rights reserved © 2026.

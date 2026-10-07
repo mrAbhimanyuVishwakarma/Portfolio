@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Contact = () => {
-  const [followers, setFollowers] = useState('4,987+');
+  const [followers, setFollowers] = useState('5K+');
   const [connections, setConnections] = useState('500+');
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const Contact = () => {
                     {connections}
                   </span>
                 </div>
-                <a href="https://www.linkedin.com/in/mrabhimanyuvishwakarma/" target="_blank" rel="noopener noreferrer" className="hire-me-btn">Hire Me +</a>
+                <a href="https://www.linkedin.com/in/mrabhimanyu/" target="_blank" rel="noopener noreferrer" className="hire-me-btn">Hire Me +</a>
               </div>
             </div>
           </div>

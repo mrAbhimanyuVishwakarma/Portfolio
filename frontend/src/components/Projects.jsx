@@ -90,7 +90,7 @@ const Projects = () => {
         "Integrated a React frontend with server-side to support product browsing, checkout placement, inventory updates, and scalable microservices communication."
       ],
       url: "https://github.com/mrAbhimanyuVishwakarma/E-Commerce-Order-Management-System",
-      liveUrl: "https://axedrobe-frontend.pages.dev/",
+      liveUrl: "https://axedrobe.vercel.app/",
       tech: ["Java", "Spring Boot", "React", "Kafka", "MySQL", "Docker"],
       visibility: "Public",
       images: getProjectImages("axedrobe")
