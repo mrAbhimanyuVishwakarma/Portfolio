@@ -96,6 +96,19 @@ const Projects = () => {
       images: getProjectImages("axepower")
     },
     {
+      title: "SmoothCam",
+      desc: [
+        "Built a real-time Windows virtual camera app that enhances webcam feeds up to 60 FPS and 4K resolution using motion-estimated frame generation and GPU upscalers.",
+        "Engineered with C++, DirectShow virtual camera driver, OpenCV/DirectML processing, background segmentation blur, low-light boost, noise reduction, and smart auto-framing."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/SmoothCam.git",
+      liveUrl: "https://smoothcam.vercel.app",
+      downloadUrl: "https://github.com/mrAbhimanyuVishwakarma/SmoothCam/releases",
+      tech: ["C++", "DirectShow", "DirectML", "OpenCV", "DirectX 11"],
+      visibility: "Public",
+      images: getProjectImages("smoothcam")
+    },
+    {
       title: "Safarnama",
       desc: [
         "Architected an immersive cinematic travel music web application recreating nostalgic journey atmospheres (trains, road trips, monsoon scenes) with procedural soundscape synthesis.",
