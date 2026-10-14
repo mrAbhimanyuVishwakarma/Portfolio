@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Arcade.css';
 import FighterJetGame from './FighterJetGame';
+import F1RaceGame from './F1RaceGame';
 
 // Load skins dynamically from assets
 const footballImports = import.meta.glob('../assets/Mini Game/Football/*.{png,jpg,jpeg,svg}', { eager: true, import: 'default' });
@@ -418,15 +419,22 @@ const Arcade = ({ onNavigate }) => {
                   <div>
                     <div className="compact-card-top">
                       <span className="compact-card-icon">🏎️</span>
-                      <span className="modal-status-badge status-soon">Coming Soon</span>
+                      <span className="modal-status-badge status-live">Live Playable</span>
                     </div>
                     <h3 className="compact-card-title">F1 Speed Sprint</h3>
                     <p className="compact-card-desc">
-                      High-speed asphalt racer. Dodge rivals, manage grip, and clock fastest sector times.
+                      3D Grand Prix arcade racer inspired by Super Star Car. Battle 7 AI rivals, hit curves, activate DRS Nitro, and claim P1!
                     </p>
                   </div>
-                  <button type="button" className="modal-locked-btn" disabled>
-                    In Development ⏳
+                  <button 
+                    type="button" 
+                    className="modal-launch-btn"
+                    onClick={() => {
+                      setSelectedGame('f1');
+                      setIsGameSelectorOpen(false);
+                    }}
+                  >
+                    Launch F1 Sprint 🏎️
                   </button>
                 </div>
 
@@ -505,10 +513,10 @@ const Arcade = ({ onNavigate }) => {
       </header>
 
       {/* ====================================================
-          ACTIVE GAME ARENA: BALL STRIKER OR FIGHTER JET
+          ACTIVE GAME ARENA: BALL STRIKER, F1 SPRINT, OR FIGHTER JET
       ==================================================== */}
       <section className="arcade-cabinet">
-        {selectedGame === 'football' ? (
+        {selectedGame === 'football' && (
           <>
             <div className="cabinet-top-hud">
               <div className="cabinet-title-box">
@@ -538,6 +546,15 @@ const Arcade = ({ onNavigate }) => {
                     <path d="M3 3v5h5"></path>
                   </svg>
                   Reset Ball
+                </button>
+
+                <button
+                  type="button"
+                  className="hud-btn switch-game-btn"
+                  onClick={() => setSelectedGame('f1')}
+                  title="Switch to F1 Speed Sprint"
+                >
+                  🏎️ Play F1 Race
                 </button>
 
                 <button
@@ -643,7 +660,57 @@ const Arcade = ({ onNavigate }) => {
               </div>
             </div>
           </>
-        ) : (
+        )}
+
+        {selectedGame === 'f1' && (
+          <>
+            <div className="cabinet-top-hud">
+              <div className="cabinet-title-box">
+                <span className="cabinet-icon">🏎️</span>
+                <div>
+                  <h2 className="cabinet-game-title">F1 Speed Sprint: Super Star Car</h2>
+                </div>
+                <span className="cabinet-tag">Live Playable</span>
+              </div>
+
+              <div className="cabinet-hud-controls">
+                <button
+                  type="button"
+                  className="hud-btn switch-game-btn"
+                  onClick={() => {
+                    setSelectedGame('football');
+                    resetBallPosition();
+                  }}
+                  title="Switch to Football"
+                >
+                  ⚽ Play Football
+                </button>
+
+                <button
+                  type="button"
+                  className="hud-btn switch-game-btn"
+                  onClick={() => setSelectedGame('jet')}
+                  title="Switch to Sky Strike: Fighter Jet"
+                >
+                  ✈️ Play Fighter Jet
+                </button>
+
+                <button
+                  type="button"
+                  className="hud-btn"
+                  onClick={() => setIsGameSelectorOpen(true)}
+                  title="Select Game Modal"
+                >
+                  🕹️ Game Menu
+                </button>
+              </div>
+            </div>
+
+            <F1RaceGame onBackToMenu={() => setIsGameSelectorOpen(true)} />
+          </>
+        )}
+
+        {selectedGame === 'jet' && (
           <>
             <div className="cabinet-top-hud">
               <div className="cabinet-title-box">
@@ -669,11 +736,20 @@ const Arcade = ({ onNavigate }) => {
 
                 <button
                   type="button"
+                  className="hud-btn switch-game-btn"
+                  onClick={() => setSelectedGame('f1')}
+                  title="Switch to F1 Speed Sprint"
+                >
+                  🏎️ Play F1 Race
+                </button>
+
+                <button
+                  type="button"
                   className="hud-btn"
                   onClick={() => setIsGameSelectorOpen(true)}
                   title="Select Game Modal"
                 >
-                  🕹️ Select Game
+                  🕹️ Game Menu
                 </button>
               </div>
             </div>
@@ -691,8 +767,8 @@ const Arcade = ({ onNavigate }) => {
       ==================================================== */}
       <section className="pipeline-section">
         <div className="pipeline-header">
-          <span className="pipeline-tag">Upcoming Releases</span>
-          <h2 className="pipeline-title">More Games in Development</h2>
+          <span className="pipeline-tag">Featured Games</span>
+          <h2 className="pipeline-title">Playable Arcade Library</h2>
         </div>
 
         <div className="pipeline-grid">
@@ -700,17 +776,18 @@ const Arcade = ({ onNavigate }) => {
             <div>
               <div className="pipeline-card-top">
                 <span className="pipeline-card-icon">🏎️</span>
-                <span className="modal-status-badge status-soon">In Progress</span>
+                <span className="modal-status-badge status-live">Live Playable</span>
               </div>
-              <h3 className="pipeline-card-title">F1 Speed Sprint</h3>
+              <h3 className="pipeline-card-title">F1 Speed Sprint: Super Star Car</h3>
               <p className="pipeline-card-desc">
-                High-speed top-down Grand Prix racer with collision physics, drifting mechanics, and dynamic weather laps.
+                High-speed 3D Grand Prix racer with realistic banked curves, 7 AI rival cars, DRS Nitro, and synthesized V10 engine roar.
               </p>
             </div>
             <div className="pipeline-tags">
-              <span className="pipeline-tag-pill">Canvas 2D</span>
-              <span className="pipeline-tag-pill">Asphalt Racing</span>
-              <span className="pipeline-tag-pill">Tire Grip Physics</span>
+              <span className="pipeline-tag-pill">3D Pseudo-Engine</span>
+              <span className="pipeline-tag-pill">AI F1 Grid</span>
+              <span className="pipeline-tag-pill">V10 Audio FX</span>
+              <span className="pipeline-tag-pill">DRS Boost</span>
             </div>
           </div>
 
