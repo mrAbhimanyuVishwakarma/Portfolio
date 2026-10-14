@@ -50,6 +50,9 @@ const Football = () => {
   }, []);
 
   const handlePointerDown = (e) => {
+    // Only allow primary pointer (left click on mouse, touch, pen)
+    if (e.button !== undefined && e.button !== 0) return;
+    
     e.preventDefault();
     if (isGoal) return; // Cannot shoot while goal animation is playing
 
@@ -307,8 +310,9 @@ const Football = () => {
           className={`interactive-football ${isCharging ? 'charging' : ''}`}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
+          onContextMenu={(e) => e.preventDefault()}
           title="Double-click to change skin! Hold to shoot!"
-          style={{ touchAction: 'none' }} // Prevent scrolling while charging on mobile
+          style={{ touchAction: 'none', userSelect: 'none', WebkitTouchCallout: 'none' }}
         >
           <img 
             src={skins[skinIndex].url} 

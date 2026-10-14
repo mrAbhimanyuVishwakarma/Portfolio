@@ -1,13 +1,43 @@
 import React from 'react';
 import ThemeToggle from './ThemeToggle';
 
-const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
+const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
   return (
     <nav className={isMenuOpen ? 'nav--hidden' : ''}>
-      <a className="nav-title" href="#">Abhimanyu Vishwakarma</a>
+      <a 
+        className="nav-title" 
+        href="#" 
+        onClick={(e) => {
+          e.preventDefault();
+          if (onNavigate) onNavigate('home', 'top');
+        }}
+      >
+        Abhimanyu Vishwakarma
+      </a>
       <ul className="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#work">My Work</a></li>
+        <li>
+          <a 
+            href="#work" 
+            onClick={(e) => {
+              e.preventDefault();
+              if (onNavigate) onNavigate('home', 'work');
+            }}
+          >
+            My Work
+          </a>
+        </li>
+        <li>
+          <a 
+            href="#arcade" 
+            className={currentPage === 'arcade' ? 'active' : ''}
+            onClick={(e) => {
+              e.preventDefault();
+              if (onNavigate) onNavigate('arcade');
+            }}
+          >
+            Arcade
+          </a>
+        </li>
       </ul>
       <ThemeToggle />
       <button 
@@ -25,7 +55,15 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
           <path d="M4 17h16"></path>
         </svg>
       </button>
-      <a className="nav-logo" href="#" aria-label="Abhimanyu Vishwakarma home">
+      <a 
+        className="nav-logo" 
+        href="#" 
+        aria-label="Abhimanyu Vishwakarma home"
+        onClick={(e) => {
+          e.preventDefault();
+          if (onNavigate) onNavigate('home', 'top');
+        }}
+      >
         <img className="nav-avatar" src="./mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" />
       </a>
     </nav>

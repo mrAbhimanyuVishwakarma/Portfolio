@@ -203,6 +203,20 @@ html.theme-alpine body {
   --tag-bg: rgba(223, 235, 255, 0.1);
 }
 
+html[data-theme="light"] body,
+html[data-theme="light"].theme-racing-bulls body,
+html[data-theme="light"].theme-alpine body {
+  --bg: #F1F2F4;
+  --surface: rgba(255, 255, 255, 0.96);
+  --surface-hover: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: rgba(0, 0, 0, 0.12);
+  --tag-bg: rgba(0, 0, 0, 0.06);
+  --tag-text: #0f172a;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
 nav,
 .hero,
 .divider,
@@ -324,15 +338,16 @@ nav.nav--hidden {
 .mobile-menu {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 100001;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1.4rem;
   padding: 2rem 1.5rem;
   background:
-    linear-gradient(180deg, rgba(7, 9, 14, 0.9) 0%, rgba(7, 9, 14, 0.96) 100%);
-  backdrop-filter: blur(18px);
+    linear-gradient(180deg, rgba(7, 9, 14, 0.92) 0%, rgba(7, 9, 14, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.24s ease;
@@ -341,6 +356,13 @@ nav.nav--hidden {
 .mobile-menu.is-open {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Light mode mobile menu drawer */
+html[data-theme="light"] .mobile-menu {
+  background: linear-gradient(180deg, rgba(246, 248, 252, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 .mobile-menu-close {
@@ -357,18 +379,30 @@ nav.nav--hidden {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, border-color 0.2s ease;
-  z-index: 100;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  z-index: 100002;
 }
 
 .mobile-menu-close:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.26);
+  transform: rotate(90deg);
 }
 
 .mobile-menu-close svg {
   width: 20px;
   height: 20px;
+}
+
+html[data-theme="light"] .mobile-menu-close {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.14);
+  color: #0b0e14;
+}
+
+html[data-theme="light"] .mobile-menu-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.28);
 }
 
 .mobile-menu a {
@@ -378,6 +412,22 @@ nav.nav--hidden {
   color: var(--text);
   text-decoration: none;
   letter-spacing: -0.04em;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a.active {
+  color: var(--accent);
+  transform: translateX(6px);
+}
+
+html[data-theme="light"] .mobile-menu a {
+  color: #0b0e14;
+}
+
+html[data-theme="light"] .mobile-menu a:hover,
+html[data-theme="light"] .mobile-menu a.active {
+  color: #008ba3;
 }
 
 .mobile-menu-divider {
@@ -388,6 +438,11 @@ nav.nav--hidden {
   margin: 1.5rem 0;
 }
 
+html[data-theme="light"] .mobile-menu-divider {
+  background-color: rgba(0, 0, 0, 0.15);
+  opacity: 1;
+}
+
 .mobile-menu-meta {
   margin-top: 1rem;
   font-size: 12px;
@@ -395,6 +450,10 @@ nav.nav--hidden {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+html[data-theme="light"] .mobile-menu-meta {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .hero {
@@ -679,7 +738,7 @@ html[data-theme="light"] .hero-shell h1 em {
   justify-content: center;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) and (orientation: landscape), (min-width: 1081px) {
   .project-card {
     flex-direction: row;
     align-items: center;
@@ -694,7 +753,7 @@ html[data-theme="light"] .hero-shell h1 em {
 
   .project-content {
     width: 50%;
-    padding: 1.75rem;
+    padding: 2rem 2.25rem;
   }
 }
 
@@ -1299,21 +1358,20 @@ footer p {
     border: 1px solid rgba(255, 255, 255, 0.18);
   }
 
+  /* Enable video background on mobile with GPU acceleration */
   .video-bg {
-    display: none !important;
-  }
-
-  body::before {
-    background-image: url('/Background/Mobile/1.mobile_dark.jpg') !important;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-  }
-
-  html[data-theme="light"] body::before {
-    background-image: url('/Background/Mobile/2.mobile_light.jpg') !important;
-    background-size: cover !important;
-    background-position: center !important;
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
   }
 
   .hero {
@@ -1706,10 +1764,97 @@ footer p {
   box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
 }
 
+.video-toggle-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-cloud-bubble {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(12, 16, 24, 0.95);
+  color: #ffffff;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 184, 212, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 15px rgba(0, 184, 212, 0.3);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  z-index: 9999;
+  pointer-events: none;
+  cursor: default;
+  user-select: none;
+  animation: cloudFloat 2.6s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 1;
+  transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s ease;
+}
+
+.video-cloud-bubble.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50%) scale(0.92);
+}
+
+.video-cloud-bubble.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Light mode cloud styling */
+html[data-theme="light"] .video-cloud-bubble {
+  background: #ffffff !important;
+  color: #090b10 !important;
+  border: 1px solid rgba(0, 0, 0, 0.18) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 0 12px rgba(0, 184, 212, 0.25) !important;
+}
+
+html[data-theme="light"] .video-cloud-bubble .cloud-text {
+  color: #090b10 !important;
+  font-weight: 600 !important;
+}
+
+/* Cloud tail pointing to button */
+.video-cloud-bubble::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 7px solid rgba(12, 16, 24, 0.95);
+}
+
+html[data-theme="light"] .video-cloud-bubble::before {
+  border-right-color: #ffffff;
+}
+
+.cloud-icon {
+  font-size: 14px;
+}
+
+@keyframes cloudFloat {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(5px); }
+}
+
 .video-toggle-btn {
   background: none;
   border: none;
-  color: var(--muted);
+  color: #ffffff !important;
+  opacity: 0.95;
   cursor: pointer;
   margin-top: 16px;
   margin-bottom: 24px;
@@ -1717,13 +1862,14 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 }
 
 .video-toggle-btn:hover {
-  color: #00E5FF;
+  color: #00E5FF !important;
+  opacity: 1 !important;
   transform: translateY(-4px);
-  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.7));
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.8));
 }
 
 .video-toggle-btn svg {
@@ -1732,8 +1878,81 @@ footer p {
 }
 
 @media (max-width: 1024px) {
-  .social-sidebar {
+  .social-sidebar.right,
+  .social-sidebar.left .social-icons,
+  .social-sidebar.left .vertical-line {
     display: none;
+  }
+
+  .social-sidebar.left {
+    position: fixed;
+    bottom: 24px;
+    left: 20px;
+    top: auto;
+    width: auto;
+    height: auto;
+    z-index: 9998;
+    display: block;
+  }
+
+  .video-toggle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    margin: 0;
+    color: var(--text);
+  }
+
+  .video-toggle-btn:hover {
+    transform: scale(1.08);
+  }
+
+  html[data-theme="light"] .video-toggle-btn {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.18) !important;
+    color: #090b10 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  .video-cloud-bubble {
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width: 520px) {
+  .video-cloud-bubble {
+    left: 0;
+    bottom: calc(100% + 10px);
+    top: auto;
+    transform: none;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .video-cloud-bubble::before {
+    left: 16px;
+    top: 100%;
+    bottom: auto;
+    transform: none;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-top: 7px solid rgba(12, 16, 24, 0.95);
+    border-bottom: none;
+  }
+
+  html[data-theme="light"] .video-cloud-bubble::before {
+    border-top-color: #ffffff;
+  }
+
+  @keyframes cloudFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
   }
 }
 
@@ -2049,13 +2268,29 @@ html[data-theme="light"] .contact-item {
   justify-content: center;
 }
 
-/* Ensure footer, section labels, and social sidebars text remain pure white in light mode since they float over the video */
+/* Ensure footer, section labels, and social icons text remain pure white in light mode since they float over the video */
 html[data-theme="light"] footer,
 html[data-theme="light"] footer *,
-html[data-theme="light"] .social-sidebar,
-html[data-theme="light"] .social-sidebar *,
+html[data-theme="light"] .social-sidebar .social-icons a,
+html[data-theme="light"] .social-sidebar .email-wrapper a,
+html[data-theme="light"] .social-sidebar .vertical-line,
 html[data-theme="light"] .section-label {
   color: #ffffff !important;
+}
+
+/* Explicit high-contrast dark text and clean light surface for cloud suggestion bubble */
+html[data-theme="light"] .social-sidebar .video-cloud-bubble,
+html[data-theme="light"] .social-sidebar .video-cloud-bubble *,
+html[data-theme="light"] .video-cloud-bubble,
+html[data-theme="light"] .video-cloud-bubble * {
+  color: #090b10 !important;
+}
+
+html[data-theme="light"] .social-sidebar .video-cloud-bubble,
+html[data-theme="light"] .video-cloud-bubble {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.18) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Privacy policy hover effect for readability against bright backgrounds */
@@ -2088,4 +2323,122 @@ html[data-theme="light"] .more-projects-bar:hover,
 html[data-theme="light"] .project-card:has(.project-image-container a:hover) {
   background: #f0f2f5 !important;
   color: #000000;
+}
+
+/* Hero Contact Responsive Layout (Desktop, Tablets/Foldables, Mobile) */
+.hero-contact-layout {
+  width: 100%;
+  max-width: 1150px;
+  margin: 2.5rem auto 0;
+  display: grid;
+  gap: 1.5rem 2rem;
+}
+
+/* 1. Desktop (> 1080px): 2 Column layout, profile on left, summary + contacts stacked on right */
+@media (min-width: 1081px) {
+  .hero-contact-layout {
+    grid-template-columns: 380px 1fr;
+    grid-template-areas:
+      "profile summary"
+      "profile contacts";
+    align-items: start;
+  }
+
+  .hero-profile-cell {
+    grid-area: profile;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-summary-cell {
+    grid-area: summary;
+  }
+
+  .hero-contact-links-cell {
+    grid-area: contacts;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* 2. Tablets & Foldables (601px to 1080px):
+      Profile Card on Left + Name Summary on Right (Side-by-side!),
+      with Contact Links underneath across the full width */
+@media (min-width: 601px) and (max-width: 1080px) {
+  .hero-contact-layout {
+    grid-template-columns: minmax(280px, 350px) 1fr;
+    grid-template-areas:
+      "profile summary"
+      "contacts contacts";
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  .hero-profile-cell {
+    grid-area: profile;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-profile-cell .custom-linkedin-card {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .hero-summary-cell {
+    grid-area: summary;
+    display: flex;
+  }
+
+  .hero-summary-cell .hero-shell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .hero-summary-cell .hero-actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-summary-cell .hero-actions .hire-me-btn,
+  .hero-summary-cell .hero-actions .btn-ghost {
+    width: auto;
+  }
+
+  .hero-contact-links-cell {
+    grid-area: contacts;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+  }
+}
+
+/* 3. Small Mobile Phones (<= 600px): Clean vertical stack */
+@media (max-width: 600px) {
+  .hero-contact-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .hero-profile-cell,
+  .hero-summary-cell,
+  .hero-contact-links-cell {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-contact-links-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
 }

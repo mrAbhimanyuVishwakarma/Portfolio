@@ -8,12 +8,19 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
 import Football from './components/Football';
+import Arcade from './components/Arcade';
 import Lenis from 'lenis';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [lenis, setLenis] = useState(null);
+  const [currentPage, setCurrentPage] = useState(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#arcade') {
+      return 'arcade';
+    }
+    return 'home';
+  });
   
   const { theme } = useTheme();
 
@@ -119,31 +126,57 @@ function App() {
     };
     lenisInstance.on('scroll', handleLenisScroll);
 
-    // Anchor Link Interceptor for Smooth Scroll to prevent sticky header cutoffs
+    // Anchor Link Interceptor for Smooth Scroll & Routing
     const handleAnchorClick = (e) => {
       const targetLink = e.target.closest('a');
       if (!targetLink) return;
       
       const href = targetLink.getAttribute('href');
-      if (href && href.startsWith('#')) {
+      if (!href) return;
+
+      if (href === '#arcade') {
+        e.preventDefault();
+        handleNavigate('arcade');
+        return;
+      }
+
+      if (href === '#work') {
+        e.preventDefault();
+        handleNavigate('home', 'work');
+        return;
+      }
+
+      if (href === '#' || href === '') {
+        e.preventDefault();
+        handleNavigate('home', 'top');
+        return;
+      }
+
+      if (href.startsWith('#')) {
         e.preventDefault();
         const targetId = href.substring(1);
-        
-        if (targetId === '' || targetId === '#') {
-          lenisInstance.scrollTo(0, { duration: 1.2 });
-        } else {
-          const targetElement = document.getElementById(targetId);
-          if (targetElement) {
-            const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
-            lenisInstance.scrollTo(targetElement, { 
-              offset: -navbarHeight, 
-              duration: 1.2 
-            });
-          }
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
+          lenisInstance.scrollTo(targetElement, { 
+            offset: -navbarHeight, 
+            duration: 1.2 
+          });
         }
       }
     };
     document.addEventListener('click', handleAnchorClick);
+
+    // Sync hash changes (e.g. browser back/forward buttons)
+    const handleHashSync = () => {
+      const hash = window.location.hash;
+      if (hash === '#arcade') {
+        setCurrentPage('arcade');
+      } else {
+        setCurrentPage('home');
+      }
+    };
+    window.addEventListener('hashchange', handleHashSync);
 
     // Device Capability Checks (Disables hover interactive computations on Mobile/Touch screens)
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
@@ -254,6 +287,7 @@ function App() {
       // document.removeEventListener('contextmenu', disableContextMenu);
       // document.removeEventListener('keydown', disableDevTools);
       document.removeEventListener('click', handleAnchorClick);
+      window.removeEventListener('hashchange', handleHashSync);
       sections.forEach(section => observer.unobserve(section));
       sections.forEach(section => revealObserver.unobserve(section));
 
@@ -282,6 +316,43 @@ function App() {
       }
     };
   }, []);
+
+  const handleNavigate = (page, targetId) => {
+    if (page === 'arcade') {
+      setCurrentPage('arcade');
+      window.location.hash = '#arcade';
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 0.8 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      setCurrentPage('home');
+      if (targetId === 'work') {
+        window.location.hash = '#work';
+        setTimeout(() => {
+          const targetElement = document.getElementById('work');
+          if (targetElement) {
+            const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
+            if (lenis) {
+              lenis.scrollTo(targetElement, { offset: -navbarHeight, duration: 1.0 });
+            } else {
+              targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }, 80);
+      } else {
+        if (window.location.hash && window.location.hash !== '') {
+          window.history.pushState(null, '', window.location.pathname);
+        }
+        if (lenis) {
+          lenis.scrollTo(0, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+  };
 
   const scrollToTop = () => {
     if (lenis) {
@@ -314,16 +385,34 @@ function App() {
         )}
       </video>
 
-      <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-      <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      <Navbar 
+        isMenuOpen={isMenuOpen} 
+        setIsMenuOpen={setIsMenuOpen} 
+        currentPage={currentPage}
+        onNavigate={handleNavigate}
+      />
+      <MobileMenu 
+        isMenuOpen={isMenuOpen} 
+        setIsMenuOpen={setIsMenuOpen} 
+        currentPage={currentPage}
+        onNavigate={handleNavigate}
+      />
       
       <SocialSidebar />
       
-      <div className="divider"><hr /></div>
-      <Contact />
-      
-      <div className="divider"><hr /></div>
-      <Projects />
+      {currentPage === 'home' ? (
+        <>
+          <div className="divider"><hr /></div>
+          <Contact />
+          
+          <div className="divider"><hr /></div>
+          <Projects />
+          
+          <Football />
+        </>
+      ) : (
+        <Arcade onNavigate={handleNavigate} />
+      )}
       
       <Footer />
 
@@ -337,8 +426,6 @@ function App() {
           <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
       </button>
-
-      <Football />
     </>
   );
 }
