@@ -21,201 +21,279 @@ const Arcade = ({ onNavigate }) => {
   const [isGoal, setIsGoal] = useState(false);
   const [netShaking, setNetShaking] = useState(false);
   const [isCharging, setIsCharging] = useState(false);
-  const [aimVector, setAimVector] = useState(null);
 
   // Arena Physics Refs
   const arenaRef = useRef(null);
+  const wrapperRef = useRef(null);
   const ballRef = useRef(null);
   const posRef = useRef({ x: 0, y: 0 });
   const velRef = useRef({ x: 0, y: 0 });
   const isMovingRef = useRef(false);
   const animFrameRef = useRef(null);
-  const dragStartRef = useRef(null);
+  const chargeStartTimeRef = useRef(0);
+  const swipeStartRef = useRef({ x: 0, y: 0, time: 0 });
+  const isSwipingRef = useRef(false);
+  const isChargingRef = useRef(false);
+  const isGoalRef = useRef(false);
   const lastTapRef = useRef(0);
-
   const aimLineRef = useRef(null);
+  const lastTimeRef = useRef(0);
 
-  const ballSize = 62;
+  const ballSize = 60;
   const goalWidth = 280;
   const goalHeight = 85;
 
-  // Initialize ball position to center kickoff spot on the enlarged pitch
+  // Initialize or reset ball position to center kickoff spot on the pitch
   const resetBallPosition = () => {
-    if (!arenaRef.current) return;
-    const rect = arenaRef.current.getBoundingClientRect();
-    const x = rect.width / 2 - ballSize / 2;
-    const y = Math.max(rect.height * 0.72 - ballSize / 2, rect.height - ballSize - 120);
+    if (!arenaRef.current || !wrapperRef.current) return;
+    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+
+    const arenaW = arenaRef.current.clientWidth || 800;
+    const arenaH = arenaRef.current.clientHeight || 680;
+
+    const x = Math.max(0, Math.min(arenaW / 2 - ballSize / 2, arenaW - ballSize));
+    const y = Math.max(100, Math.min(arenaH * 0.65, arenaH - ballSize - 50));
+
     posRef.current = { x, y };
     velRef.current = { x: 0, y: 0 };
     isMovingRef.current = false;
+    isChargingRef.current = false;
+    isSwipingRef.current = false;
     setIsCharging(false);
 
     if (aimLineRef.current) {
       aimLineRef.current.style.display = 'none';
     }
 
+    wrapperRef.current.style.transform = `translate(${x}px, ${y}px)`;
     if (ballRef.current) {
-      ballRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      ballRef.current.style.transform = 'rotate(0deg)';
+      ballRef.current.dataset.rotation = '0';
     }
   };
 
   useEffect(() => {
-    resetBallPosition();
+    const timer = setTimeout(resetBallPosition, 60);
     window.addEventListener('resize', resetBallPosition);
-    return () => window.removeEventListener('resize', resetBallPosition);
-  }, [selectedGame]);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', resetBallPosition);
+    };
+  }, [selectedGame, isGameSelectorOpen]);
 
-  // Pointer Down (Mouse or Touch) - Left Click Only
+  // Pointer Down (Mouse, Touch, or Pen)
   const handlePointerDown = (e) => {
-    // Completely ignore right click or other buttons
-    if (e.button !== undefined && e.button !== 0) {
-      e.preventDefault();
-      return;
-    }
+    if (e.button !== undefined && e.button !== 0) return;
+    if (isGoalRef.current) return;
 
     e.preventDefault();
-    e.stopPropagation();
-    if (isGoal) return;
 
-    // Double tap/click to swap skin
+    // Double tap/click to cycle skin (identical to dashboard Football)
     const now = Date.now();
     if (now - lastTapRef.current < 300) {
       setSkinIndex((prev) => (prev + 1) % skins.length);
       lastTapRef.current = 0;
-      velRef.current = { x: 0, y: 0 };
       isMovingRef.current = false;
+      isChargingRef.current = false;
+      isSwipingRef.current = false;
       setIsCharging(false);
+      velRef.current = { x: 0, y: 0 };
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
       if (aimLineRef.current) aimLineRef.current.style.display = 'none';
       return;
     }
     lastTapRef.current = now;
 
-    // Stop current ball velocity
+    // Grab ball and stop current motion
     isMovingRef.current = false;
-    velRef.current = { x: 0, y: 0 };
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    velRef.current = { x: 0, y: 0 };
 
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-    dragStartRef.current = { x: clientX, y: clientY };
+    chargeStartTimeRef.current = now;
+    swipeStartRef.current = { x: e.clientX, y: e.clientY, time: now };
+    isChargingRef.current = true;
     setIsCharging(true);
+
+    if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+      isSwipingRef.current = true;
+    }
+
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (_) {}
+  };
+
+  // Live Slingshot / Aim Drag Tracking
+  const handlePointerMove = (e) => {
+    if (!isChargingRef.current || !wrapperRef.current) return;
+
+    const dx = e.clientX - swipeStartRef.current.x;
+    const dy = e.clientY - swipeStartRef.current.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
     if (aimLineRef.current) {
-      aimLineRef.current.style.display = 'block';
-      aimLineRef.current.style.width = '0px';
+      if (dist > 10) {
+        aimLineRef.current.style.display = 'block';
+        // Aim direction points toward goal/shot direction
+        const shootDx = dy > 10 ? -dx : dx;
+        const shootDy = dy > 10 ? -dy : dy;
+        const angle = Math.atan2(shootDy, shootDx) * (180 / Math.PI);
+        const lineLen = Math.min(dist * 1.25, 150);
+
+        aimLineRef.current.style.width = `${lineLen}px`;
+        aimLineRef.current.style.transform = `rotate(${angle}deg)`;
+      } else {
+        aimLineRef.current.style.display = 'none';
+      }
     }
   };
 
-  // Pointer Move (Mouse or Touch) - Direct GPU transform without React re-renders!
-  const handlePointerMove = (e) => {
-    if (!isCharging || !dragStartRef.current || !aimLineRef.current) return;
-
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-    const dx = dragStartRef.current.x - clientX;
-    const dy = dragStartRef.current.y - clientY;
-    const distance = Math.min(Math.sqrt(dx * dx + dy * dy), 160);
-    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-    aimLineRef.current.style.width = `${distance * 1.2}px`;
-    aimLineRef.current.style.transform = `rotate(${angle}deg)`;
-  };
-
-  // Pointer Up (Mouse or Touch) - Launch Ball
+  // Pointer Up / Release: Execute Shot
   const handlePointerUp = (e) => {
-    if (!isCharging || !dragStartRef.current) return;
+    try {
+      e.currentTarget?.releasePointerCapture?.(e.pointerId);
+    } catch (_) {}
+
+    if (!isChargingRef.current && !isSwipingRef.current) return;
+
+    isChargingRef.current = false;
     setIsCharging(false);
+
     if (aimLineRef.current) {
       aimLineRef.current.style.display = 'none';
     }
 
-    const clientX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
-    const clientY = e.clientY || (e.changedTouches && e.changedTouches[0].clientY);
+    const now = Date.now();
+    const holdDuration = Math.min(now - chargeStartTimeRef.current, 1200);
+    const powerMultiplier = 0.75 + (holdDuration / 1200) * 0.55;
 
-    const dx = dragStartRef.current.x - clientX;
-    const dy = dragStartRef.current.y - clientY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
+    const endX = e.clientX;
+    const endY = e.clientY;
+    const swipeDx = endX - swipeStartRef.current.x;
+    const swipeDy = endY - swipeStartRef.current.y;
+    const dt = Math.max(1, now - swipeStartRef.current.time);
+    const dist = Math.sqrt(swipeDx * swipeDx + swipeDy * swipeDy);
 
-    // If it was just a tiny click without drag, launch upward toward goal
-    if (dist < 10) {
-      velRef.current = { x: (Math.random() - 0.5) * 4, y: -22 };
+    let vx = 0;
+    let vy = 0;
+
+    // 1. Touch swipe / forward flick: if moved forward or swiped fast
+    if (isSwipingRef.current && dt < 1000 && dist >= 15) {
+      isSwipingRef.current = false;
+      const swipeMultiplier = 7;
+      vx = (swipeDx / dt) * swipeMultiplier;
+      vy = (swipeDy / dt) * swipeMultiplier;
+
+      const maxSpeed = 18;
+      const currentSpeed = Math.sqrt(vx * vx + vy * vy);
+      if (currentSpeed > maxSpeed) {
+        vx = (vx / currentSpeed) * maxSpeed;
+        vy = (vy / currentSpeed) * maxSpeed;
+      }
+    } else if (dist > 10) {
+      // 2. Slingshot or Drag (Calibrated for smooth PC play)
+      if (swipeDy > 10) {
+        // Slingshot: user pulled downward/backward -> fires forward toward goal!
+        const nx = swipeDx / dist;
+        const ny = swipeDy / dist;
+        const speed = Math.min(9 + dist * 0.08, 17) * powerMultiplier;
+        vx = -nx * speed;
+        vy = -ny * speed;
+      } else {
+        // Direct forward drag toward goal
+        const nx = swipeDx / dist;
+        const ny = swipeDy / dist;
+        const speed = Math.min(8 + dist * 0.08, 16) * powerMultiplier;
+        vx = nx * speed;
+        vy = ny * speed;
+      }
     } else {
-      const speedMultiplier = Math.min(dist / 4, 34);
-      const angle = Math.atan2(dy, dx);
-      velRef.current = {
-        x: Math.cos(angle) * speedMultiplier,
-        y: Math.sin(angle) * speedMultiplier
-      };
+      // 3. Quick tap or direct click on the ball -> smooth kick straight towards goal!
+      vx = (Math.random() - 0.5) * 3;
+      vy = -13 * powerMultiplier;
     }
 
-    dragStartRef.current = null;
+    velRef.current = { x: vx, y: vy };
     isMovingRef.current = true;
-    animate();
+    lastTimeRef.current = performance.now();
+    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    animFrameRef.current = requestAnimationFrame(animate);
   };
 
-  // Animation Loop within Arena Bounds
+  // Continuous Physics Loop - STRICTLY CONFINED TO PITCH ARENA FIELD
   const animate = () => {
-    if (!arenaRef.current || !ballRef.current) return;
+    if (!arenaRef.current || !wrapperRef.current) return;
 
-    const rect = arenaRef.current.getBoundingClientRect();
-    const arenaW = rect.width;
-    const arenaH = rect.height;
+    const arenaW = arenaRef.current.clientWidth || 800;
+    const arenaH = arenaRef.current.clientHeight || 680;
+
+    // Delta-time normalization: prevents ball from moving too fast on 120Hz/144Hz/240Hz PC monitors
+    const now = performance.now();
+    const rawDt = lastTimeRef.current ? (now - lastTimeRef.current) / 16.667 : 1;
+    lastTimeRef.current = now;
+    const dt = Math.max(0.1, Math.min(rawDt, 1.8));
 
     let { x, y } = posRef.current;
     let { x: vx, y: vy } = velRef.current;
 
     const gravity = 0.35;
-    const bounce = 0.78;
-    const friction = 0.985;
+    const bounceFriction = 0.82;
+    const airFriction = 0.994;
+    const groundFriction = 0.95;
 
-    vy += gravity;
-    vx *= friction;
+    vy += gravity * dt;
+    vx *= Math.pow(airFriction, dt);
 
-    x += vx;
-    y += vy;
+    x += vx * dt;
+    y += vy * dt;
 
-    // Left and Right Wall Collision
-    if (x <= 0) {
-      x = 0;
-      vx = -vx * bounce;
-    } else if (x + ballSize >= arenaW) {
-      x = arenaW - ballSize;
-      vx = -vx * bounce;
+    const minX = 0;
+    const maxX = Math.max(0, arenaW - ballSize);
+    const minY = 0;
+    const maxY = Math.max(0, arenaH - ballSize);
+
+    // Left and Right Boundary Checks (Never goes out of field)
+    if (x <= minX) {
+      x = minX;
+      vx = Math.abs(vx) * bounceFriction;
+    } else if (x >= maxX) {
+      x = maxX;
+      vx = -Math.abs(vx) * bounceFriction;
     }
 
-    // Top Boundary & Goal Collision
+    // Top Goal Mouth & Top Wall Check
     const goalLeft = arenaW / 2 - goalWidth / 2;
     const goalRight = arenaW / 2 + goalWidth / 2;
     const ballCenter = x + ballSize / 2;
 
     if (y <= goalHeight && ballCenter >= goalLeft && ballCenter <= goalRight) {
-      // GOAL SCORED!
-      if (!isGoal) {
+      // Inside Goal Post Netting!
+      if (!isGoalRef.current) {
         handleTriggerGoal();
       }
-      y = goalHeight;
-      vy = Math.abs(vy) * 0.4; // Bounce downward from net
+      y = Math.min(y, goalHeight);
+      vy = Math.abs(vy) * 0.45; // gentle bounce downward off net
       vx *= 0.5;
-    } else if (y <= 0) {
-      y = 0;
-      vy = -vy * bounce;
+    } else if (y <= minY) {
+      // Top wall outside the goal
+      y = minY;
+      vy = Math.abs(vy) * bounceFriction;
     }
 
-    // Floor Boundary Collision
-    if (y + ballSize >= arenaH) {
-      y = arenaH - ballSize;
-      if (Math.abs(vy) < 1.2) {
+    // Bottom Boundary (Turf / Floor)
+    if (y >= maxY) {
+      y = maxY;
+      if (Math.abs(vy) < gravity * 1.5) {
         vy = 0;
       } else {
-        vy = -vy * bounce;
+        vy = -Math.abs(vy) * bounceFriction;
       }
-      vx *= 0.94; // ground friction
+      vx *= groundFriction;
     }
 
-    // Stop if resting on floor
-    if (y >= arenaH - ballSize - 1 && Math.abs(vy) === 0 && Math.abs(vx) < 0.15) {
-      y = arenaH - ballSize;
+    // Settled & Resting on Pitch Floor
+    if (y >= maxY - 1 && Math.abs(vy) === 0 && Math.abs(vx) < 0.12) {
+      y = maxY;
       vx = 0;
       vy = 0;
       isMovingRef.current = false;
@@ -224,7 +302,17 @@ const Arcade = ({ onNavigate }) => {
     posRef.current = { x, y };
     velRef.current = { x: vx, y: vy };
 
-    ballRef.current.style.transform = `translate(${x}px, ${y}px)`;
+    wrapperRef.current.style.transform = `translate(${x}px, ${y}px)`;
+
+    // Dynamic Ball Spin Rotation based on Velocity
+    if (ballRef.current) {
+      const currentRotation = parseFloat(ballRef.current.dataset.rotation || '0');
+      const speed = Math.sqrt(vx * vx + vy * vy);
+      const rotationSpeed = vx > 0 ? speed : -speed;
+      const newRotation = currentRotation + rotationSpeed;
+      ballRef.current.dataset.rotation = newRotation;
+      ballRef.current.style.transform = `rotate(${newRotation}deg)`;
+    }
 
     if (isMovingRef.current) {
       animFrameRef.current = requestAnimationFrame(animate);
@@ -232,6 +320,7 @@ const Arcade = ({ onNavigate }) => {
   };
 
   const handleTriggerGoal = () => {
+    isGoalRef.current = true;
     setIsGoal(true);
     setNetShaking(true);
     setScore((prev) => prev + 1);
@@ -241,25 +330,28 @@ const Arcade = ({ onNavigate }) => {
     }, 700);
 
     setTimeout(() => {
+      isGoalRef.current = false;
       setIsGoal(false);
-    }, 2400);
+    }, 2800);
   };
 
+  // Window fallback release listeners
   useEffect(() => {
-    const handleGlobalUp = (e) => {
-      if (isCharging) handlePointerUp(e);
+    const handleGlobalPointerUp = (e) => {
+      if (isChargingRef.current || isSwipingRef.current) {
+        handlePointerUp(e);
+      }
     };
-    const handleGlobalMove = (e) => {
-      if (isCharging) handlePointerMove(e);
-    };
-    window.addEventListener('pointerup', handleGlobalUp);
-    window.addEventListener('pointermove', handleGlobalMove);
+
+    window.addEventListener('pointerup', handleGlobalPointerUp);
+    window.addEventListener('pointercancel', handleGlobalPointerUp);
+
     return () => {
-      window.removeEventListener('pointerup', handleGlobalUp);
-      window.removeEventListener('pointermove', handleGlobalMove);
+      window.removeEventListener('pointerup', handleGlobalPointerUp);
+      window.removeEventListener('pointercancel', handleGlobalPointerUp);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [isCharging]);
+  }, []);
 
   const currentSkin = skins[skinIndex] || skins[0];
 
@@ -291,64 +383,68 @@ const Arcade = ({ onNavigate }) => {
               </p>
             </div>
 
-            <div className="modal-games-grid">
-              {/* Game 1: Ball Striker Challenge (Active) */}
-              <div className={`modal-game-item ${selectedGame === 'football' ? 'active-game' : ''}`}>
-                <div>
-                  <div className="modal-game-top">
-                    <span className="modal-game-icon">⚽🏀</span>
-                    <span className="modal-status-badge status-playable">Playable Now</span>
-                  </div>
-                  <h3 className="modal-item-title">Ball Striker Challenge</h3>
-                  <p className="modal-item-desc">
+            <div className="modal-games-layout">
+              {/* Left Column: Featured Main Card (Ball Striker Challenge) */}
+              <div className="modal-featured-card">
+                <div className="featured-banner-wrapper">
+                  <img src="/ball_striker_banner.png" alt="Ball Striker Challenge" className="featured-banner-img" />
+                </div>
+                
+                <div className="featured-card-body">
+                  <h3 className="featured-card-title">Ball Striker Challenge</h3>
+                  <p className="featured-card-desc">
                     Physics-driven shooting game. Slingshot or swipe the ball, hit the top net or hoop, and switch ball skins!
                   </p>
+                  
+                  <button 
+                    type="button" 
+                    className="modal-launch-btn"
+                    onClick={() => {
+                      setSelectedGame('football');
+                      setIsGameSelectorOpen(false);
+                      resetBallPosition();
+                    }}
+                  >
+                    Launch Game 🎯
+                  </button>
                 </div>
-                <button 
-                  type="button" 
-                  className="modal-play-btn btn-launch"
-                  onClick={() => {
-                    setSelectedGame('football');
-                    setIsGameSelectorOpen(false);
-                    resetBallPosition();
-                  }}
-                >
-                  Launch Game 🎯
-                </button>
               </div>
 
-              {/* Game 2: F1 Speed Sprint (Coming Soon) */}
-              <div className="modal-game-item">
-                <div>
-                  <div className="modal-game-top">
-                    <span className="modal-game-icon">🏎️</span>
-                    <span className="modal-status-badge status-soon">Coming Soon</span>
+              {/* Right Column: Stacked Secondary Cards */}
+              <div className="modal-secondary-column">
+                {/* Game 2: F1 Speed Sprint */}
+                <div className="modal-compact-card f1-card">
+                  <div>
+                    <div className="compact-card-top">
+                      <span className="compact-card-icon">🏎️</span>
+                      <span className="modal-status-badge status-soon">Coming Soon</span>
+                    </div>
+                    <h3 className="compact-card-title">F1 Speed Sprint</h3>
+                    <p className="compact-card-desc">
+                      High-speed asphalt racer. Dodge rivals, manage grip, and clock fastest sector times.
+                    </p>
                   </div>
-                  <h3 className="modal-item-title">F1 Speed Sprint</h3>
-                  <p className="modal-item-desc">
-                    High-speed asphalt racer. Dodge rivals, manage grip, and clock fastest sector times.
-                  </p>
+                  <button type="button" className="modal-locked-btn" disabled>
+                    In Development ⏳
+                  </button>
                 </div>
-                <button type="button" className="modal-play-btn btn-locked" disabled>
-                  In Development ⏳
-                </button>
-              </div>
 
-              {/* Game 3: Sky Strike: Fighter Jet (Coming Soon) */}
-              <div className="modal-game-item">
-                <div>
-                  <div className="modal-game-top">
-                    <span className="modal-game-icon">✈️</span>
-                    <span className="modal-status-badge status-soon">Coming Soon</span>
+                {/* Game 3: Sky Strike: Fighter Jet */}
+                <div className="modal-compact-card jet-card">
+                  <div>
+                    <div className="compact-card-top">
+                      <span className="compact-card-icon">✈️</span>
+                      <span className="modal-status-badge status-soon">Coming Soon</span>
+                    </div>
+                    <h3 className="compact-card-title">Sky Strike: Fighter Jet</h3>
+                    <p className="compact-card-desc">
+                      Supersonic aerial combat simulator. Evade missile locks and engage enemy squadrons.
+                    </p>
                   </div>
-                  <h3 className="modal-item-title">Sky Strike: Fighter Jet</h3>
-                  <p className="modal-item-desc">
-                    Supersonic aerial combat simulator. Evade missile locks and engage enemy squadrons.
-                  </p>
+                  <button type="button" className="modal-locked-btn" disabled>
+                    In Development ⏳
+                  </button>
                 </div>
-                <button type="button" className="modal-play-btn btn-locked" disabled>
-                  In Development ⏳
-                </button>
               </div>
             </div>
           </div>
@@ -440,7 +536,6 @@ const Arcade = ({ onNavigate }) => {
         <div 
           ref={arenaRef} 
           className="pitch-arena-container"
-          onPointerDown={handlePointerDown}
         >
           {/* Pitch Field Markings */}
           <div className="pitch-lines">
@@ -455,11 +550,11 @@ const Arcade = ({ onNavigate }) => {
 
           {/* Goal Net or Basketball Hoop at Top of Pitch */}
           {currentSkin.type === 'football' ? (
-            <div className="pitch-goal-post">
+            <div className={`pitch-goal-post ${netShaking ? 'shake' : ''}`}>
               <div className="pitch-goal-netting"></div>
             </div>
           ) : (
-            <div className="pitch-basketball-hoop">
+            <div className={`pitch-basketball-hoop ${netShaking ? 'shake' : ''}`}>
               <div className="hoop-backboard"></div>
               <div className="hoop-ring">
                 <div className="hoop-net"></div>
@@ -476,14 +571,11 @@ const Arcade = ({ onNavigate }) => {
 
           {/* The Playable Ball */}
           <div 
-            ref={ballRef}
+            ref={wrapperRef}
             className="arena-ball-wrapper"
-            onPointerDown={handlePointerDown}
-            onContextMenu={(e) => e.preventDefault()}
-            title="Drag to shoot! Double click to switch ball skin!"
-            style={{ userSelect: 'none', WebkitTouchCallout: 'none', touchAction: 'none' }}
+            style={{ userSelect: 'none', WebkitTouchCallout: 'none' }}
           >
-            {/* GPU Accelerated Slingshot Aim Arrow Indicator */}
+            {/* Slingshot Aim Indicator Arrow */}
             <div 
               ref={aimLineRef}
               className="slingshot-aim-line"
@@ -491,8 +583,15 @@ const Arcade = ({ onNavigate }) => {
             />
 
             <div 
+              ref={ballRef}
               className={`arena-ball ${isCharging ? 'charging' : ''}`}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
               onContextMenu={(e) => e.preventDefault()}
+              title="Click or pull back to shoot! Double click to switch ball skin!"
+              style={{ touchAction: 'none', userSelect: 'none', WebkitTouchCallout: 'none' }}
             >
               <img src={currentSkin.url} alt={currentSkin.name} draggable="false" />
             </div>
