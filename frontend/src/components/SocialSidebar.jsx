@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const SocialSidebar = () => {
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isCloudVisible, setIsCloudVisible] = useState(true);
+  const cycleTimeoutRef = useRef(null);
 
   useEffect(() => {
     const video = document.querySelector('.video-bg');
@@ -18,14 +20,42 @@ const SocialSidebar = () => {
     }
   }, []);
 
+  // 10 seconds visible, 20 seconds vanished recurring cycle
+  useEffect(() => {
+    let active = true;
+
+    const runTimerCycle = (showing) => {
+      const duration = showing ? 10000 : 20000;
+      cycleTimeoutRef.current = setTimeout(() => {
+        if (!active) return;
+        setIsCloudVisible(!showing);
+        runTimerCycle(!showing);
+      }, duration);
+    };
+
+    runTimerCycle(true); // start with 10s visible
+
+    return () => {
+      active = false;
+      if (cycleTimeoutRef.current) clearTimeout(cycleTimeoutRef.current);
+    };
+  }, []);
+
   const toggleVideo = () => {
     const video = document.querySelector('.video-bg');
     if (video) {
       if (video.paused) {
-        video.play();
+        video.play().then(() => setIsPlaying(true)).catch(() => {});
       } else {
         video.pause();
+        setIsPlaying(false);
       }
+      // Re-trigger cloud briefly so user sees the new state
+      setIsCloudVisible(true);
+      if (cycleTimeoutRef.current) clearTimeout(cycleTimeoutRef.current);
+      cycleTimeoutRef.current = setTimeout(() => {
+        setIsCloudVisible(false);
+      }, 10000);
     }
   };
 
@@ -41,17 +71,28 @@ const SocialSidebar = () => {
           </a>
         </div>
         <div className="vertical-line"></div>
-        <button 
-          className="video-toggle-btn" 
-          onClick={toggleVideo} 
-          aria-label={isPlaying ? "Pause background video" : "Play background video"}
-        >
-          {isPlaying ? (
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          ) : (
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          )}
-        </button>
+        <div className="video-toggle-wrapper">
+          <div 
+            className={`video-cloud-bubble ${isCloudVisible ? 'visible' : 'hidden'}`} 
+            aria-hidden={!isCloudVisible}
+          >
+            <span className="cloud-icon">☁️</span>
+            <span className="cloud-text">
+              {isPlaying ? "Click to pause BG video" : "Click to play BG video"}
+            </span>
+          </div>
+          <button 
+            className="video-toggle-btn" 
+            onClick={toggleVideo} 
+            aria-label={isPlaying ? "Pause background video" : "Play background video"}
+          >
+            {isPlaying ? (
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="social-sidebar right">

@@ -48,11 +48,9 @@ const Contact = () => {
   return (
     <section className="section">
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '1150px', margin: '0 auto', marginTop: '2.5rem' }}>
-        {/* 👇 TO ADJUST OVERALL WIDTH manually, change maxWidth: '1150px' above */}
-
+      <div className="hero-contact-layout">
         {/* Left Side: Custom LinkedIn Card */}
-        <div style={{ flex: '1 1 420px', display: 'flex', justifyContent: 'center' }}>
+        <div className="hero-profile-cell">
           <div className="custom-linkedin-card" style={{ margin: '0' }}>
             <div className="card-image-container">
               <img src="/mrAbhimanyu.png" alt="Profile" />
@@ -117,10 +115,8 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Right Side: Contact Items & Summary */}
-        {/* 👇 TO ADJUST RIGHT-SIDE WIDTH manually, change the 580px value below (e.g. to 600px or 700px) */}
-        <div style={{ flex: '1.2 1 630px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-
+        {/* Name Summary / Hero Shell */}
+        <div className="hero-summary-cell">
           <div className="hero-shell" style={{ maxWidth: '100%', padding: '2rem' }}>
             <h1>Abhimanyu<br /><em>Vishwakarma</em></h1>
 
@@ -140,7 +136,10 @@ const Contact = () => {
               </a>
             </div>
           </div>
+        </div>
 
+        {/* Contact Items (Email, GitHub, X) */}
+        <div className="hero-contact-links-cell">
           <a href="mailto:abhimanyuvishwakarma9228@gmail.com" className="contact-item copy-email small-bar" onClick={copyEmail}>
             <div className="contact-left">
               <div className="contact-icon" style={{ color: 'var(--text)' }}>
@@ -186,7 +185,6 @@ const Contact = () => {
             </div>
             <span className="contact-arrow">↗</span>
           </a>
-
         </div>
       </div>
     </section>

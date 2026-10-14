@@ -1,0 +1,12 @@
+my mascot chilling and vibing to music in the back ground.
+"D:\Projects\Portfolio\frontend\public\my mascot character"
+" is chilling and playing video game.
+" is chilling and watering plants.
+" is chilling and reading a book.
+" is chilling and doing coding.
+" is chilling and sleeping.
+
+arcade games page with the following games :
+Football
+f1 race
+Fighter jet - use this to make our game https://github.com/mooict/Jet-fighter-shooter-game-in-windows-form.git

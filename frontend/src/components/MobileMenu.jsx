@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
+const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
   const handleResumeDownload = (e) => {
     e.preventDefault();
     const link = document.createElement('a');
@@ -26,9 +26,28 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen }) => {
         </svg>
       </button>
 
-      <a href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
+      <a 
+        href="#work" 
+        onClick={(e) => {
+          e.preventDefault();
+          if (onNavigate) onNavigate('home', 'work');
+          setIsMenuOpen(false);
+        }}
+      >
+        My Work
+      </a>
+      <a 
+        href="#arcade" 
+        className={currentPage === 'arcade' ? 'active' : ''}
+        onClick={(e) => {
+          e.preventDefault();
+          if (onNavigate) onNavigate('arcade');
+          setIsMenuOpen(false);
+        }}
+      >
+        Arcade
+      </a>
       <a href="/AbhimanyuVishwakarma_Resume.pdf" onClick={handleResumeDownload}>Resume</a>
-      <a href="#work" onClick={() => setIsMenuOpen(false)}>My Work</a>
 
       <div className="mobile-menu-divider"></div>
 
