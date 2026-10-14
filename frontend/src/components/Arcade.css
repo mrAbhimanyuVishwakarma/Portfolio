@@ -267,6 +267,24 @@ html[data-theme="light"] .cabinet-top-hud {
   height: 15px;
 }
 
+.switch-game-btn {
+  background: rgba(0, 229, 255, 0.12) !important;
+  border-color: rgba(0, 229, 255, 0.4) !important;
+  color: #00e5ff !important;
+}
+
+html[data-theme="light"] .switch-game-btn {
+  background: rgba(2, 132, 199, 0.12) !important;
+  border-color: rgba(2, 132, 199, 0.4) !important;
+  color: #0284c7 !important;
+}
+
+.switch-game-btn:hover {
+  background: #00e5ff !important;
+  color: #04101c !important;
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.35);
+}
+
 /* Interactive Stadium Pitch Stage */
 .pitch-arena-container {
   position: relative;
@@ -487,19 +505,17 @@ html[data-theme="light"] .cabinet-top-hud {
 }
 
 /* Playable Ball */
+/* Playable Ball */
 .arena-ball-wrapper {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 60px;
   height: 60px;
   z-index: 20;
-  cursor: grab;
+  pointer-events: none;
   user-select: none;
-  touch-action: none;
-  transform-origin: center center;
-}
-
-.arena-ball-wrapper:active {
-  cursor: grabbing;
+  will-change: transform;
 }
 
 .arena-ball {
@@ -514,7 +530,16 @@ html[data-theme="light"] .cabinet-top-hud {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
   transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.arena-ball:active {
+  cursor: grabbing;
 }
 
 .arena-ball img {
@@ -526,14 +551,14 @@ html[data-theme="light"] .cabinet-top-hud {
 }
 
 .arena-ball:hover {
-  transform: scale(1.12);
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
+  transform: scale(1.15) !important;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
 }
 
 .arena-ball.charging {
-  transform: scale(0.92);
-  box-shadow: 0 0 25px 6px rgba(0, 229, 255, 0.9);
-  animation: ballChargingPulse 0.4s infinite alternate;
+  transform: scale(0.9) !important;
+  box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.5), 0 0 25px 6px rgba(0, 229, 255, 0.9) !important;
+  animation: ballChargingPulse 0.45s infinite alternate !important;
 }
 
 @keyframes ballChargingPulse {
@@ -546,13 +571,14 @@ html[data-theme="light"] .cabinet-top-hud {
   position: absolute;
   top: 30px;
   left: 30px;
-  height: 4px;
+  height: 5px;
   background: linear-gradient(90deg, #ff4500 0%, #00e5ff 100%);
-  border-radius: 2px;
+  border-radius: 999px;
   transform-origin: 0 50%;
   pointer-events: none;
-  z-index: 10;
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+  z-index: 15;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.9), 0 0 20px rgba(255, 69, 0, 0.6);
+  transition: width 0.04s ease-out;
 }
 
 /* Goal Celebration Overlay */
@@ -690,12 +716,12 @@ html[data-theme="light"] .cabinet-top-hud {
 .game-modal-card {
   position: relative;
   width: 100%;
-  max-width: 860px;
+  max-width: 1040px;
   background: var(--arcade-modal-bg);
   border: 1px solid var(--arcade-card-border);
-  border-radius: 24px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
-  padding: 2.5rem;
+  border-radius: 26px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), 0 0 30px rgba(0, 184, 212, 0.15);
+  padding: 2.2rem 2.4rem;
   color: var(--arcade-text);
   animation: zoomInModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -762,52 +788,179 @@ html[data-theme="light"] .game-modal-card {
   color: var(--arcade-muted);
 }
 
-/* Modal Games Grid */
-.modal-games-grid {
+/* Modal Games Layout (Reference Design: Left Featured + Right Stacked) */
+.modal-games-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1.25fr 1fr;
   gap: 1.5rem;
+  align-items: stretch;
   margin-top: 1.5rem;
 }
 
-.modal-game-item {
-  position: relative;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--arcade-card-border);
-  border-radius: 18px;
-  padding: 1.5rem;
+/* Featured Left Card: Ball Striker Challenge */
+.modal-featured-card {
+  background: rgba(16, 22, 34, 0.92);
+  border: 1.5px solid #00B8D4;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 184, 212, 0.22), inset 0 0 15px rgba(0, 184, 212, 0.08);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.25s ease;
 }
 
-html[data-theme="light"] .modal-game-item {
-  background: #f8fafc;
+html[data-theme="light"] .modal-featured-card {
+  background: #ffffff;
+  border: 2px solid #00B8D4;
+  box-shadow: 0 8px 30px rgba(0, 184, 212, 0.18);
+}
+
+.modal-featured-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px rgba(0, 184, 212, 0.35);
+}
+
+.featured-banner-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0c121e;
+}
+
+.featured-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.modal-featured-card:hover .featured-banner-img {
+  transform: scale(1.02);
+}
+
+.featured-card-body {
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.featured-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  color: var(--arcade-text);
+  margin: 0;
+}
+
+.featured-card-desc {
+  font-size: 14px;
+  color: var(--arcade-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.modal-launch-btn {
+  width: 100%;
+  padding: 0.9rem 1.25rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(90deg, #00B8D4 0%, #00E5FF 100%);
+  color: #080c14;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 229, 255, 0.4);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.modal-launch-btn:hover {
+  background: linear-gradient(90deg, #00e5ff 0%, #38bdf8 100%);
+  box-shadow: 0 6px 24px rgba(0, 229, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Secondary Column: Stacked F1 + Jet Cards */
+.modal-secondary-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  justify-content: space-between;
+}
+
+.modal-compact-card {
+  background: rgba(18, 24, 38, 0.85);
+  border: 1px solid var(--arcade-card-border);
+  border-radius: 20px;
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.85rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.modal-compact-card.f1-card {
+  background: linear-gradient(90deg, rgba(16, 22, 34, 0.96) 0%, rgba(16, 22, 34, 0.88) 55%, rgba(16, 22, 34, 0.45) 100%), url('/f1_art.png') no-repeat right center / contain;
+}
+
+.modal-compact-card.jet-card {
+  background: linear-gradient(90deg, rgba(16, 22, 34, 0.96) 0%, rgba(16, 22, 34, 0.88) 55%, rgba(16, 22, 34, 0.45) 100%), url('/jet_art.png') no-repeat right center / contain;
+}
+
+html[data-theme="light"] .modal-compact-card {
+  background: #f8fafc !important;
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-.modal-game-item:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: 0 12px 30px var(--accent-soft);
+html[data-theme="light"] .modal-compact-card.f1-card {
+  background: linear-gradient(90deg, rgba(248, 250, 252, 0.97) 0%, rgba(248, 250, 252, 0.88) 55%, rgba(248, 250, 252, 0.5) 100%), url('/f1_art.png') no-repeat right center / contain !important;
 }
 
-.modal-game-item.active-game {
-  border-color: var(--accent);
-  box-shadow: 0 0 20px var(--accent-soft);
-  background: rgba(0, 184, 212, 0.05);
+html[data-theme="light"] .modal-compact-card.jet-card {
+  background: linear-gradient(90deg, rgba(248, 250, 252, 0.97) 0%, rgba(248, 250, 252, 0.88) 55%, rgba(248, 250, 252, 0.5) 100%), url('/jet_art.png') no-repeat right center / contain !important;
 }
 
-.modal-game-top {
+.modal-compact-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.compact-card-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
-.modal-game-icon {
-  font-size: 2.2rem;
+.compact-card-icon {
+  font-size: 1.6rem;
+}
+
+.compact-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--arcade-text);
+  margin-bottom: 0.35rem;
+}
+
+.compact-card-desc {
+  font-size: 13px;
+  color: var(--arcade-muted);
+  line-height: 1.5;
+  margin-bottom: 0.9rem;
 }
 
 .modal-status-badge {
@@ -819,69 +972,37 @@ html[data-theme="light"] .modal-game-item {
   border-radius: 999px;
 }
 
-.status-playable {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-}
-
 .status-soon {
   color: #eab308;
   background: rgba(234, 179, 8, 0.15);
   border: 1px solid rgba(234, 179, 8, 0.35);
 }
 
-.modal-item-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
-  color: var(--arcade-text);
-  margin-bottom: 0.5rem;
+.status-live {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
-.modal-item-desc {
-  font-size: 13px;
-  color: var(--arcade-muted);
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-}
-
-.modal-play-btn {
+.modal-locked-btn {
   width: 100%;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.65);
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  cursor: pointer;
+  font-weight: 600;
+  cursor: not-allowed;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
 }
 
-.btn-launch {
-  background: var(--accent);
-  color: #090b10;
-}
-
-.btn-launch:hover {
-  background: #00e5ff;
-  box-shadow: 0 4px 15px rgba(0, 184, 212, 0.4);
-  transform: translateY(-2px);
-}
-
-.btn-locked {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--arcade-muted);
-  cursor: not-allowed;
-  border: 1px solid var(--arcade-card-border);
-}
-
-html[data-theme="light"] .btn-locked {
+html[data-theme="light"] .modal-locked-btn {
   background: #e2e8f0;
   color: #64748b;
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 /* Pipeline Section */
