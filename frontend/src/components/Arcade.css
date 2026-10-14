@@ -267,6 +267,24 @@ html[data-theme="light"] .cabinet-top-hud {
   height: 15px;
 }
 
+.switch-game-btn {
+  background: rgba(0, 229, 255, 0.12) !important;
+  border-color: rgba(0, 229, 255, 0.4) !important;
+  color: #00e5ff !important;
+}
+
+html[data-theme="light"] .switch-game-btn {
+  background: rgba(2, 132, 199, 0.12) !important;
+  border-color: rgba(2, 132, 199, 0.4) !important;
+  color: #0284c7 !important;
+}
+
+.switch-game-btn:hover {
+  background: #00e5ff !important;
+  color: #04101c !important;
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.35);
+}
+
 /* Interactive Stadium Pitch Stage */
 .pitch-arena-container {
   position: relative;
@@ -958,6 +976,12 @@ html[data-theme="light"] .modal-compact-card.jet-card {
   color: #eab308;
   background: rgba(234, 179, 8, 0.15);
   border: 1px solid rgba(234, 179, 8, 0.35);
+}
+
+.status-live {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 .modal-locked-btn {

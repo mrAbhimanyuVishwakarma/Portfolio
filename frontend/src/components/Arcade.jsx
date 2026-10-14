@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Arcade.css';
+import FighterJetGame from './FighterJetGame';
 
 // Load skins dynamically from assets
 const footballImports = import.meta.glob('../assets/Mini Game/Football/*.{png,jpg,jpeg,svg}', { eager: true, import: 'default' });
@@ -434,15 +435,22 @@ const Arcade = ({ onNavigate }) => {
                   <div>
                     <div className="compact-card-top">
                       <span className="compact-card-icon">✈️</span>
-                      <span className="modal-status-badge status-soon">Coming Soon</span>
+                      <span className="modal-status-badge status-live">Live Playable</span>
                     </div>
                     <h3 className="compact-card-title">Sky Strike: Fighter Jet</h3>
                     <p className="compact-card-desc">
-                      Supersonic aerial combat simulator. Evade missile locks and engage enemy squadrons.
+                      Supersonic aerial combat shooter. Engage enemy squadrons, dodge barrages, collect weapon upgrades, and defeat bosses!
                     </p>
                   </div>
-                  <button type="button" className="modal-locked-btn" disabled>
-                    In Development ⏳
+                  <button 
+                    type="button" 
+                    className="modal-launch-btn"
+                    onClick={() => {
+                      setSelectedGame('jet');
+                      setIsGameSelectorOpen(false);
+                    }}
+                  >
+                    Launch Sky Strike ✈️
                   </button>
                 </div>
               </div>
@@ -497,132 +505,185 @@ const Arcade = ({ onNavigate }) => {
       </header>
 
       {/* ====================================================
-          ACTIVE GAME ARENA: BALL STRIKER
+          ACTIVE GAME ARENA: BALL STRIKER OR FIGHTER JET
       ==================================================== */}
       <section className="arcade-cabinet">
-        <div className="cabinet-top-hud">
-          <div className="cabinet-title-box">
-            <span className="cabinet-icon">{currentSkin.type === 'basketball' ? '🏀' : '⚽'}</span>
-            <div>
-              <h2 className="cabinet-game-title">
-                {currentSkin.type === 'basketball' ? 'Hoops Challenge' : 'Penalty Striker Arena'}
-              </h2>
-            </div>
-            <span className="cabinet-tag">Live Playable</span>
-          </div>
+        {selectedGame === 'football' ? (
+          <>
+            <div className="cabinet-top-hud">
+              <div className="cabinet-title-box">
+                <span className="cabinet-icon">{currentSkin.type === 'basketball' ? '🏀' : '⚽'}</span>
+                <div>
+                  <h2 className="cabinet-game-title">
+                    {currentSkin.type === 'basketball' ? 'Hoops Challenge' : 'Penalty Striker Arena'}
+                  </h2>
+                </div>
+                <span className="cabinet-tag">Live Playable</span>
+              </div>
 
-          <div className="cabinet-hud-controls">
-            <div className="score-badge">
-              <span className="score-label">{currentSkin.type === 'basketball' ? 'Swishes:' : 'Goals:'}</span>
-              <span className="score-num">{score}</span>
-            </div>
+              <div className="cabinet-hud-controls">
+                <div className="score-badge">
+                  <span className="score-label">{currentSkin.type === 'basketball' ? 'Swishes:' : 'Goals:'}</span>
+                  <span className="score-num">{score}</span>
+                </div>
 
-            <button 
-              type="button" 
-              className="hud-btn" 
-              onClick={resetBallPosition}
-              title="Reset ball to kickoff spot"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                <path d="M3 3v5h5"></path>
-              </svg>
-              Reset Ball
-            </button>
-          </div>
-        </div>
+                <button 
+                  type="button" 
+                  className="hud-btn" 
+                  onClick={resetBallPosition}
+                  title="Reset ball to kickoff spot"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                  </svg>
+                  Reset Ball
+                </button>
 
-        {/* The Stadium Pitch Court */}
-        <div 
-          ref={arenaRef} 
-          className="pitch-arena-container"
-        >
-          {/* Pitch Field Markings */}
-          <div className="pitch-lines">
-            <div className="pitch-box-penalty"></div>
-            <div className="pitch-box-goal"></div>
-            <div className="pitch-penalty-spot"></div>
-            <div className="pitch-penalty-arc"></div>
-            <div className="pitch-center-line"></div>
-            <div className="pitch-center-circle-ring"></div>
-            <div className="pitch-kickoff-spot-marker"></div>
-          </div>
-
-          {/* Goal Net or Basketball Hoop at Top of Pitch */}
-          {currentSkin.type === 'football' ? (
-            <div className={`pitch-goal-post ${netShaking ? 'shake' : ''}`}>
-              <div className="pitch-goal-netting"></div>
-            </div>
-          ) : (
-            <div className={`pitch-basketball-hoop ${netShaking ? 'shake' : ''}`}>
-              <div className="hoop-backboard"></div>
-              <div className="hoop-ring">
-                <div className="hoop-net"></div>
+                <button
+                  type="button"
+                  className="hud-btn switch-game-btn"
+                  onClick={() => setSelectedGame('jet')}
+                  title="Switch to Sky Strike: Fighter Jet"
+                >
+                  ✈️ Play Fighter Jet
+                </button>
               </div>
             </div>
-          )}
 
-          {/* Celebration Text on Goal */}
-          {isGoal && (
-            <div className="pitch-goal-celebration">
-              <h1>{currentSkin.type === 'basketball' ? 'SWISH!! 🏀' : 'GOAL!! ⚽'}</h1>
-            </div>
-          )}
-
-          {/* The Playable Ball */}
-          <div 
-            ref={wrapperRef}
-            className="arena-ball-wrapper"
-            style={{ userSelect: 'none', WebkitTouchCallout: 'none' }}
-          >
-            {/* Slingshot Aim Indicator Arrow */}
+            {/* The Stadium Pitch Court */}
             <div 
-              ref={aimLineRef}
-              className="slingshot-aim-line"
-              style={{ display: 'none' }}
-            />
-
-            <div 
-              ref={ballRef}
-              className={`arena-ball ${isCharging ? 'charging' : ''}`}
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerUp}
-              onContextMenu={(e) => e.preventDefault()}
-              title="Click or pull back to shoot! Double click to switch ball skin!"
-              style={{ touchAction: 'none', userSelect: 'none', WebkitTouchCallout: 'none' }}
+              ref={arenaRef} 
+              className="pitch-arena-container"
             >
-              <img src={currentSkin.url} alt={currentSkin.name} draggable="false" />
-            </div>
-          </div>
+              {/* Pitch Field Markings */}
+              <div className="pitch-lines">
+                <div className="pitch-box-penalty"></div>
+                <div className="pitch-box-goal"></div>
+                <div className="pitch-penalty-spot"></div>
+                <div className="pitch-penalty-arc"></div>
+                <div className="pitch-center-line"></div>
+                <div className="pitch-center-circle-ring"></div>
+                <div className="pitch-kickoff-spot-marker"></div>
+              </div>
 
-          {/* Bottom Pitch Controls & Skin Selector */}
-          <div className="pitch-bottom-bar">
-            <div className="pitch-tip-pill">
-              <span>🎯 <strong>How to Play:</strong> Click/touch & pull back on the ball to slingshot into the goal! Double-click to switch ball.</span>
-            </div>
+              {/* Goal Net or Basketball Hoop at Top of Pitch */}
+              {currentSkin.type === 'football' ? (
+                <div className={`pitch-goal-post ${netShaking ? 'shake' : ''}`}>
+                  <div className="pitch-goal-netting"></div>
+                </div>
+              ) : (
+                <div className={`pitch-basketball-hoop ${netShaking ? 'shake' : ''}`}>
+                  <div className="hoop-backboard"></div>
+                  <div className="hoop-ring">
+                    <div className="hoop-net"></div>
+                  </div>
+                </div>
+              )}
 
-            <div className="pitch-skins-picker">
-              <span className="skin-picker-label">Ball:</span>
-              {skins.map((skin, i) => (
+              {/* Celebration Text on Goal */}
+              {isGoal && (
+                <div className="pitch-goal-celebration">
+                  <h1>{currentSkin.type === 'basketball' ? 'SWISH!! 🏀' : 'GOAL!! ⚽'}</h1>
+                </div>
+              )}
+
+              {/* The Playable Ball */}
+              <div 
+                ref={wrapperRef}
+                className="arena-ball-wrapper"
+                style={{ userSelect: 'none', WebkitTouchCallout: 'none' }}
+              >
+                {/* Slingshot Aim Indicator Arrow */}
+                <div 
+                  ref={aimLineRef}
+                  className="slingshot-aim-line"
+                  style={{ display: 'none' }}
+                />
+
+                <div 
+                  ref={ballRef}
+                  className={`arena-ball ${isCharging ? 'charging' : ''}`}
+                  onPointerDown={handlePointerDown}
+                  onPointerMove={handlePointerMove}
+                  onPointerUp={handlePointerUp}
+                  onPointerCancel={handlePointerUp}
+                  onContextMenu={(e) => e.preventDefault()}
+                  title="Click or pull back to shoot! Double click to switch ball skin!"
+                  style={{ touchAction: 'none', userSelect: 'none', WebkitTouchCallout: 'none' }}
+                >
+                  <img src={currentSkin.url} alt={currentSkin.name} draggable="false" />
+                </div>
+              </div>
+
+              {/* Bottom Pitch Controls & Skin Selector */}
+              <div className="pitch-bottom-bar">
+                <div className="pitch-tip-pill">
+                  <span>🎯 <strong>How to Play:</strong> Click/touch & pull back on the ball to slingshot into the goal! Double-click to switch ball.</span>
+                </div>
+
+                <div className="pitch-skins-picker">
+                  <span className="skin-picker-label">Ball:</span>
+                  {skins.map((skin, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`pitch-skin-btn ${skinIndex === i ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSkinIndex(i);
+                        resetBallPosition();
+                      }}
+                      title={`Switch to ${skin.name}`}
+                    >
+                      <img src={skin.url} alt={skin.name} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="cabinet-top-hud">
+              <div className="cabinet-title-box">
+                <span className="cabinet-icon">✈️</span>
+                <div>
+                  <h2 className="cabinet-game-title">Sky Strike: Fighter Jet</h2>
+                </div>
+                <span className="cabinet-tag">Live Playable</span>
+              </div>
+
+              <div className="cabinet-hud-controls">
                 <button
-                  key={i}
                   type="button"
-                  className={`pitch-skin-btn ${skinIndex === i ? 'active' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSkinIndex(i);
+                  className="hud-btn switch-game-btn"
+                  onClick={() => {
+                    setSelectedGame('football');
                     resetBallPosition();
                   }}
-                  title={`Switch to ${skin.name}`}
+                  title="Switch to Football"
                 >
-                  <img src={skin.url} alt={skin.name} />
+                  ⚽ Play Football
                 </button>
-              ))}
+
+                <button
+                  type="button"
+                  className="hud-btn"
+                  onClick={() => setIsGameSelectorOpen(true)}
+                  title="Select Game Modal"
+                >
+                  🕹️ Select Game
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
+
+            <FighterJetGame onBackToFootball={() => {
+              setSelectedGame('football');
+              resetBallPosition();
+            }} />
+          </>
+        )}
       </section>
 
       {/* ====================================================
@@ -657,17 +718,18 @@ const Arcade = ({ onNavigate }) => {
             <div>
               <div className="pipeline-card-top">
                 <span className="pipeline-card-icon">✈️</span>
-                <span className="modal-status-badge status-soon">In Progress</span>
+                <span className="modal-status-badge status-live">Live Playable</span>
               </div>
               <h3 className="pipeline-card-title">Sky Strike: Fighter Jet</h3>
               <p className="pipeline-card-desc">
-                Supersonic aerial combat simulation with radar sweeps, dogfight barrel rolls, and evasive flare countermeasures.
+                Supersonic aerial combat shooter with enemy squadrons, plasma upgrades, synthesized audio, and ace boss battles!
               </p>
             </div>
             <div className="pipeline-tags">
+              <span className="pipeline-tag-pill">Canvas 2D</span>
               <span className="pipeline-tag-pill">Arcade Shooter</span>
-              <span className="pipeline-tag-pill">Radar Targeting</span>
-              <span className="pipeline-tag-pill">Particle FX</span>
+              <span className="pipeline-tag-pill">Web Audio FX</span>
+              <span className="pipeline-tag-pill">Boss Battles</span>
             </div>
           </div>
         </div>
