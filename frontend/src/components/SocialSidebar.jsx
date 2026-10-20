@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const SocialSidebar = () => {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -8,7 +8,9 @@ const SocialSidebar = () => {
   useEffect(() => {
     const video = document.querySelector('.video-bg');
     if (video) {
-      setIsPlaying(!video.paused);
+      requestAnimationFrame(() => {
+        setIsPlaying(!video.paused);
+      });
       const handlePlay = () => setIsPlaying(true);
       const handlePause = () => setIsPlaying(false);
       video.addEventListener('play', handlePlay);

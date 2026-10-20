@@ -17,9 +17,7 @@ import {
   FaReact,
   FaJs,
   FaHtml5,
-  FaCss3Alt,
-  FaWindows,
-  FaLinux
+  FaCss3Alt
 } from 'react-icons/fa';
 import { 
   SiSpringboot, 

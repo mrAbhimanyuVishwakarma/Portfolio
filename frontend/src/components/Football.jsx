@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './Football.css';
 
 // Dynamically load all skin images from the Mini Game folders
@@ -49,136 +49,21 @@ const Football = () => {
     return () => window.removeEventListener('resize', initPos);
   }, []);
 
-  const handlePointerDown = (e) => {
-    // Only allow primary pointer (left click on mouse, touch, pen)
-    if (e.button !== undefined && e.button !== 0) return;
+  const triggerGoal = useCallback(() => {
+    setIsGoal(true);
+    // Add an extra little bounce off the net
+    velocityRef.current.vy = Math.abs(velocityRef.current.vy) * 0.5; // bounce down
+    velocityRef.current.vx *= 0.5; // lose horizontal speed
     
-    e.preventDefault();
-    if (isGoal) return; // Cannot shoot while goal animation is playing
-
-    const now = Date.now();
-    if (now - lastTapTimeRef.current < 300) {
-      // Double tap detected!
-      setSkinIndex((prev) => (prev + 1) % skins.length);
-      lastTapTimeRef.current = 0; // Reset
-      // Stop any movement just in case
-      isMovingRef.current = false;
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      velocityRef.current = { x: 0, y: 0 };
+    // Hide goal and text after 3 seconds
+    setTimeout(() => {
+      setIsGoal(false);
       setShowGoal(false);
-      setIsCharging(false);
-      return; 
-    }
-    lastTapTimeRef.current = now;
-    
-    // Stop current movement when grabbed
-    isMovingRef.current = false;
-    if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    
-    velocityRef.current = { x: 0, y: 0 };
-    
-    if (e.pointerType === 'touch' || e.pointerType === 'pen') {
-      swipeStartRef.current = { x: e.clientX, y: e.clientY, time: Date.now() };
-      isSwipingRef.current = true;
-    } 
-    
-    // Always start charging (slingshot) as a fallback
-    chargeStartTimeRef.current = Date.now();
-    setIsCharging(true);
-    setShowGoal(true);
-  };
+    }, 3000);
+  }, []);
 
-  const handlePointerUp = (e) => {
-    if (e.cancelable) e.preventDefault();
-
-    if (isSwipingRef.current && (e.pointerType === 'touch' || e.pointerType === 'pen')) {
-      isSwipingRef.current = false;
-      const endX = e.clientX;
-      const endY = e.clientY;
-      const swipeDx = endX - swipeStartRef.current.x;
-      const swipeDy = endY - swipeStartRef.current.y;
-      const dt = Math.max(1, Date.now() - swipeStartRef.current.time);
-      
-      // If it was a clear swipe (fast enough and moved enough distance)
-      if (dt < 1000 && (Math.abs(swipeDx) >= 15 || Math.abs(swipeDy) >= 15)) {
-        const swipeMultiplier = 15; 
-        let vx = (swipeDx / dt) * swipeMultiplier;
-        let vy = (swipeDy / dt) * swipeMultiplier;
-        
-        const maxSpeed = window.innerWidth < 768 ? 35 : 50;
-        const currentSpeed = Math.sqrt(vx * vx + vy * vy);
-        if (currentSpeed > maxSpeed) {
-           vx = (vx / currentSpeed) * maxSpeed;
-           vy = (vy / currentSpeed) * maxSpeed;
-        }
-        
-        velocityRef.current = { x: vx, y: vy };
-        setIsCharging(false);
-      } else {
-        // Fallback to slingshot if they just held it
-        executeSlingshot(e);
-      }
-    } else if (isCharging) {
-      // Slingshot logic for mouse
-      executeSlingshot(e);
-    } else {
-      return;
-    }
-
-    setShowGoal(true);
-    isMovingRef.current = true;
-    animate();
-  };
-
-  const executeSlingshot = (e) => {
-    setIsCharging(false);
-    const holdDuration = Math.min(Date.now() - chargeStartTimeRef.current, 1500);
-    const powerMultiplier = 0.5 + (holdDuration / 1500) * 1.5; 
-
-    const rect = ballRef.current.getBoundingClientRect();
-    const ballCenterX = rect.left + ballSize / 2;
-    const ballCenterY = rect.top + ballSize / 2;
-    
-    const dx = e.clientX - ballCenterX;
-    const dy = e.clientY - ballCenterY;
-    
-    // If just a tiny tap directly on the center, cancel
-    if (Math.abs(dx) < 5 && Math.abs(dy) < 5 && holdDuration < 200) {
-      setShowGoal(false);
-      velocityRef.current = { x: 0, y: 0 };
-      return;
-    }
-    
-    const distance = Math.sqrt(dx * dx + dy * dy) || 1;
-    const nx = dx / distance;
-    const ny = dy / distance;
-    
-    const baseSpeed = window.innerWidth < 768 ? 22 : 35;
-    const speed = baseSpeed * powerMultiplier;
-    velocityRef.current = { x: -nx * speed, y: -ny * speed };
-  };
-
-  // If pointer leaves the ball while dragging, we still want to fire
-  useEffect(() => {
-    const handleGlobalPointerUp = (e) => {
-      if (isCharging || isSwipingRef.current) handlePointerUp(e);
-    };
-    window.addEventListener('pointerup', handleGlobalPointerUp);
-    return () => window.removeEventListener('pointerup', handleGlobalPointerUp);
-  }, [isCharging]);
-
-  // Hide goal post on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (showGoal && !isGoal) {
-        setShowGoal(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [showGoal, isGoal]);
-
-  const animate = () => {
+  const animateRef = useRef();
+  const animate = useCallback(() => {
     let { x, y } = positionRef.current;
     let { x: vx, y: vy } = velocityRef.current;
 
@@ -217,12 +102,10 @@ const Football = () => {
     }
 
     // Goal collision detection
-    // Show goal is true, y is hitting top of screen, x is within goal bounds
     if (showGoal && !isGoal) {
        const goalLeft = window.innerWidth / 2 - goalWidth / 2;
        const goalRight = window.innerWidth / 2 + goalWidth / 2;
        
-       // If ball's center is within goal width and hits the top 80 pixels
        if (y <= goalHeight && (x + ballSize/2) >= goalLeft && (x + ballSize/2) <= goalRight) {
           triggerGoal();
        }
@@ -253,22 +136,144 @@ const Football = () => {
     }
 
     if (isMovingRef.current) {
-      animationRef.current = requestAnimationFrame(animate);
+      animationRef.current = requestAnimationFrame(() => animateRef.current?.());
     }
+  }, [isGoal, showGoal, triggerGoal]);
+
+  useEffect(() => {
+    animateRef.current = animate;
+  }, [animate]);
+
+  const handlePointerDown = (e) => {
+    // Only allow primary pointer (left click on mouse, touch, pen)
+    if (e.button !== undefined && e.button !== 0) return;
+    
+    e.preventDefault();
+    if (isGoal) return; // Cannot shoot while goal animation is playing
+
+    const now = e.timeStamp;
+    if (now - lastTapTimeRef.current < 300) {
+      // Double tap detected!
+      setSkinIndex((prev) => (prev + 1) % skins.length);
+      lastTapTimeRef.current = 0; // Reset
+      isMovingRef.current = false;
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      velocityRef.current = { x: 0, y: 0 };
+      setShowGoal(false);
+      setIsCharging(false);
+      return; 
+    }
+    lastTapTimeRef.current = now;
+    
+    // Stop current movement when grabbed
+    isMovingRef.current = false;
+    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    
+    velocityRef.current = { x: 0, y: 0 };
+    
+    if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+      swipeStartRef.current = { x: e.clientX, y: e.clientY, time: e.timeStamp };
+      isSwipingRef.current = true;
+    } 
+    
+    // Always start charging (slingshot) as a fallback
+    chargeStartTimeRef.current = e.timeStamp;
+    setIsCharging(true);
+    setShowGoal(true);
   };
 
-  const triggerGoal = () => {
-    setIsGoal(true);
-    // Add an extra little bounce off the net
-    velocityRef.current.vy = Math.abs(velocityRef.current.vy) * 0.5; // bounce down
-    velocityRef.current.vx *= 0.5; // lose horizontal speed
+  const handleSlingshot = (e) => {
+    setIsCharging(false);
+    const holdDuration = Math.min(e.timeStamp - chargeStartTimeRef.current, 1500);
+    const powerMultiplier = 0.5 + (holdDuration / 1500) * 1.5; 
+
+    const rect = ballRef.current.getBoundingClientRect();
+    const ballCenterX = rect.left + ballSize / 2;
+    const ballCenterY = rect.top + ballSize / 2;
     
-    // Hide goal and text after 3 seconds
-    setTimeout(() => {
-      setIsGoal(false);
+    const dx = e.clientX - ballCenterX;
+    const dy = e.clientY - ballCenterY;
+    
+    // If just a tiny tap directly on the center, cancel
+    if (Math.abs(dx) < 5 && Math.abs(dy) < 5 && holdDuration < 200) {
       setShowGoal(false);
-    }, 3000);
+      velocityRef.current = { x: 0, y: 0 };
+      return;
+    }
+    
+    const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+    const nx = dx / distance;
+    const ny = dy / distance;
+    
+    const baseSpeed = window.innerWidth < 768 ? 22 : 35;
+    const speed = baseSpeed * powerMultiplier;
+    velocityRef.current = { x: -nx * speed, y: -ny * speed };
   };
+
+  const handlePointerUp = useCallback((e) => {
+    if (e.cancelable) e.preventDefault();
+
+    if (isSwipingRef.current && (e.pointerType === 'touch' || e.pointerType === 'pen')) {
+      isSwipingRef.current = false;
+      const endX = e.clientX;
+      const endY = e.clientY;
+      const swipeDx = endX - swipeStartRef.current.x;
+      const swipeDy = endY - swipeStartRef.current.y;
+      const dt = Math.max(1, e.timeStamp - swipeStartRef.current.time);
+      
+      // If it was a clear swipe (fast enough and moved enough distance)
+      if (dt < 1000 && (Math.abs(swipeDx) >= 15 || Math.abs(swipeDy) >= 15)) {
+        const swipeMultiplier = 15; 
+        let vx = (swipeDx / dt) * swipeMultiplier;
+        let vy = (swipeDy / dt) * swipeMultiplier;
+        
+        const maxSpeed = window.innerWidth < 768 ? 35 : 50;
+        const currentSpeed = Math.sqrt(vx * vx + vy * vy);
+        if (currentSpeed > maxSpeed) {
+           vx = (vx / currentSpeed) * maxSpeed;
+           vy = (vy / currentSpeed) * maxSpeed;
+        }
+        
+        velocityRef.current = { x: vx, y: vy };
+        setIsCharging(false);
+      } else {
+        handleSlingshot(e);
+      }
+    } else if (isCharging) {
+      handleSlingshot(e);
+    } else {
+      return;
+    }
+
+    setShowGoal(true);
+    isMovingRef.current = true;
+    animate();
+  }, [animate, isCharging]);
+
+  const handlePointerUpRef = useRef(handlePointerUp);
+  useEffect(() => {
+    handlePointerUpRef.current = handlePointerUp;
+  }, [handlePointerUp]);
+
+  // If pointer leaves the ball while dragging, we still want to fire
+  useEffect(() => {
+    const handleGlobalPointerUp = (e) => {
+      if (isCharging || isSwipingRef.current) handlePointerUpRef.current(e);
+    };
+    window.addEventListener('pointerup', handleGlobalPointerUp);
+    return () => window.removeEventListener('pointerup', handleGlobalPointerUp);
+  }, [isCharging]);
+
+  // Hide goal post on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (showGoal && !isGoal) {
+        setShowGoal(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showGoal, isGoal]);
 
   useEffect(() => {
     return () => {
@@ -297,7 +302,7 @@ const Football = () => {
       
       {isGoal && (
         <div className="goal-celebration">
-          <h1>{skins[skinIndex].type === 'basketball' ? 'SWISH!!' : 'GOAL!!'}</h1>
+          <span className="goal-celebration-title">{skins[skinIndex].type === 'basketball' ? 'SWISH!!' : 'GOAL!!'}</span>
         </div>
       )}
 

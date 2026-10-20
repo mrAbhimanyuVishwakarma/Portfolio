@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { LuX, LuSun, LuMoon } from 'react-icons/lu';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
@@ -34,7 +34,7 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, setIsMenuOpen]);
 
   const closeMenu = () => setIsMenuOpen(false);
 

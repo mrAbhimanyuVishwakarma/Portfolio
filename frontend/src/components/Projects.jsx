@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const ProjectCarousel = ({ images, title, link }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -189,6 +189,7 @@ const Projects = () => {
       }
     };
     checkRepoVisibility();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

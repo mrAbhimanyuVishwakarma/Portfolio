@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './FighterJetGame.css';
 
 /**
@@ -106,7 +106,9 @@ const FighterJetGame = ({ onBackToFootball }) => {
         osc.start(now);
         osc.stop(now + 0.11);
       }
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
   };
 
   // Game Engine Refs
@@ -139,7 +141,7 @@ const FighterJetGame = ({ onBackToFootball }) => {
     floatingTexts: [],
     lastEnemySpawnTime: 0,
     screenShake: 0,
-    lastFrameTime: performance.now()
+    lastFrameTime: 0
   });
 
   // Keep state sync for audio or UI
@@ -1016,6 +1018,7 @@ const FighterJetGame = ({ onBackToFootball }) => {
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerup', handlePointerUp);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

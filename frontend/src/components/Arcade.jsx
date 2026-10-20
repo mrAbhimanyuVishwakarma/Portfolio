@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Arcade.css';
 import FighterJetGame from './FighterJetGame';
 import F1RaceGame from './F1RaceGame';
@@ -122,7 +122,9 @@ const Arcade = ({ onNavigate }) => {
 
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
   };
 
   // Live Slingshot / Aim Drag Tracking
@@ -154,7 +156,9 @@ const Arcade = ({ onNavigate }) => {
   const handlePointerUp = (e) => {
     try {
       e.currentTarget?.releasePointerCapture?.(e.pointerId);
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
 
     if (!isChargingRef.current && !isSwipingRef.current) return;
 
@@ -165,7 +169,7 @@ const Arcade = ({ onNavigate }) => {
       aimLineRef.current.style.display = 'none';
     }
 
-    const now = Date.now();
+    const now = e.timeStamp;
     const holdDuration = Math.min(now - chargeStartTimeRef.current, 1200);
     const powerMultiplier = 0.75 + (holdDuration / 1200) * 0.55;
 
@@ -176,8 +180,8 @@ const Arcade = ({ onNavigate }) => {
     const dt = Math.max(1, now - swipeStartRef.current.time);
     const dist = Math.sqrt(swipeDx * swipeDx + swipeDy * swipeDy);
 
-    let vx = 0;
-    let vy = 0;
+    let vx;
+    let vy;
 
     // 1. Touch swipe / forward flick: if moved forward or swiped fast
     if (isSwipingRef.current && dt < 1000 && dist >= 15) {
@@ -211,26 +215,26 @@ const Arcade = ({ onNavigate }) => {
       }
     } else {
       // 3. Quick tap or direct click on the ball -> smooth kick straight towards goal!
-      vx = (Math.random() - 0.5) * 3;
+      vx = ((e.clientX % 10) / 10 - 0.5) * 3;
       vy = -13 * powerMultiplier;
     }
 
     velRef.current = { x: vx, y: vy };
     isMovingRef.current = true;
-    lastTimeRef.current = performance.now();
+    lastTimeRef.current = e.timeStamp;
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     animFrameRef.current = requestAnimationFrame(animate);
   };
 
   // Continuous Physics Loop - STRICTLY CONFINED TO PITCH ARENA FIELD
-  const animate = () => {
+  const animate = (timestamp) => {
     if (!arenaRef.current || !wrapperRef.current) return;
 
     const arenaW = arenaRef.current.clientWidth || 800;
     const arenaH = arenaRef.current.clientHeight || 680;
 
     // Delta-time normalization: prevents ball from moving too fast on 120Hz/144Hz/240Hz PC monitors
-    const now = performance.now();
+    const now = timestamp || 0;
     const rawDt = lastTimeRef.current ? (now - lastTimeRef.current) / 16.667 : 1;
     lastTimeRef.current = now;
     const dt = Math.max(0.1, Math.min(rawDt, 1.8));
@@ -353,6 +357,7 @@ const Arcade = ({ onNavigate }) => {
       window.removeEventListener('pointercancel', handleGlobalPointerUp);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const currentSkin = skins[skinIndex] || skins[0];

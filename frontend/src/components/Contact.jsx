@@ -1,22 +1,8 @@
-import React, { useState, useEffect } from 'react';
-
 const Contact = () => {
-  const [followers, setFollowers] = useState('5K+');
-  const [connections, setConnections] = useState('500+');
+  const followers = '5K+';
+  const connections = '500+';
 
-  useEffect(() => {
-    // LinkedIn heavily restricts scraping its public profiles (returns HTTP 999 to bots).
-    // To fetch this dynamically, you would need a backend serverless function (like Next.js API or AWS Lambda)
-    // that connects to a dedicated API like Proxycurl, Nubela, or a headless browser service to bypass LinkedIn's bot detection.
-    //
-    // Example backend fetch structure:
-    // fetch('/api/linkedin-stats')
-    //   .then(res => res.json())
-    //   .then(data => setFollowers(data.followers))
-    //   .catch(err => console.error(err));
-  }, []);
-
-  const copyEmail = (e) => {
+  const copyEmail = () => {
     const email = 'abhimanyuvishwakarma9228@gmail.com';
     navigator.clipboard.writeText(email).then(() => {
       const existingToast = document.querySelector('.toast-notification');
