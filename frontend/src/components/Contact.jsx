@@ -111,20 +111,20 @@ const Contact = ({ onNavigate, openLegalModal }) => {
         {/* Name Summary / Hero Shell */}
         <div className="hero-summary-cell">
           <div className="hero-shell">
-            <h1 className="hero-greeting-title">Hey, I'm Abhimanyu</h1>
+            <h1 className="hero-greeting-title">Hi,&nbsp;&nbsp;I'm Abhimanyu</h1>
 
             <div className="about-summary" style={{ margin: '1.2rem 0 1.6rem 0' }}>
               <p className="hero-intro-desc">
-                Software Development Engineer building event-driven Java & Spring Boot microservices, high-FPS C++/.NET desktop utilities, and full-stack web systems.
+                <strong>I</strong> specialize in designing high performance applications using <strong>Java, Spring Boot, Kafka,</strong> and <strong>Microservices</strong>. I <strong>love</strong> exploring <strong>new technologies</strong> to deliver impactful solutions. Let's <strong>connect</strong> and <strong>explore</strong> how I can contribute to your team's <strong>success</strong>!
               </p>
             </div>
 
             <div className="hero-actions">
-              <a 
-                href="/AbhimanyuVishwakarma_Resume.pdf" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="hire-me-btn" 
+              <a
+                href="/AbhimanyuVishwakarma_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hire-me-btn"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
@@ -195,7 +195,7 @@ const Contact = ({ onNavigate, openLegalModal }) => {
             <div className="contact-left">
               <div className="contact-icon" style={{ color: 'var(--text)' }}>
                 <svg viewBox="0 0 24 24" fill="currentColor" style={{ color: 'inherit' }} aria-hidden="true">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                 </svg>
               </div>
               <div>
