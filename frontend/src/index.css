@@ -73,7 +73,7 @@ html[data-theme="light"] .theme-toggle:hover {
 
 
 html {
-  background: #090b10;
+  background: var(--bg);
   scroll-behavior: auto !important;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
@@ -412,20 +412,20 @@ nav.nav--hidden {
 .nav-links a {
   font-size: 13px;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--text);
   text-decoration: none;
   letter-spacing: 0.04em;
   transition: opacity 0.2s ease;
 }
 
 .nav-links a:hover {
-  color: #ffffff;
+  color: var(--text);
   opacity: 0.75;
 }
 
 /* Active state for navigation links */
 .nav-links a.active {
-  color: #ffffff;
+  color: var(--text);
   opacity: 1;
 }
 
@@ -548,17 +548,15 @@ html[data-theme="light"] .hero-intro-desc {
   display: inline-block;
   width: 8px;
   height: 16px;
-  background-color: #ffffff;
+  background-color: var(--text);
   margin-left: 6px;
   vertical-align: -1px;
-  box-shadow:
-    0 0 8px rgba(255, 255, 255, 0.8),
-    0 0 20px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 8px var(--accent-soft);
   animation: blink 1s step-end infinite;
 }
 
 html[data-theme="light"] .typewriter-cursor {
-  background-color: #0f172a;
+  background-color: var(--text);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -2459,19 +2457,19 @@ html[data-theme="light"] .video-cloud-bubble {
 }
 
 #privacy-policy:hover {
-  background-color: rgba(20, 20, 20, 0.92);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background-color: var(--surface-hover);
+  box-shadow: var(--shadow);
 }
 
 /* Light mode specific hover effect for privacy policy */
 html[data-theme="light"] #privacy-policy:hover {
   background-color: #ffffff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
 }
 
 html[data-theme="light"] #privacy-policy:hover,
 html[data-theme="light"] #privacy-policy:hover * {
-  color: #000000 !important;
+  color: var(--text) !important;
 }
 
 /* Fix project card hover states bleeding dark mode variables */

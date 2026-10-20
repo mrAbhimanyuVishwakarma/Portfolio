@@ -394,7 +394,7 @@ const Arcade = ({ onNavigate }) => {
               {/* Left Column: Featured Main Card (Ball Striker Challenge) */}
               <div className="modal-featured-card">
                 <div className="featured-banner-wrapper">
-                  <img src="/ball_striker_banner.png" alt="Ball Striker Challenge" className="featured-banner-img" />
+                  <img src="/ball_striker_banner.png" alt="Ball Striker Challenge" className="featured-banner-img" width="560" height="280" loading="lazy" />
                 </div>
                 
                 <div className="featured-card-body">
@@ -634,7 +634,7 @@ const Arcade = ({ onNavigate }) => {
                   title="Click or pull back to shoot! Double click to switch ball skin!"
                   style={{ touchAction: 'none', userSelect: 'none', WebkitTouchCallout: 'none' }}
                 >
-                  <img src={currentSkin.url} alt={currentSkin.name} draggable="false" />
+                  <img src={currentSkin.url} alt={currentSkin.name} draggable="false" width="60" height="60" />
                 </div>
               </div>
 
@@ -658,7 +658,7 @@ const Arcade = ({ onNavigate }) => {
                       }}
                       title={`Switch to ${skin.name}`}
                     >
-                      <img src={skin.url} alt={skin.name} />
+                      <img src={skin.url} alt={skin.name} width="28" height="28" loading="lazy" />
                     </button>
                   ))}
                 </div>

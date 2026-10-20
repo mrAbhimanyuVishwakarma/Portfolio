@@ -67,7 +67,7 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
         {/* Header: Profile Avatar & Name */}
         <div className="mobile-menu-header">
           <a href="#" onClick={handleNavClick('home', 'top')} className="memoji-wrapper" aria-label="Home">
-            <img src="/mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" className="memoji" />
+            <img src="/mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" className="memoji" width="96" height="96" loading="lazy" />
           </a>
           <h2 className="mobile-menu-name">Abhimanyu Vishwakarma</h2>
         </div>

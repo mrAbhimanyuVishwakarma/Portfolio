@@ -323,6 +323,8 @@ const Football = () => {
             src={skins[skinIndex].url} 
             alt={`${skins[skinIndex].type} Skin`} 
             draggable="false"
+            width={ballSize}
+            height={ballSize}
           />
         </div>
       </div>

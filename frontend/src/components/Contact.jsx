@@ -40,7 +40,7 @@ const Contact = () => {
         <div className="hero-profile-cell">
           <div className="custom-linkedin-card">
             <div className="card-image-container">
-              <img src="/mrAbhimanyu.png" alt="Profile" />
+              <img src="/mrAbhimanyu.png" alt="Profile" width="400" height="400" loading="lazy" />
             </div>
             <div className="card-content">
               <div className="card-title-area">
@@ -109,7 +109,7 @@ const Contact = () => {
 
             <div className="about-summary" style={{ margin: '1.2rem 0 1.6rem 0' }}>
               <p className="hero-intro-desc">
-                A passionate software engineer with a love for creating innovative solutions and turning ideas into reality. I enjoy working with cutting-edge technologies and continuously learning new tools to solve complex problems.
+                Software Development Engineer building event-driven Java & Spring Boot microservices, high-FPS C++/.NET desktop utilities, and full-stack web systems.
               </p>
             </div>
 
