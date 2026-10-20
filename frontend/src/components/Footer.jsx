@@ -15,7 +15,21 @@ const Footer = ({ onNavigate, openLegalModal }) => {
         {/* Top Row: Brand Info, Navigation Links, Social Icons */}
         <div className="footer-top-row">
           <div className="footer-brand">
-            <h2 className="footer-title">Abhimanyu Vishwakarma</h2>
+            <h2 
+              className="footer-title"
+              onClick={handleNav('home', 'top')}
+              role="button"
+              tabIndex={0}
+              aria-label="Back to home top"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleNav('home', 'top')(e);
+                }
+              }}
+            >
+              Abhimanyu Vishwakarma
+            </h2>
             <p className="footer-subtitle">Building scalable systems and digital solutions</p>
           </div>
 

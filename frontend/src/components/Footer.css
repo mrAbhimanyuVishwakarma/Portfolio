@@ -54,6 +54,21 @@
   color: var(--text);
   margin: 0;
   line-height: 1.2;
+  cursor: pointer;
+  display: inline-block;
+  transition: opacity 200ms ease, transform 200ms ease;
+  user-select: none;
+}
+
+.footer-title:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+.footer-title:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .footer-subtitle {
@@ -184,17 +199,23 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1.75rem;
+    width: 100%;
   }
 
   .footer-nav {
     justify-self: unset;
+    display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 1.25rem 1.75rem;
+    gap: 1rem 2rem;
     width: 100%;
   }
 
   .footer-socials {
     justify-self: unset;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     width: 100%;
   }
 
@@ -203,6 +224,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+    width: 100%;
   }
 
   .footer-copyright,
@@ -212,15 +234,23 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .site-footer {
-    padding: 3rem 0 2.5rem;
+    padding: 2.75rem 0 2.25rem;
     margin-top: 3.5rem;
   }
 
   .footer-container {
-    padding: 0 1.25rem;
+    padding: 0 1.5rem;
     gap: 1.75rem;
+  }
+
+  .footer-top-row {
+    gap: 1.5rem;
+  }
+
+  .footer-brand {
+    gap: 0.35rem;
   }
 
   .footer-title {
@@ -228,21 +258,40 @@
   }
 
   .footer-subtitle {
-    font-size: 0.84rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
   }
 
+  /* Structured 3-column grid for clean, balanced link distribution without orphan wraps */
   .footer-nav {
-    gap: 1rem 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 2rem;
+    row-gap: 0.85rem;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
   }
 
   .footer-nav a {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer-socials {
+    gap: 0.7rem;
   }
 
   .footer-social-btn {
     width: 36px;
     height: 36px;
     font-size: 0.9rem;
+  }
+
+  .footer-divider {
+    margin: 0.15rem 0;
   }
 
   .footer-bottom-row {
@@ -254,5 +303,23 @@
   .footer-legal-btn {
     font-size: 0.82rem;
     white-space: normal;
+    line-height: 1.45;
+  }
+
+  .footer-legal-links {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .footer-container {
+    padding: 0 1.15rem;
+  }
+
+  /* 2-column fallback for narrow devices */
+  .footer-nav {
+    grid-template-columns: repeat(2, auto);
+    column-gap: 1.75rem;
+    row-gap: 0.75rem;
   }
 }

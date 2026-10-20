@@ -62,24 +62,68 @@ function App() {
     if (page === 'arcade') {
       setCurrentPage('arcade');
       window.location.hash = '#arcade';
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(0, { duration: 0.8 });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      requestAnimationFrame(() => {
+        lenisRef.current?.resize();
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
     } else if (page === 'contact') {
       setCurrentPage('contact');
       window.location.hash = '#contact';
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(0, { duration: 0.8 });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      requestAnimationFrame(() => {
+        lenisRef.current?.resize();
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
     } else {
       setCurrentPage('home');
-      if (targetId === 'work' || targetId === 'experience' || targetId === 'about' || targetId === 'privacy-policy') {
-        window.location.hash = `#${targetId}`;
+      if (targetId === 'top' || !targetId) {
+        if (window.location.hash && window.location.hash !== '') {
+          window.history.pushState(null, '', window.location.pathname);
+        }
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { duration: 0.8 });
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
         setTimeout(() => {
+          lenisRef.current?.resize();
+          if (window.scrollY > 40) {
+            if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.4 });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }, 120);
+      } else if (targetId === 'about') {
+        window.location.hash = '#about';
+        const scrollToAbout = () => {
+          lenisRef.current?.resize();
+          const targetElement = document.getElementById('about');
+          if (targetElement) {
+            const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
+            if (lenisRef.current) {
+              lenisRef.current.scrollTo(targetElement, { offset: -navbarHeight, duration: 0.8 });
+            } else {
+              targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+          } else {
+            if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.8 });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        };
+        requestAnimationFrame(scrollToAbout);
+        setTimeout(scrollToAbout, 120);
+      } else if (targetId === 'work' || targetId === 'experience' || targetId === 'privacy-policy') {
+        window.location.hash = `#${targetId}`;
+        const scrollToTarget = () => {
+          lenisRef.current?.resize();
           const targetElement = document.getElementById(targetId);
           if (targetElement) {
             const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
@@ -89,16 +133,9 @@ function App() {
               targetElement.scrollIntoView({ behavior: 'smooth' });
             }
           }
-        }, 80);
-      } else {
-        if (window.location.hash && window.location.hash !== '') {
-          window.history.pushState(null, '', window.location.pathname);
-        }
-        if (lenisRef.current) {
-          lenisRef.current.scrollTo(0, { duration: 0.8 });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        };
+        requestAnimationFrame(scrollToTarget);
+        setTimeout(scrollToTarget, 120);
       }
     }
   }, []);
@@ -213,6 +250,12 @@ function App() {
       const href = targetLink.getAttribute('href');
       if (!href) return;
 
+      if (href === '#about') {
+        e.preventDefault();
+        handleNavigateRef.current('home', 'about');
+        return;
+      }
+
       if (href === '#arcade') {
         e.preventDefault();
         handleNavigateRef.current('arcade');
@@ -265,19 +308,49 @@ function App() {
       if (!validHashes.has(hash)) {
         setCurrentPage('home');
         window.history.replaceState(null, '', '/');
-        if (lenisRef.current) {
-          lenisRef.current.scrollTo(0, { duration: 0.5 });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { duration: 0.5 });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
         return;
       }
       if (hash === '#arcade') {
         setCurrentPage('arcade');
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.5 });
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       } else if (hash === '#contact') {
         setCurrentPage('contact');
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.5 });
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       } else {
         setCurrentPage('home');
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (hash === '#about' || hash === '#' || hash === '') {
+            if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.8 });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (hash === '#experience' || hash === '#work') {
+            const targetId = hash.substring(1);
+            setTimeout(() => {
+              const el = document.getElementById(targetId);
+              if (el) {
+                const offset = document.querySelector('nav')?.offsetHeight || 62;
+                if (lenisRef.current) lenisRef.current.scrollTo(el, { offset: -offset, duration: 1.0 });
+                else el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 80);
+          }
+        });
       }
     };
     window.addEventListener('hashchange', handleHashSync);
