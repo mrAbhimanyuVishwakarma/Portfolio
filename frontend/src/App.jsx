@@ -4,7 +4,9 @@ import './index.css';
 import Navbar from './components/Navbar';
 import MobileMenu from './components/MobileMenu';
 import Projects from './components/Projects';
+import Experience from './components/Experience';
 import Contact from './components/Contact';
+import ContactPage from './pages/ContactPage';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
 import Football from './components/Football';
@@ -16,19 +18,46 @@ function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [lenis, setLenis] = useState(null);
   const [currentPage, setCurrentPage] = useState(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#arcade') {
-      return 'arcade';
+    if (typeof window !== 'undefined') {
+      if (window.location.hash === '#arcade') return 'arcade';
+      if (window.location.hash === '#contact') return 'contact';
     }
     return 'home';
   });
   
   const { theme } = useTheme();
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
 
-  // Add your future light-mode background video paths here
+  // Light-mode background video paths
   const LIGHT_MODE_VIDEO_WEBM = '';
   const LIGHT_MODE_VIDEO_MP4 = '/Background/Web/2.f1-wallpaper_light.mp4';
-  // Fallbacks if no light mode video is provided
-  const hasLightVideo = LIGHT_MODE_VIDEO_WEBM || LIGHT_MODE_VIDEO_MP4;
+  const hasLightVideo = Boolean(LIGHT_MODE_VIDEO_WEBM || LIGHT_MODE_VIDEO_MP4);
+
+  // Monitor background video play/pause state
+  useEffect(() => {
+    const video = document.querySelector('.video-bg');
+    if (!video) return;
+
+    setIsVideoPlaying(!video.paused);
+    const handlePlay = () => setIsVideoPlaying(true);
+    const handlePause = () => setIsVideoPlaying(false);
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
+  }, [theme]);
+
+  // Sync body.video-paused class to show the crisp geometric grid & animated mesh
+  useEffect(() => {
+    if (!isVideoPlaying) {
+      document.body.classList.add('video-paused');
+    } else {
+      document.body.classList.remove('video-paused');
+    }
+  }, [isVideoPlaying]);
 
   useEffect(() => {
     // Lenis Smooth Scroll Setup
@@ -140,9 +169,21 @@ function App() {
         return;
       }
 
+      if (href === '#contact') {
+        e.preventDefault();
+        handleNavigate('contact');
+        return;
+      }
+
       if (href === '#work') {
         e.preventDefault();
         handleNavigate('home', 'work');
+        return;
+      }
+
+      if (href === '#experience') {
+        e.preventDefault();
+        handleNavigate('home', 'experience');
         return;
       }
 
@@ -172,6 +213,8 @@ function App() {
       const hash = window.location.hash;
       if (hash === '#arcade') {
         setCurrentPage('arcade');
+      } else if (hash === '#contact') {
+        setCurrentPage('contact');
       } else {
         setCurrentPage('home');
       }
@@ -326,12 +369,20 @@ function App() {
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    } else if (page === 'contact') {
+      setCurrentPage('contact');
+      window.location.hash = '#contact';
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 0.8 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } else {
       setCurrentPage('home');
-      if (targetId === 'work') {
-        window.location.hash = '#work';
+      if (targetId === 'work' || targetId === 'experience' || targetId === 'about' || targetId === 'privacy-policy') {
+        window.location.hash = `#${targetId}`;
         setTimeout(() => {
-          const targetElement = document.getElementById('work');
+          const targetElement = document.getElementById(targetId);
           if (targetElement) {
             const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
             if (lenis) {
@@ -364,9 +415,13 @@ function App() {
 
   return (
     <>
+      {/* Dynamic Animated Mesh Gradient & Geometric Grid Overlay */}
+      <div className={`dynamic-mesh-bg ${theme === 'light' ? 'light' : 'dark'}`} />
+      <div className={`dynamic-grid-overlay ${theme === 'light' ? 'light' : 'dark'}`} />
+
       <video 
         key={theme} 
-        className="video-bg" 
+        className={`video-bg ${!isVideoPlaying ? 'video-paused' : ''}`} 
         autoPlay 
         loop 
         muted 
@@ -406,10 +461,15 @@ function App() {
           <Contact />
           
           <div className="divider"><hr /></div>
+          <Experience />
+
+          <div className="divider"><hr /></div>
           <Projects />
           
           <Football />
         </>
+      ) : currentPage === 'contact' ? (
+        <ContactPage onNavigate={handleNavigate} />
       ) : (
         <Arcade onNavigate={handleNavigate} />
       )}

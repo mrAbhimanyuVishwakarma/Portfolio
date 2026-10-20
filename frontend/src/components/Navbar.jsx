@@ -1,4 +1,3 @@
-import React from 'react';
 import ThemeToggle from './ThemeToggle';
 
 const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
@@ -17,13 +16,35 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
       <ul className="nav-links">
         <li>
           <a 
+            href="#about" 
+            onClick={(e) => {
+              e.preventDefault();
+              if (onNavigate) onNavigate('home', 'about');
+            }}
+          >
+            About
+          </a>
+        </li>
+        <li>
+          <a 
+            href="#experience" 
+            onClick={(e) => {
+              e.preventDefault();
+              if (onNavigate) onNavigate('home', 'experience');
+            }}
+          >
+            Experience
+          </a>
+        </li>
+        <li>
+          <a 
             href="#work" 
             onClick={(e) => {
               e.preventDefault();
               if (onNavigate) onNavigate('home', 'work');
             }}
           >
-            My Work
+            Projects
           </a>
         </li>
         <li>
@@ -36,6 +57,18 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
             }}
           >
             Arcade
+          </a>
+        </li>
+        <li>
+          <a 
+            href="#contact" 
+            className={currentPage === 'contact' ? 'active' : ''}
+            onClick={(e) => {
+              e.preventDefault();
+              if (onNavigate) onNavigate('contact');
+            }}
+          >
+            Contact
           </a>
         </li>
       </ul>

@@ -46,12 +46,13 @@ const Contact = () => {
   };
 
   return (
-    <section className="section">
+    <section className="section" id="about">
+      <p className="section-label">About Me</p>
 
       <div className="hero-contact-layout">
         {/* Left Side: Custom LinkedIn Card */}
         <div className="hero-profile-cell">
-          <div className="custom-linkedin-card" style={{ margin: '0' }}>
+          <div className="custom-linkedin-card">
             <div className="card-image-container">
               <img src="/mrAbhimanyu.png" alt="Profile" />
             </div>
@@ -109,7 +110,7 @@ const Contact = () => {
                     {connections}
                   </span>
                 </div>
-                <a href="https://www.linkedin.com/in/mrabhimanyu/" target="_blank" rel="noopener noreferrer" className="hire-me-btn">Hire Me +</a>
+                <a href="https://www.linkedin.com/in/mrabhimanyu/" target="_blank" rel="noopener noreferrer" className="hire-me-btn">LinkedIn</a>
               </div>
             </div>
           </div>
@@ -117,12 +118,12 @@ const Contact = () => {
 
         {/* Name Summary / Hero Shell */}
         <div className="hero-summary-cell">
-          <div className="hero-shell" style={{ maxWidth: '100%', padding: '2rem' }}>
-            <h1>Abhimanyu<br /><em>Vishwakarma</em></h1>
+          <div className="hero-shell">
+            <h1 className="hero-greeting-title">Hey, I'm Abhimanyu</h1>
 
-            <div className="about-summary" style={{ margin: '1rem 0' }}>
-              <p style={{ color: 'var(--muted)', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                <span style={{ fontSize: '1.4rem', color: 'var(--text)', lineHeight: 1 }}>S</span>oftware Development Engineer specializing in full stack development, backend development, scalable architectures, and automation workflows. Proven ability to design robust APIs, optimize performance, and solve complex algorithmic challenges. Always eager to explore new technologies and build products that make a real impact.
+            <div className="about-summary" style={{ margin: '1.2rem 0 1.6rem 0' }}>
+              <p className="hero-intro-desc">
+                A passionate software engineer with a love for creating innovative solutions and turning ideas into reality. I enjoy working with cutting-edge technologies and continuously learning new tools to solve complex problems.
               </p>
             </div>
 
@@ -138,8 +139,9 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Contact Items (Email, GitHub, X) */}
-        <div className="hero-contact-links-cell">
+        {/* Contact Items (Email, GitHub, X, YouTube) */}
+        <div className="hero-contact-links-cell" id="contact">
+
           <a href="mailto:abhimanyuvishwakarma9228@gmail.com" className="contact-item copy-email small-bar" onClick={copyEmail}>
             <div className="contact-left">
               <div className="contact-icon" style={{ color: 'var(--text)' }}>
@@ -181,6 +183,21 @@ const Contact = () => {
               <div>
                 <p className="contact-name">X (Twitter)</p>
                 <p className="contact-handle">mrAbhimanyu07</p>
+              </div>
+            </div>
+            <span className="contact-arrow">↗</span>
+          </a>
+
+          <a href="https://www.youtube.com/@mrAbhimanyuVishwakarma" target="_blank" rel="noopener noreferrer" className="contact-item small-bar">
+            <div className="contact-left">
+              <div className="contact-icon" style={{ color: 'var(--text)' }}>
+                <svg viewBox="0 0 24 24" fill="currentColor" style={{ color: 'inherit' }}>
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <div>
+                <p className="contact-name">YouTube</p>
+                <p className="contact-handle">@mrAbhimanyuVishwakarma</p>
               </div>
             </div>
             <span className="contact-arrow">↗</span>
