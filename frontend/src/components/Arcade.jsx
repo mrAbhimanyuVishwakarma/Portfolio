@@ -376,7 +376,7 @@ const Arcade = ({ onNavigate }) => {
               onClick={() => setIsGameSelectorOpen(false)}
               aria-label="Close game selector"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -483,7 +483,7 @@ const Arcade = ({ onNavigate }) => {
             onClick={() => onNavigate('home', 'top')}
             aria-label="Back to Portfolio"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
@@ -545,8 +545,9 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn" 
                   onClick={resetBallPosition}
                   title="Reset ball to kickoff spot"
+                  aria-label="Reset ball to kickoff spot"
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                     <path d="M3 3v5h5"></path>
                   </svg>
@@ -558,6 +559,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('f1')}
                   title="Switch to F1 Speed Sprint"
+                  aria-label="Switch to F1 Speed Sprint"
                 >
                   🏎️ Play F1 Race
                 </button>
@@ -567,6 +569,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('jet')}
                   title="Switch to Sky Strike: Fighter Jet"
+                  aria-label="Switch to Sky Strike: Fighter Jet"
                 >
                   ✈️ Play Fighter Jet
                 </button>
@@ -657,6 +660,7 @@ const Arcade = ({ onNavigate }) => {
                         resetBallPosition();
                       }}
                       title={`Switch to ${skin.name}`}
+                      aria-label={`Switch to ball skin: ${skin.name}`}
                     >
                       <img src={skin.url} alt={skin.name} width="28" height="28" loading="lazy" />
                     </button>
@@ -687,6 +691,7 @@ const Arcade = ({ onNavigate }) => {
                     resetBallPosition();
                   }}
                   title="Switch to Football"
+                  aria-label="Switch to Football"
                 >
                   ⚽ Play Football
                 </button>
@@ -696,6 +701,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('jet')}
                   title="Switch to Sky Strike: Fighter Jet"
+                  aria-label="Switch to Sky Strike: Fighter Jet"
                 >
                   ✈️ Play Fighter Jet
                 </button>
@@ -705,6 +711,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn"
                   onClick={() => setIsGameSelectorOpen(true)}
                   title="Select Game Modal"
+                  aria-label="Open Game Menu"
                 >
                   🕹️ Game Menu
                 </button>
@@ -735,6 +742,7 @@ const Arcade = ({ onNavigate }) => {
                     resetBallPosition();
                   }}
                   title="Switch to Football"
+                  aria-label="Switch to Football"
                 >
                   ⚽ Play Football
                 </button>
@@ -744,6 +752,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('f1')}
                   title="Switch to F1 Speed Sprint"
+                  aria-label="Switch to F1 Speed Sprint"
                 >
                   🏎️ Play F1 Race
                 </button>
@@ -753,6 +762,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn"
                   onClick={() => setIsGameSelectorOpen(true)}
                   title="Select Game Modal"
+                  aria-label="Open Game Menu"
                 >
                   🕹️ Game Menu
                 </button>

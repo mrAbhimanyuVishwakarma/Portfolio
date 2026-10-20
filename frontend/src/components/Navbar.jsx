@@ -1,15 +1,22 @@
 import ThemeToggle from './ThemeToggle';
 
 const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
+  const handleScrollTop = (e) => {
+    e.preventDefault();
+    if (window.location.hash && window.location.hash !== '') {
+      window.history.pushState(null, '', window.location.pathname);
+    }
+    if (onNavigate) {
+      onNavigate('home', 'top');
+    }
+  };
+
   return (
     <nav className={isMenuOpen ? 'nav--hidden' : ''}>
       <a 
         className="nav-title" 
         href="#" 
-        onClick={(e) => {
-          e.preventDefault();
-          if (onNavigate) onNavigate('home', 'top');
-        }}
+        onClick={handleScrollTop}
       >
         Abhimanyu Vishwakarma
       </a>
@@ -92,10 +99,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
         className="nav-logo" 
         href="#" 
         aria-label="Abhimanyu Vishwakarma home"
-        onClick={(e) => {
-          e.preventDefault();
-          if (onNavigate) onNavigate('home', 'top');
-        }}
+        onClick={handleScrollTop}
       >
         <img className="nav-avatar" src="/mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" width="36" height="36" />
       </a>

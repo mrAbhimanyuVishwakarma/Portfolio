@@ -11,19 +11,43 @@ import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
 import Football from './components/Football';
 import Arcade from './components/Arcade';
+import LegalModal from './components/LegalModal';
 import Lenis from 'lenis';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
   const lenisRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window !== 'undefined') {
+      const validHashes = new Set(['', '#', '#about', '#experience', '#work', '#arcade', '#contact']);
+      const isUnknownPath = window.location.pathname !== '/' && window.location.pathname !== '';
+      const isUnknownHash = !validHashes.has(window.location.hash);
+      if (isUnknownPath || isUnknownHash) {
+        return 'home';
+      }
       if (window.location.hash === '#arcade') return 'arcade';
       if (window.location.hash === '#contact') return 'contact';
     }
     return 'home';
   });
+
+  // Auto-Redirect Unknown URLs & Hashes to Home
+  useEffect(() => {
+    const validHashes = new Set(['', '#', '#about', '#experience', '#work', '#arcade', '#contact']);
+    const isUnknownPath = window.location.pathname !== '/' && window.location.pathname !== '';
+    const isUnknownHash = !validHashes.has(window.location.hash);
+
+    if (isUnknownPath || isUnknownHash) {
+      window.history.replaceState(null, '', '/');
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { duration: 0.5 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }, []);
   
   const { theme } = useTheme();
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
@@ -131,11 +155,6 @@ function App() {
     }
     rafId = requestAnimationFrame(raf);
 
-    // Theme setup
-    const themes = ['theme-racing-bulls', 'theme-alpine'];
-    const selectedTheme = themes[Math.floor(Math.random() * themes.length)];
-    document.documentElement.classList.add(selectedTheme);
-
     // Dynamic SEO Metadata Injection
     document.title = "Abhimanyu Vishwakarma — Software Development Engineer & Systems Builder";
 
@@ -241,7 +260,18 @@ function App() {
 
     // Sync hash changes (e.g. browser back/forward buttons)
     const handleHashSync = () => {
+      const validHashes = new Set(['', '#', '#about', '#experience', '#work', '#arcade', '#contact']);
       const hash = window.location.hash;
+      if (!validHashes.has(hash)) {
+        setCurrentPage('home');
+        window.history.replaceState(null, '', '/');
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { duration: 0.5 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        return;
+      }
       if (hash === '#arcade') {
         setCurrentPage('arcade');
       } else if (hash === '#contact') {
@@ -435,6 +465,7 @@ function App() {
         setIsMenuOpen={setIsMenuOpen} 
         currentPage={currentPage}
         onNavigate={handleNavigate}
+        openLegalModal={() => setIsLegalModalOpen(true)}
       />
       
       <SocialSidebar />
@@ -442,7 +473,7 @@ function App() {
       {currentPage === 'home' ? (
         <>
           <div className="divider"><hr /></div>
-          <Contact />
+          <Contact onNavigate={handleNavigate} openLegalModal={() => setIsLegalModalOpen(true)} />
           
           <div className="divider"><hr /></div>
           <Experience />
@@ -458,7 +489,15 @@ function App() {
         <Arcade onNavigate={handleNavigate} />
       )}
       
-      <Footer />
+      <Footer 
+        onNavigate={handleNavigate}
+        openLegalModal={() => setIsLegalModalOpen(true)} 
+      />
+
+      <LegalModal 
+        isOpen={isLegalModalOpen} 
+        onClose={() => setIsLegalModalOpen(false)} 
+      />
 
       <button 
         id="scroll-to-top" 

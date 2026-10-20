@@ -2,7 +2,7 @@
 
 > **Software Development Engineer & Systems Builder.** Based in Bengaluru, India 🇮🇳
 
-The personal portfolio of **Abhimanyu Vishwakarma**, showcasing full-stack systems, microservices, desktop utilities, and interactive web applications.
+The personal portfolio of **Abhimanyu Vishwakarma**, showcasing full-stack systems, event-driven microservices, high-performance desktop utilities, and interactive web applications.
 
 <p align="center">
   <a href="https://mrabhimanyu.vercel.app"><strong>🌐 Visit the Live Site →</strong></a>
@@ -17,6 +17,7 @@ The personal portfolio of **Abhimanyu Vishwakarma**, showcasing full-stack syste
 - **Projects**: Interactive showcase of featured engineering projects with image carousels, live GitHub visibility tags, and direct deployment links.
 - **Arcade**: Interactive web mini-games including 2D F1 Racing, Fighter Jet Dogfight, and a physics-based football field.
 - **Contact**: Direct email trigger, contact modal, and social connection links.
+- **Privacy & Legal**: Transparent zero-tracking privacy policy and intellectual property notice in an accessible glassmorphic modal.
 
 ---
 
@@ -36,11 +37,14 @@ The personal portfolio of **Abhimanyu Vishwakarma**, showcasing full-stack syste
 
 ## Features
 
-- 🌗 **Light & Dark Theme**: High-contrast, sleek dark mode and warm stone light mode with saved `localStorage` preferences.
-- 🎥 **Cinematic Ambient Video Background**: Dual-theme video loops with a play/pause toggle.
-- 🎨 **Dynamic Mesh & Grid Fallback**: Automatic pure CSS 15-second animated mesh gradient and 32px geometric grid overlay revealed whenever the background video is paused.
+- 🌗 **Pure Monochrome Theme Engine**: Zero-FOUC Dark & Light mode powered by pure CSS variables, synchronous HTML header initialization, and automatic sync between `localStorage` and system `prefers-color-scheme`.
+- 🔍 **Industrial SEO & Structured Data**: Static OpenGraph and Twitter Cards metadata, canonical URLs, XML Sitemap, strict Robots directives, and comprehensive Schema.org (`Person` + `ProfilePage`) JSON-LD graph.
+- ⚡ **Performance & Media Optimization**: Ultra-compressed 1080p H.264 ambient video loops (<3 MB, audio stripped), lossless PNG image compression (60–80% bandwidth savings), CLS-free explicit image dimensions, and `sessionStorage`-cached GitHub API repository visibility lookups.
+- 🛡️ **Resilience & Security**: Top-level React Error Boundary safeguarding Canvas/WebGL Arcade games with instant reset capabilities, accessible `Privacy & Legal` glassmorphic modal (`role="dialog"`, `aria-modal="true"`), and hardened HTTP security headers (`X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`) implemented across both `vercel.json` and `nginx.conf`.
+- 🎥 **Cinematic Ambient Video Background**: Dual-theme video loops with a state-aware play/pause toggle.
+- 🎨 **Dynamic Mesh & Grid Fallback**: Automatic pure CSS animated mesh gradient and 32px geometric grid overlay smoothly revealed whenever background video playback is paused.
 - 📱 **Fully Responsive Layout**: Custom responsive breakpoints tailored for standard phones, flip phones / foldables, tablets, and 4K monitors.
-- 🕹️ **Integrated Arcade**: Custom interactive canvas games with audio effects and physics simulations.
+- 🕹️ **Integrated Arcade**: Custom interactive canvas games with procedural audio effects and real-time physics simulations.
 - ✨ **Smooth Interactions**: Butter-smooth scrolling with Lenis, 3D perspective card tilt, and magnetic hover effects.
 
 ---
@@ -48,10 +52,11 @@ The personal portfolio of **Abhimanyu Vishwakarma**, showcasing full-stack syste
 ## Tech Stack
 
 - **Frontend**: React 19, Vite 8
-- **Styling**: Vanilla CSS3 (Custom Design Tokens, Glassmorphism, CSS Grid & Flexbox)
-- **Smooth Scroll**: Lenis (`@studio-freight/lenis`)
-- **Icons**: `react-icons`
-- **Deployment & Container**: Docker (Multi-stage build) · Nginx Alpine · Vercel
+- **Styling**: Vanilla CSS3 (Custom Design Tokens, Glassmorphism, CSS Grid & Flexbox, Zero Framework Lock-in)
+- **Smooth Scroll**: Lenis (`lenis`)
+- **Icons**: `react-icons` (Lu & Fa sets with explicit accessibility attributes)
+- **Deployment & Containers**: Docker (Multi-stage build) · Nginx Alpine · Vercel
+- **Security & Headers**: Custom `vercel.json` and `nginx.conf` production security headers
 
 ---
 
