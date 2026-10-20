@@ -17,9 +17,7 @@ import {
   FaReact,
   FaJs,
   FaHtml5,
-  FaCss3Alt,
-  FaWindows,
-  FaLinux
+  FaCss3Alt
 } from 'react-icons/fa';
 import { 
   SiSpringboot, 
@@ -202,7 +200,7 @@ const Experience = () => {
             <div className="timeline-card">
               <div className="timeline-header">
                 <div className="company-logo">
-                  <img src="/cognizant-icon.svg" alt={`${exp.company} logo`} className="company-logo-img" />
+                  <img src="/cognizant-icon.svg" alt={`${exp.company} logo`} className="company-logo-img" width="32" height="32" loading="lazy" />
                 </div>
                 <div className="timeline-header-text">
                   <h3 className="timeline-title">

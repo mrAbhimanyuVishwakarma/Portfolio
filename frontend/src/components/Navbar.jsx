@@ -1,15 +1,22 @@
 import ThemeToggle from './ThemeToggle';
 
 const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
+  const handleScrollTop = (e) => {
+    e.preventDefault();
+    if (window.location.hash && window.location.hash !== '') {
+      window.history.pushState(null, '', window.location.pathname);
+    }
+    if (onNavigate) {
+      onNavigate('home', 'top');
+    }
+  };
+
   return (
     <nav className={isMenuOpen ? 'nav--hidden' : ''}>
       <a 
         className="nav-title" 
         href="#" 
-        onClick={(e) => {
-          e.preventDefault();
-          if (onNavigate) onNavigate('home', 'top');
-        }}
+        onClick={handleScrollTop}
       >
         Abhimanyu Vishwakarma
       </a>
@@ -81,7 +88,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
         aria-label="Open menu"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
-        <img className="nav-toggle-avatar" src="./mrAbhimanyu.png" alt="Open menu" />
+        <img className="nav-toggle-avatar" src="/mrAbhimanyu.png" alt="Open menu" width="24" height="24" />
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
           <path d="M4 7h16"></path>
           <path d="M4 12h16"></path>
@@ -92,12 +99,9 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
         className="nav-logo" 
         href="#" 
         aria-label="Abhimanyu Vishwakarma home"
-        onClick={(e) => {
-          e.preventDefault();
-          if (onNavigate) onNavigate('home', 'top');
-        }}
+        onClick={handleScrollTop}
       >
-        <img className="nav-avatar" src="./mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" />
+        <img className="nav-avatar" src="/mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" width="36" height="36" />
       </a>
     </nav>
   );

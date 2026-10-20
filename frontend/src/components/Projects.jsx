@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const ProjectCarousel = ({ images, title, link }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -37,7 +37,7 @@ const ProjectCarousel = ({ images, title, link }) => {
             className="carousel-slide"
             style={{ flex: '0 0 100%', width: '100%', height: '100%', scrollSnapAlign: 'start', display: 'block', position: 'relative' }}
           >
-            <img src={img} alt={`${title} screenshot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={img} alt={`${title} screenshot ${idx + 1}`} width="600" height="340" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </a>
         ))}
       </div>
@@ -169,16 +169,25 @@ const Projects = () => {
             if (urlPath.length >= 2) {
               const owner = urlPath[0];
               const repoName = urlPath[1];
+              const cacheKey = 'gh_repo_vis_' + repoName;
+              
+              const cached = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(cacheKey) : null;
+              if (cached) {
+                return { ...repo, visibility: cached };
+              }
+
               const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}`);
 
               if (response.status === 200) {
+                if (typeof sessionStorage !== 'undefined') sessionStorage.setItem(cacheKey, 'Public');
                 return { ...repo, visibility: 'Public' };
               } else if (response.status === 404) {
+                if (typeof sessionStorage !== 'undefined') sessionStorage.setItem(cacheKey, 'Private');
                 return { ...repo, visibility: 'Private' };
               }
             }
-          } catch (error) {
-            console.error('Failed to check repo visibility:', error);
+          } catch {
+            // Silent fallback without exhausting rate limit
           }
         }
         return repo;
@@ -189,6 +198,7 @@ const Projects = () => {
       }
     };
     checkRepoVisibility();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { LuX, LuSun, LuMoon } from 'react-icons/lu';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 import './MobileMenu.css';
 
-const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
+const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate, openLegalModal }) => {
   const { theme, toggleTheme } = useTheme();
   const navigatingRef = useRef(false);
 
@@ -34,9 +34,21 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, setIsMenuOpen]);
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleScrollTop = (e) => {
+    e.preventDefault();
+    if (window.location.hash && window.location.hash !== '') {
+      window.history.pushState(null, '', window.location.pathname);
+    }
+    navigatingRef.current = true;
+    closeMenu();
+    setTimeout(() => {
+      if (onNavigate) onNavigate('home', 'top');
+    }, 60);
+  };
 
   const handleNavClick = (page, targetId) => (e) => {
     e.preventDefault();
@@ -66,10 +78,10 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
       <div className="mobile-menu-content" onClick={(e) => e.stopPropagation()}>
         {/* Header: Profile Avatar & Name */}
         <div className="mobile-menu-header">
-          <a href="#" onClick={handleNavClick('home', 'top')} className="memoji-wrapper" aria-label="Home">
-            <img src="/mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" className="memoji" />
+          <a href="#" onClick={handleScrollTop} className="memoji-wrapper" aria-label="Home">
+            <img src="/mrAbhimanyu.png" alt="Abhimanyu Vishwakarma" className="memoji" width="96" height="96" loading="lazy" />
           </a>
-          <h2 className="mobile-menu-name">Abhimanyu Vishwakarma</h2>
+          <h2 className="mobile-menu-name" onClick={handleScrollTop} style={{ cursor: 'pointer' }}>Abhimanyu Vishwakarma</h2>
         </div>
 
         {/* Navigation Links */}
@@ -157,8 +169,16 @@ const MobileMenu = ({ isMenuOpen, setIsMenuOpen, currentPage, onNavigate }) => {
         <div className="mobile-copyright-notice">
           <p>© 2026 Abhimanyu Vishwakarma. All rights reserved.</p>
           <div className="mobile-menu-legal">
-            <a href="#privacy-policy" onClick={closeMenu}>Legal Notice</a>
-            <a href="#privacy-policy" onClick={closeMenu}>Privacy Policy</a>
+            <button
+              type="button"
+              className="privacy-legal-trigger"
+              onClick={() => {
+                closeMenu();
+                if (openLegalModal) openLegalModal();
+              }}
+            >
+              Privacy & Legal
+            </button>
           </div>
         </div>
       </div>

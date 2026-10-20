@@ -1,22 +1,149 @@
-const Footer = () => {
+import { FaLinkedinIn, FaGithub, FaXTwitter, FaInstagram, FaEnvelope } from 'react-icons/fa6';
+import './Footer.css';
+
+const Footer = ({ onNavigate, openLegalModal }) => {
+  const handleNav = (page, targetId) => (e) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(page, targetId);
+    }
+  };
+
   return (
-    <footer style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-        <p>© 2026 Abhimanyu Vishwakarma</p>
-        <p>Built with care <span className="heart-beat">❤️</span></p>
-      </div>
-      <div id="privacy-policy" style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '11px', color: 'var(--muted)', lineHeight: '1.6', textAlign: 'center' }}>
-        <p style={{ marginBottom: '6px', color: 'var(--text)', fontWeight: '600', fontSize: '12px' }}>Privacy Policy</p>
-        <div style={{ textAlign: 'left', width: '100%', margin: '0 auto' }}>
-          <p style={{ marginBottom: '10px' }}>
-            <strong>Data Collection:</strong> This website is a personal portfolio and does not actively collect, store, or process any personal data from its visitors. It operates entirely without the use of tracking cookies, analytics tools, or third-party advertising scripts. Your browsing experience here is completely private.
-          </p>
-          <p style={{ marginBottom: '10px' }}>
-            <strong>Communication & Privacy:</strong> If you choose to contact me via email or through any linked professional platforms (such as LinkedIn or GitHub), any personal information you provide will be kept strictly confidential. Your details will only be used for the direct purpose of responding to your inquiry and will never be shared, sold, or distributed.
-          </p>
-          <p>
-            <strong>External Links:</strong> This site contains outbound links to external websites and platforms. Please be aware that I am not responsible for the privacy practices, data collection, or content of these external sites. Once you leave this portfolio, their respective privacy policies and terms of service will apply.
-          </p>
+    <footer className="site-footer">
+      <div className="footer-container">
+        {/* Top Row: Brand Info, Navigation Links, Social Icons */}
+        <div className="footer-top-row">
+          <div className="footer-brand">
+            <h2 
+              className="footer-title"
+              onClick={handleNav('home', 'top')}
+              role="button"
+              tabIndex={0}
+              aria-label="Back to home top"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleNav('home', 'top')(e);
+                }
+              }}
+            >
+              Abhimanyu Vishwakarma
+            </h2>
+            <p className="footer-subtitle">Building scalable systems and digital solutions</p>
+          </div>
+
+          <nav className="footer-nav" aria-label="Footer Navigation">
+            <a 
+              href="#about" 
+              onClick={handleNav('home', 'about')}
+            >
+              About
+            </a>
+            <a 
+              href="#experience" 
+              onClick={handleNav('home', 'experience')}
+            >
+              Experience
+            </a>
+            <a 
+              href="#work" 
+              onClick={handleNav('home', 'work')}
+            >
+              Projects
+            </a>
+            <a 
+              href="#arcade" 
+              onClick={handleNav('arcade')}
+            >
+              Arcade
+            </a>
+            <a 
+              href="#contact" 
+              onClick={handleNav('contact')}
+            >
+              Contact
+            </a>
+          </nav>
+
+          <div className="footer-socials" aria-label="Social Profiles">
+            <a 
+              href="https://www.linkedin.com/in/mrabhimanyu/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn" 
+              aria-label="LinkedIn Profile"
+            >
+              <FaLinkedinIn aria-hidden="true" />
+            </a>
+            <a 
+              href="https://github.com/mrAbhimanyuVishwakarma" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn" 
+              aria-label="GitHub Profile"
+            >
+              <FaGithub aria-hidden="true" />
+            </a>
+            <a 
+              href="https://x.com/mrAbhimanyu07" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn" 
+              aria-label="X (Twitter) Profile"
+            >
+              <FaXTwitter aria-hidden="true" />
+            </a>
+            <a 
+              href="https://instagram.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn" 
+              aria-label="Instagram Profile"
+            >
+              <FaInstagram aria-hidden="true" />
+            </a>
+            <a 
+              href="mailto:abhimanyuvishwakarma9228@gmail.com" 
+              className="footer-social-btn" 
+              aria-label="Send Direct Email"
+            >
+              <FaEnvelope aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+
+        {/* Crisp Horizontal Divider */}
+        <div className="footer-divider" role="separator" />
+
+        {/* Bottom Row: Copyright, Legal Links, Location */}
+        <div className="footer-bottom-row">
+          <div className="footer-copyright">
+            © 2026 Abhimanyu Vishwakarma. All rights reserved.
+          </div>
+
+          <div className="footer-legal-links">
+            <button
+              type="button"
+              className="footer-legal-btn"
+              onClick={openLegalModal}
+              aria-label="Open Legal Notice modal"
+            >
+              Legal Notice
+            </button>
+            <button
+              type="button"
+              className="footer-legal-btn"
+              onClick={openLegalModal}
+              aria-label="Open Privacy Policy modal"
+            >
+              Privacy Policy
+            </button>
+          </div>
+
+          <div className="footer-location">
+            Made in Bengaluru, India 🇮🇳
+          </div>
         </div>
       </div>
     </footer>

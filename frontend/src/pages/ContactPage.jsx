@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { FaEnvelope, FaLinkedin } from 'react-icons/fa';
 import confetti from 'canvas-confetti';
 import emailjs from '@emailjs/browser';
@@ -19,11 +19,44 @@ const ContactPage = ({ onNavigate }) => {
   const [consent, setConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | 'rate-limited' | null
-  const [timeUntilNextMessage, setTimeUntilNextMessage] = useState(0);
-  const [timerActive, setTimerActive] = useState(false);
+  const [timeUntilNextMessage, setTimeUntilNextMessage] = useState(() => {
+    if (typeof window === 'undefined') return 0;
+    const lastMessageTime = localStorage.getItem('lastMessageTime');
+    if (lastMessageTime) {
+      const currentTime = new Date().getTime();
+      const timeDiff = currentTime - parseInt(lastMessageTime, 10);
+      const waitTime = 600000; // 10 minutes in ms
+      if (timeDiff < waitTime) {
+        return Math.ceil((waitTime - timeDiff) / 1000);
+      }
+    }
+    return 0;
+  });
+  const [timerActive, setTimerActive] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const lastMessageTime = localStorage.getItem('lastMessageTime');
+    if (lastMessageTime) {
+      const currentTime = new Date().getTime();
+      const timeDiff = currentTime - parseInt(lastMessageTime, 10);
+      return timeDiff < 600000;
+    }
+    return false;
+  });
 
-  useEffect(() => {
-    checkRateLimit();
+  const checkRateLimit = useCallback(() => {
+    const lastMessageTime = localStorage.getItem('lastMessageTime');
+    if (lastMessageTime) {
+      const currentTime = new Date().getTime();
+      const timeDiff = currentTime - parseInt(lastMessageTime, 10);
+      const waitTime = 600000; // 10 minutes in ms
+      if (timeDiff < waitTime) {
+        const remainingTime = Math.ceil((waitTime - timeDiff) / 1000);
+        setTimeUntilNextMessage(remainingTime);
+        setTimerActive(true);
+        return true;
+      }
+    }
+    return false;
   }, []);
 
   useEffect(() => {
@@ -43,22 +76,6 @@ const ContactPage = ({ onNavigate }) => {
     }
     return () => clearInterval(interval);
   }, [timerActive, timeUntilNextMessage]);
-
-  const checkRateLimit = () => {
-    const lastMessageTime = localStorage.getItem('lastMessageTime');
-    if (lastMessageTime) {
-      const currentTime = new Date().getTime();
-      const timeDiff = currentTime - parseInt(lastMessageTime, 10);
-      const waitTime = 600000; // 10 minutes in ms
-      if (timeDiff < waitTime) {
-        const remainingTime = Math.ceil((waitTime - timeDiff) / 1000);
-        setTimeUntilNextMessage(remainingTime);
-        setTimerActive(true);
-        return true;
-      }
-    }
-    return false;
-  };
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);

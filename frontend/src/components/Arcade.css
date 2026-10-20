@@ -800,9 +800,9 @@ html[data-theme="light"] .game-modal-card {
 /* Featured Left Card: Ball Striker Challenge */
 .modal-featured-card {
   background: rgba(16, 22, 34, 0.92);
-  border: 1.5px solid #00B8D4;
+  border: 1.5px solid var(--border);
   border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0, 184, 212, 0.22), inset 0 0 15px rgba(0, 184, 212, 0.08);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.08), inset 0 0 15px rgba(255, 255, 255, 0.04);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -812,13 +812,14 @@ html[data-theme="light"] .game-modal-card {
 
 html[data-theme="light"] .modal-featured-card {
   background: #ffffff;
-  border: 2px solid #00B8D4;
-  box-shadow: 0 8px 30px rgba(0, 184, 212, 0.18);
+  border: 2px solid var(--border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
 .modal-featured-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 35px rgba(0, 184, 212, 0.35);
+  border-color: var(--accent);
+  box-shadow: 0 0 35px var(--accent-soft);
 }
 
 .featured-banner-wrapper {
@@ -872,10 +873,10 @@ html[data-theme="light"] .modal-featured-card {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  background: linear-gradient(90deg, #00B8D4 0%, #00E5FF 100%);
-  color: #080c14;
+  background: var(--text);
+  color: var(--bg);
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0, 229, 255, 0.4);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
   transition: all 0.25s ease;
   display: flex;
   align-items: center;
@@ -885,8 +886,9 @@ html[data-theme="light"] .modal-featured-card {
 }
 
 .modal-launch-btn:hover {
-  background: linear-gradient(90deg, #00e5ff 0%, #38bdf8 100%);
-  box-shadow: 0 6px 24px rgba(0, 229, 255, 0.6);
+  background: var(--text);
+  filter: brightness(1.15);
+  box-shadow: 0 6px 24px var(--accent-soft);
   transform: translateY(-2px);
 }
 
