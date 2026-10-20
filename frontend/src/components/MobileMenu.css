@@ -1,0 +1,391 @@
+/* ==========================================================================
+   MOBILE MENU (Matching Duarte Santos Portfolio style for Light & Dark)
+   ========================================================================== */
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 100005;
+  overscroll-behavior: contain;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 
+    opacity 0.35s ease, 
+    visibility 0.35s ease,
+    transform 0.35s cubic-bezier(0.77, 0, 0.175, 1);
+  transform: scale(0.92);
+  transform-origin: top right;
+}
+
+/* Dark mode background - Warm rich matte charcoal gradient */
+.mobile-menu-overlay.dark {
+  background: linear-gradient(125deg, #3D3935 0%, #2A2723 50%, #504A45 100%);
+  color: #E6E3DF;
+}
+
+/* Light mode background - Warm stone / linen sand gradient */
+.mobile-menu-overlay.light {
+  background: linear-gradient(125deg, #E6E3DF 0%, #B8B2AA 50%, #F3F0EC 100%);
+  color: #3D3935;
+}
+
+.mobile-menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* Close Button (top-right X) */
+.mobile-menu-close-btn {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  cursor: pointer;
+  z-index: 100006;
+  background: none;
+  border: none;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.85;
+}
+
+.mobile-menu-close-btn:hover {
+  opacity: 1;
+  transform: scale(1.1) rotate(90deg);
+}
+
+/* Content Container */
+.mobile-menu-content {
+  width: 90%;
+  max-width: 520px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  gap: 1.85rem;
+  max-height: 100dvh;
+  box-sizing: border-box;
+}
+
+/* Header: Memoji Avatar & Name */
+.mobile-menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.memoji-wrapper {
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border-radius: 50%;
+}
+
+.memoji-wrapper:hover {
+  transform: scale(1.06);
+}
+
+.memoji {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 15%;
+  display: block;
+}
+
+.mobile-menu-overlay.dark .memoji {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.mobile-menu-overlay.light .memoji {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.mobile-menu-name {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(1.85rem, 5vw, 2.35rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.mobile-menu-overlay.dark .mobile-menu-name {
+  color: #E6E3DF;
+}
+
+.mobile-menu-overlay.light .mobile-menu-name {
+  color: #3D3935;
+}
+
+/* Navigation Links */
+.mobile-menu-links {
+  position: static !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1.35rem !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.mobile-menu-links a {
+  text-decoration: none;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(1.45rem, 4.2vw, 1.85rem);
+  font-weight: 400;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  opacity: 0.72;
+  position: relative !important;
+  display: inline-block !important;
+  width: fit-content;
+  margin: 0 auto;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.mobile-menu-overlay.dark .mobile-menu-links a {
+  color: #E6E3DF;
+}
+
+.mobile-menu-overlay.light .mobile-menu-links a {
+  color: #3D3935;
+}
+
+.mobile-menu-links a:hover,
+.mobile-menu-links a.active {
+  opacity: 1;
+  transform: translateY(-2px);
+  background: none !important;
+}
+
+.mobile-menu-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.mobile-menu-overlay.dark .mobile-menu-links a::after {
+  background-color: #E6E3DF;
+}
+
+.mobile-menu-overlay.light .mobile-menu-links a::after {
+  background-color: #3D3935;
+}
+
+.mobile-menu-links a:hover::after,
+.mobile-menu-links a.active::after {
+  width: 100%;
+}
+
+/* Options Row: Theme Toggle & Language */
+.mobile-menu-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.mobile-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: none;
+  cursor: pointer;
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.mobile-menu-overlay.dark .mobile-theme-toggle {
+  color: #E6E3DF;
+  border: 1.5px solid rgba(230, 227, 223, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mobile-menu-overlay.light .mobile-theme-toggle {
+  color: #3D3935;
+  border: 1.5px solid rgba(61, 57, 53, 0.35);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.mobile-theme-toggle:hover {
+  transform: scale(1.04);
+  opacity: 1;
+}
+
+.mobile-theme-toggle:active {
+  transform: scale(0.97);
+}
+
+.mobile-lang-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.mobile-menu-overlay.dark .mobile-lang-picker {
+  color: #E6E3DF;
+  border: 1.5px solid rgba(230, 227, 223, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mobile-menu-overlay.light .mobile-lang-picker {
+  color: #3D3935;
+  border: 1.5px solid rgba(61, 57, 53, 0.35);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.lang-flag {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.lang-arrow {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+/* Social Links */
+.mobile-menu-social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.85rem;
+}
+
+.mobile-menu-social a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.75;
+}
+
+.mobile-menu-overlay.dark .mobile-menu-social a {
+  color: #E6E3DF;
+}
+
+.mobile-menu-overlay.light .mobile-menu-social a {
+  color: #3D3935;
+}
+
+.mobile-menu-social a:hover {
+  opacity: 1;
+  transform: scale(1.18);
+}
+
+/* Copyright & Legal */
+.mobile-copyright-notice {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.mobile-menu-overlay.dark .mobile-copyright-notice {
+  color: rgba(230, 227, 223, 0.65);
+}
+
+.mobile-menu-overlay.light .mobile-copyright-notice {
+  color: rgba(61, 57, 53, 0.65);
+}
+
+.mobile-copyright-notice p {
+  margin: 0;
+}
+
+.mobile-menu-legal {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.mobile-menu-legal a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.78rem;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, text-decoration 0.2s ease;
+}
+
+.mobile-menu-legal a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Body lock on open */
+body.menu-open {
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+/* Responsive optimization for shorter phone viewports */
+@media (max-height: 740px) {
+  .mobile-menu-content {
+    gap: 1.2rem;
+    padding: 1.2rem 1rem;
+  }
+  .memoji {
+    width: 72px;
+    height: 72px;
+  }
+  .mobile-menu-header {
+    gap: 0.45rem;
+  }
+  .mobile-menu-name {
+    font-size: 1.7rem;
+  }
+  .mobile-menu-links {
+    gap: 0.95rem;
+  }
+  .mobile-menu-links a {
+    font-size: 1.4rem;
+  }
+  .mobile-menu-social {
+    gap: 1.4rem;
+  }
+}
