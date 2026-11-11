@@ -1,34 +1,178 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTheme } from './context/ThemeContext';
 import './index.css';
 import Navbar from './components/Navbar';
 import MobileMenu from './components/MobileMenu';
 import Projects from './components/Projects';
+import Experience from './components/Experience';
 import Contact from './components/Contact';
+import ContactPage from './pages/ContactPage';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
 import Football from './components/Football';
 import Arcade from './components/Arcade';
+import LegalModal from './components/LegalModal';
 import Lenis from 'lenis';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [lenis, setLenis] = useState(null);
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+  const lenisRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#arcade') {
-      return 'arcade';
+    if (typeof window !== 'undefined') {
+      const validHashes = new Set(['', '#', '#about', '#experience', '#work', '#arcade', '#contact']);
+      const isUnknownPath = window.location.pathname !== '/' && window.location.pathname !== '';
+      const isUnknownHash = !validHashes.has(window.location.hash);
+      if (isUnknownPath || isUnknownHash) {
+        return 'home';
+      }
+      if (window.location.hash === '#arcade') return 'arcade';
+      if (window.location.hash === '#contact') return 'contact';
     }
     return 'home';
   });
+
+  // Auto-Redirect Unknown URLs & Hashes to Home
+  useEffect(() => {
+    const validHashes = new Set(['', '#', '#about', '#experience', '#work', '#arcade', '#contact']);
+    const isUnknownPath = window.location.pathname !== '/' && window.location.pathname !== '';
+    const isUnknownHash = !validHashes.has(window.location.hash);
+
+    if (isUnknownPath || isUnknownHash) {
+      window.history.replaceState(null, '', '/');
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { duration: 0.5 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }, []);
   
   const { theme } = useTheme();
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
 
-  // Add your future light-mode background video paths here
+  // Light-mode background video paths
   const LIGHT_MODE_VIDEO_WEBM = '';
   const LIGHT_MODE_VIDEO_MP4 = '/Background/Web/2.f1-wallpaper_light.mp4';
-  // Fallbacks if no light mode video is provided
-  const hasLightVideo = LIGHT_MODE_VIDEO_WEBM || LIGHT_MODE_VIDEO_MP4;
+  const hasLightVideo = Boolean(LIGHT_MODE_VIDEO_WEBM || LIGHT_MODE_VIDEO_MP4);
+
+  // Navigation handler
+  const handleNavigate = useCallback((page, targetId) => {
+    if (page === 'arcade') {
+      setCurrentPage('arcade');
+      window.location.hash = '#arcade';
+      requestAnimationFrame(() => {
+        lenisRef.current?.resize();
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    } else if (page === 'contact') {
+      setCurrentPage('contact');
+      window.location.hash = '#contact';
+      requestAnimationFrame(() => {
+        lenisRef.current?.resize();
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    } else {
+      setCurrentPage('home');
+      if (targetId === 'top' || !targetId) {
+        if (window.location.hash && window.location.hash !== '') {
+          window.history.pushState(null, '', window.location.pathname);
+        }
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { duration: 0.8 });
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        setTimeout(() => {
+          lenisRef.current?.resize();
+          if (window.scrollY > 40) {
+            if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.4 });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }, 120);
+      } else if (targetId === 'about') {
+        window.location.hash = '#about';
+        const scrollToAbout = () => {
+          lenisRef.current?.resize();
+          const targetElement = document.getElementById('about');
+          if (targetElement) {
+            const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
+            if (lenisRef.current) {
+              lenisRef.current.scrollTo(targetElement, { offset: -navbarHeight, duration: 0.8 });
+            } else {
+              targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+          } else {
+            if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.8 });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        };
+        requestAnimationFrame(scrollToAbout);
+        setTimeout(scrollToAbout, 120);
+      } else if (targetId === 'work' || targetId === 'experience' || targetId === 'privacy-policy') {
+        window.location.hash = `#${targetId}`;
+        const scrollToTarget = () => {
+          lenisRef.current?.resize();
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
+            if (lenisRef.current) {
+              lenisRef.current.scrollTo(targetElement, { offset: -navbarHeight, duration: 1.0 });
+            } else {
+              targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        };
+        requestAnimationFrame(scrollToTarget);
+        setTimeout(scrollToTarget, 120);
+      }
+    }
+  }, []);
+
+  const handleNavigateRef = useRef(handleNavigate);
+  useEffect(() => {
+    handleNavigateRef.current = handleNavigate;
+  }, [handleNavigate]);
+
+  // Monitor background video play/pause state
+  useEffect(() => {
+    const video = document.querySelector('.video-bg');
+    if (!video) return;
+
+    const handlePlay = () => setIsVideoPlaying(true);
+    const handlePause = () => setIsVideoPlaying(false);
+
+    requestAnimationFrame(() => {
+      if (video) setIsVideoPlaying(!video.paused);
+    });
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
+  }, [theme]);
+
+  // Sync body.video-paused class to show the crisp geometric grid & animated mesh
+  useEffect(() => {
+    if (!isVideoPlaying) {
+      document.body.classList.add('video-paused');
+    } else {
+      document.body.classList.remove('video-paused');
+    }
+  }, [isVideoPlaying]);
 
   useEffect(() => {
     // Lenis Smooth Scroll Setup
@@ -39,7 +183,7 @@ function App() {
       gestureDirection: 'vertical',
       smooth: true,
     });
-    setLenis(lenisInstance);
+    lenisRef.current = lenisInstance;
 
     let rafId;
     function raf(time) {
@@ -48,33 +192,8 @@ function App() {
     }
     rafId = requestAnimationFrame(raf);
 
-    // Theme setup
-    const themes = ['theme-racing-bulls', 'theme-alpine'];
-    const selectedTheme = themes[Math.floor(Math.random() * themes.length)];
-    document.documentElement.classList.add(selectedTheme);
-
-    // Dynamic SEO Metadata Injection (Hides details from Ctrl+U View Source)
-    document.title = "Abhimanyu Vishwakarma";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) metaDescription.setAttribute("content", "Backend engineer with a passion for building scalable systems and clean APIs.");
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute("content", "Abhimanyu Vishwakarma | Backend Engineer");
-    const ogDescription = document.querySelector('meta[property="og:description"]');
-    if (ogDescription) ogDescription.setAttribute("content", "Backend engineer with a passion for building scalable systems and clean APIs.");
-
-    // Code Protection Deterrents (Removed to allow inspection)
-    // const disableContextMenu = (e) => e.preventDefault();
-    // const disableDevTools = (e) => {
-    //   if (
-    //     e.key === 'F12' || 
-    //     (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || 
-    //     (e.ctrlKey && e.key === 'U') 
-    //   ) {
-    //     e.preventDefault();
-    //   }
-    // };
-    // document.addEventListener('contextmenu', disableContextMenu);
-    // document.addEventListener('keydown', disableDevTools);
+    // Dynamic SEO Metadata Injection
+    document.title = "Abhimanyu Vishwakarma — Software Development Engineer & Systems Builder";
 
     // Scroll Observer for active nav items
     const sections = document.querySelectorAll('.section');
@@ -103,8 +222,7 @@ function App() {
     }, { threshold: 0.15 });
     sections.forEach(section => revealObserver.observe(section));
 
-    // Scroll to Top & Autohide Navbar Logic using Lenis hook (Highly Optimized)
-    let lastScrollY = 0;
+    // Scroll to Top & Autohide Navbar Logic using Lenis hook
     let navElement = document.querySelector('nav');
     let scrollState = false;
     
@@ -119,10 +237,8 @@ function App() {
 
       if (!navElement) navElement = document.querySelector('nav');
       if (navElement) {
-        // Ensure the navbar is never hidden
         navElement.classList.remove('nav--hidden');
       }
-      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
     };
     lenisInstance.on('scroll', handleLenisScroll);
 
@@ -134,21 +250,39 @@ function App() {
       const href = targetLink.getAttribute('href');
       if (!href) return;
 
+      if (href === '#about') {
+        e.preventDefault();
+        handleNavigateRef.current('home', 'about');
+        return;
+      }
+
       if (href === '#arcade') {
         e.preventDefault();
-        handleNavigate('arcade');
+        handleNavigateRef.current('arcade');
+        return;
+      }
+
+      if (href === '#contact') {
+        e.preventDefault();
+        handleNavigateRef.current('contact');
         return;
       }
 
       if (href === '#work') {
         e.preventDefault();
-        handleNavigate('home', 'work');
+        handleNavigateRef.current('home', 'work');
+        return;
+      }
+
+      if (href === '#experience') {
+        e.preventDefault();
+        handleNavigateRef.current('home', 'experience');
         return;
       }
 
       if (href === '#' || href === '') {
         e.preventDefault();
-        handleNavigate('home', 'top');
+        handleNavigateRef.current('home', 'top');
         return;
       }
 
@@ -169,19 +303,62 @@ function App() {
 
     // Sync hash changes (e.g. browser back/forward buttons)
     const handleHashSync = () => {
+      const validHashes = new Set(['', '#', '#about', '#experience', '#work', '#arcade', '#contact']);
       const hash = window.location.hash;
+      if (!validHashes.has(hash)) {
+        setCurrentPage('home');
+        window.history.replaceState(null, '', '/');
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { duration: 0.5 });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+        return;
+      }
       if (hash === '#arcade') {
         setCurrentPage('arcade');
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.5 });
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      } else if (hash === '#contact') {
+        setCurrentPage('contact');
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.5 });
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       } else {
         setCurrentPage('home');
+        requestAnimationFrame(() => {
+          lenisRef.current?.resize();
+          if (hash === '#about' || hash === '#' || hash === '') {
+            if (lenisRef.current) lenisRef.current.scrollTo(0, { duration: 0.8 });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (hash === '#experience' || hash === '#work') {
+            const targetId = hash.substring(1);
+            setTimeout(() => {
+              const el = document.getElementById(targetId);
+              if (el) {
+                const offset = document.querySelector('nav')?.offsetHeight || 62;
+                if (lenisRef.current) lenisRef.current.scrollTo(el, { offset: -offset, duration: 1.0 });
+                else el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 80);
+          }
+        });
       }
     };
     window.addEventListener('hashchange', handleHashSync);
 
-    // Device Capability Checks (Disables hover interactive computations on Mobile/Touch screens)
+    // Device Capability Checks
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     
-    // Cached Bounding Rects to avoid layout thrashing inside mousemove loops
+    // Cached Bounding Rects
     const cachedRects = new Map();
 
     const handleHoverEnter = (e) => {
@@ -284,8 +461,6 @@ function App() {
     return () => {
       cancelAnimationFrame(rafId);
       lenisInstance.destroy();
-      // document.removeEventListener('contextmenu', disableContextMenu);
-      // document.removeEventListener('keydown', disableDevTools);
       document.removeEventListener('click', handleAnchorClick);
       window.removeEventListener('hashchange', handleHashSync);
       sections.forEach(section => observer.unobserve(section));
@@ -317,46 +492,9 @@ function App() {
     };
   }, []);
 
-  const handleNavigate = (page, targetId) => {
-    if (page === 'arcade') {
-      setCurrentPage('arcade');
-      window.location.hash = '#arcade';
-      if (lenis) {
-        lenis.scrollTo(0, { duration: 0.8 });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    } else {
-      setCurrentPage('home');
-      if (targetId === 'work') {
-        window.location.hash = '#work';
-        setTimeout(() => {
-          const targetElement = document.getElementById('work');
-          if (targetElement) {
-            const navbarHeight = document.querySelector('nav')?.offsetHeight || 62;
-            if (lenis) {
-              lenis.scrollTo(targetElement, { offset: -navbarHeight, duration: 1.0 });
-            } else {
-              targetElement.scrollIntoView({ behavior: 'smooth' });
-            }
-          }
-        }, 80);
-      } else {
-        if (window.location.hash && window.location.hash !== '') {
-          window.history.pushState(null, '', window.location.pathname);
-        }
-        if (lenis) {
-          lenis.scrollTo(0, { duration: 0.8 });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }
-    }
-  };
-
   const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0, { duration: 1.2 });
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { duration: 1.2 });
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -364,9 +502,13 @@ function App() {
 
   return (
     <>
+      {/* Dynamic Animated Mesh Gradient & Geometric Grid Overlay */}
+      <div className={`dynamic-mesh-bg ${theme === 'light' ? 'light' : 'dark'}`} />
+      <div className={`dynamic-grid-overlay ${theme === 'light' ? 'light' : 'dark'}`} />
+
       <video 
         key={theme} 
-        className="video-bg" 
+        className={`video-bg ${!isVideoPlaying ? 'video-paused' : ''}`} 
         autoPlay 
         loop 
         muted 
@@ -396,6 +538,7 @@ function App() {
         setIsMenuOpen={setIsMenuOpen} 
         currentPage={currentPage}
         onNavigate={handleNavigate}
+        openLegalModal={() => setIsLegalModalOpen(true)}
       />
       
       <SocialSidebar />
@@ -403,18 +546,31 @@ function App() {
       {currentPage === 'home' ? (
         <>
           <div className="divider"><hr /></div>
-          <Contact />
+          <Contact onNavigate={handleNavigate} openLegalModal={() => setIsLegalModalOpen(true)} />
           
+          <div className="divider"><hr /></div>
+          <Experience />
+
           <div className="divider"><hr /></div>
           <Projects />
           
           <Football />
         </>
+      ) : currentPage === 'contact' ? (
+        <ContactPage onNavigate={handleNavigate} />
       ) : (
         <Arcade onNavigate={handleNavigate} />
       )}
       
-      <Footer />
+      <Footer 
+        onNavigate={handleNavigate}
+        openLegalModal={() => setIsLegalModalOpen(true)} 
+      />
+
+      <LegalModal 
+        isOpen={isLegalModalOpen} 
+        onClose={() => setIsLegalModalOpen(false)} 
+      />
 
       <button 
         id="scroll-to-top" 

@@ -1,27 +1,97 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abhimanyu Vishwakarma — Software Development Engineer & Systems Builder</title>
+    <meta name="description" content="Software Development Engineer in Bengaluru building Java & Spring Boot microservices, Kafka event workflows, C++/.NET desktop utilities, and full-stack web apps." />
+    <meta name="keywords" content="Abhimanyu Vishwakarma, Software Development Engineer, Backend Engineer, Java, Spring Boot, Kafka, React, Full Stack Developer, Bengaluru" />
+    <meta name="author" content="Abhimanyu Vishwakarma" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://mrabhimanyu.vercel.app/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mrabhimanyu.vercel.app/" />
+    <meta property="og:title" content="Abhimanyu Vishwakarma — Software Development Engineer" />
+    <meta property="og:description" content="Full-stack systems, enterprise Java & Spring Boot microservices, desktop utilities, and interactive web applications." />
+    <meta property="og:image" content="https://mrabhimanyu.vercel.app/mrAbhimanyu.png" />
+    <meta property="og:site_name" content="Abhimanyu Vishwakarma Portfolio" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@mrAbhimanyu07" />
+    <meta name="twitter:creator" content="@mrAbhimanyu07" />
+    <meta name="twitter:title" content="Abhimanyu Vishwakarma — Software Development Engineer" />
+    <meta name="twitter:description" content="Full-stack systems, enterprise Java & Spring Boot microservices, desktop utilities, and interactive web applications." />
+    <meta name="twitter:image" content="https://mrabhimanyu.vercel.app/mrAbhimanyu.png" />
+
+    <!-- Favicons & PWA -->
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <link rel="shortcut icon" href="/favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Abhimanyu" />
+    <meta name="theme-color" content="#090b10" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
-    <meta name="description" content="Welcome to my portfolio.">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Portfolio">
-    <meta property="og:description" content="Welcome to my portfolio.">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://mrabhimanyu.vercel.app/#person",
+            "name": "Abhimanyu Vishwakarma",
+            "jobTitle": "Software Development Engineer",
+            "url": "https://mrabhimanyu.vercel.app/",
+            "image": "https://mrabhimanyu.vercel.app/mrAbhimanyu.png",
+            "email": "mailto:abhimanyuvishwakarma9228@gmail.com",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Bengaluru",
+              "addressRegion": "Karnataka",
+              "addressCountry": "IN"
+            },
+            "worksFor": {
+              "@type": "Organization",
+              "name": "Cognizant"
+            },
+            "sameAs": [
+              "https://github.com/mrAbhimanyuVishwakarma",
+              "https://www.linkedin.com/in/mrabhimanyu/",
+              "https://x.com/mrAbhimanyu07",
+              "https://www.youtube.com/@mrAbhimanyuVishwakarma"
+            ]
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://mrabhimanyu.vercel.app/#profilepage",
+            "url": "https://mrabhimanyu.vercel.app/",
+            "name": "Abhimanyu Vishwakarma — Portfolio",
+            "mainEntity": { "@id": "https://mrabhimanyu.vercel.app/#person" }
+          }
+        ]
+      }
+    </script>
+
+    <!-- Zero-FOUC Theme Init -->
     <script>
-      (function() {
+      (function () {
         try {
-          var savedTheme = localStorage.getItem('theme');
-          var theme = savedTheme || 'dark'; // Default to dark for first-time visitors
+          var saved = localStorage.getItem('theme');
+          var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+          var theme = saved || (prefersLight ? 'light' : 'dark');
           document.documentElement.setAttribute('data-theme', theme);
-          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#F1F2F4' : '#090b10');
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#F1F2F4' : '#090b10');
         } catch (e) {}
       })();
     </script>

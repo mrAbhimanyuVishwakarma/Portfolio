@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 52.1 44" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cog_g1" gradientUnits="userSpaceOnUse" x1="0" y1="33" x2="31.1" y2="33">
+      <stop offset="0" stop-color="#3d54ce"/>
+      <stop offset="1" stop-color="#35cacf"/>
+    </linearGradient>
+    <linearGradient id="cog_g2" gradientUnits="userSpaceOnUse" x1="15.3" y1="33" x2="52.1" y2="33">
+      <stop offset="0" stop-color="#13457d"/>
+      <stop offset="1" stop-color="#279698"/>
+    </linearGradient>
+    <linearGradient id="cog_g3" gradientUnits="userSpaceOnUse" x1="0" y1="11" x2="31.1" y2="11">
+      <stop offset="0" stop-color="#090086"/>
+      <stop offset="1" stop-color="#2f96a9"/>
+    </linearGradient>
+    <linearGradient id="cog_g4" gradientUnits="userSpaceOnUse" x1="15.3" y1="11" x2="52.1" y2="11">
+      <stop offset="0" stop-color="#3b62ca"/>
+      <stop offset="1" stop-color="#93dfe3"/>
+    </linearGradient>
+    <clipPath id="cog_c1"><path d="m0 22 15.3 22 15.8-9.5L22.2 22z"/></clipPath>
+    <clipPath id="cog_c2"><path d="M15.3 44h21.8l15-22z"/></clipPath>
+    <clipPath id="cog_c3"><path d="M15.3 0 0 22h22.2l8.9-12.5z"/></clipPath>
+    <clipPath id="cog_c4"><path d="m15.3 0 36.8 22-15-22z"/></clipPath>
+  </defs>
+  <path clip-path="url(#cog_c1)" fill="url(#cog_g1)" d="M0 22h31.1v22H0z"/>
+  <path clip-path="url(#cog_c2)" fill="url(#cog_g2)" d="M15.3 22h36.8v22H15.3z"/>
+  <path clip-path="url(#cog_c3)" fill="url(#cog_g3)" d="M0 0h31.1v22H0z"/>
+  <path clip-path="url(#cog_c4)" fill="url(#cog_g4)" d="M15.3 0h36.8v22H15.3z"/>
+</svg>

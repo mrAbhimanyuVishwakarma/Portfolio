@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Arcade.css';
 import FighterJetGame from './FighterJetGame';
 import F1RaceGame from './F1RaceGame';
@@ -122,7 +122,9 @@ const Arcade = ({ onNavigate }) => {
 
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
   };
 
   // Live Slingshot / Aim Drag Tracking
@@ -154,7 +156,9 @@ const Arcade = ({ onNavigate }) => {
   const handlePointerUp = (e) => {
     try {
       e.currentTarget?.releasePointerCapture?.(e.pointerId);
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
 
     if (!isChargingRef.current && !isSwipingRef.current) return;
 
@@ -165,7 +169,7 @@ const Arcade = ({ onNavigate }) => {
       aimLineRef.current.style.display = 'none';
     }
 
-    const now = Date.now();
+    const now = e.timeStamp;
     const holdDuration = Math.min(now - chargeStartTimeRef.current, 1200);
     const powerMultiplier = 0.75 + (holdDuration / 1200) * 0.55;
 
@@ -176,8 +180,8 @@ const Arcade = ({ onNavigate }) => {
     const dt = Math.max(1, now - swipeStartRef.current.time);
     const dist = Math.sqrt(swipeDx * swipeDx + swipeDy * swipeDy);
 
-    let vx = 0;
-    let vy = 0;
+    let vx;
+    let vy;
 
     // 1. Touch swipe / forward flick: if moved forward or swiped fast
     if (isSwipingRef.current && dt < 1000 && dist >= 15) {
@@ -211,26 +215,26 @@ const Arcade = ({ onNavigate }) => {
       }
     } else {
       // 3. Quick tap or direct click on the ball -> smooth kick straight towards goal!
-      vx = (Math.random() - 0.5) * 3;
+      vx = ((e.clientX % 10) / 10 - 0.5) * 3;
       vy = -13 * powerMultiplier;
     }
 
     velRef.current = { x: vx, y: vy };
     isMovingRef.current = true;
-    lastTimeRef.current = performance.now();
+    lastTimeRef.current = e.timeStamp;
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     animFrameRef.current = requestAnimationFrame(animate);
   };
 
   // Continuous Physics Loop - STRICTLY CONFINED TO PITCH ARENA FIELD
-  const animate = () => {
+  const animate = (timestamp) => {
     if (!arenaRef.current || !wrapperRef.current) return;
 
     const arenaW = arenaRef.current.clientWidth || 800;
     const arenaH = arenaRef.current.clientHeight || 680;
 
     // Delta-time normalization: prevents ball from moving too fast on 120Hz/144Hz/240Hz PC monitors
-    const now = performance.now();
+    const now = timestamp || 0;
     const rawDt = lastTimeRef.current ? (now - lastTimeRef.current) / 16.667 : 1;
     lastTimeRef.current = now;
     const dt = Math.max(0.1, Math.min(rawDt, 1.8));
@@ -353,6 +357,7 @@ const Arcade = ({ onNavigate }) => {
       window.removeEventListener('pointercancel', handleGlobalPointerUp);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const currentSkin = skins[skinIndex] || skins[0];
@@ -371,7 +376,7 @@ const Arcade = ({ onNavigate }) => {
               onClick={() => setIsGameSelectorOpen(false)}
               aria-label="Close game selector"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -389,7 +394,7 @@ const Arcade = ({ onNavigate }) => {
               {/* Left Column: Featured Main Card (Ball Striker Challenge) */}
               <div className="modal-featured-card">
                 <div className="featured-banner-wrapper">
-                  <img src="/ball_striker_banner.png" alt="Ball Striker Challenge" className="featured-banner-img" />
+                  <img src="/ball_striker_banner.png" alt="Ball Striker Challenge" className="featured-banner-img" width="560" height="280" loading="lazy" />
                 </div>
                 
                 <div className="featured-card-body">
@@ -478,7 +483,7 @@ const Arcade = ({ onNavigate }) => {
             onClick={() => onNavigate('home', 'top')}
             aria-label="Back to Portfolio"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
@@ -540,8 +545,9 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn" 
                   onClick={resetBallPosition}
                   title="Reset ball to kickoff spot"
+                  aria-label="Reset ball to kickoff spot"
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                     <path d="M3 3v5h5"></path>
                   </svg>
@@ -553,6 +559,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('f1')}
                   title="Switch to F1 Speed Sprint"
+                  aria-label="Switch to F1 Speed Sprint"
                 >
                   🏎️ Play F1 Race
                 </button>
@@ -562,6 +569,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('jet')}
                   title="Switch to Sky Strike: Fighter Jet"
+                  aria-label="Switch to Sky Strike: Fighter Jet"
                 >
                   ✈️ Play Fighter Jet
                 </button>
@@ -629,7 +637,7 @@ const Arcade = ({ onNavigate }) => {
                   title="Click or pull back to shoot! Double click to switch ball skin!"
                   style={{ touchAction: 'none', userSelect: 'none', WebkitTouchCallout: 'none' }}
                 >
-                  <img src={currentSkin.url} alt={currentSkin.name} draggable="false" />
+                  <img src={currentSkin.url} alt={currentSkin.name} draggable="false" width="60" height="60" />
                 </div>
               </div>
 
@@ -652,8 +660,9 @@ const Arcade = ({ onNavigate }) => {
                         resetBallPosition();
                       }}
                       title={`Switch to ${skin.name}`}
+                      aria-label={`Switch to ball skin: ${skin.name}`}
                     >
-                      <img src={skin.url} alt={skin.name} />
+                      <img src={skin.url} alt={skin.name} width="28" height="28" loading="lazy" />
                     </button>
                   ))}
                 </div>
@@ -682,6 +691,7 @@ const Arcade = ({ onNavigate }) => {
                     resetBallPosition();
                   }}
                   title="Switch to Football"
+                  aria-label="Switch to Football"
                 >
                   ⚽ Play Football
                 </button>
@@ -691,6 +701,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('jet')}
                   title="Switch to Sky Strike: Fighter Jet"
+                  aria-label="Switch to Sky Strike: Fighter Jet"
                 >
                   ✈️ Play Fighter Jet
                 </button>
@@ -700,6 +711,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn"
                   onClick={() => setIsGameSelectorOpen(true)}
                   title="Select Game Modal"
+                  aria-label="Open Game Menu"
                 >
                   🕹️ Game Menu
                 </button>
@@ -730,6 +742,7 @@ const Arcade = ({ onNavigate }) => {
                     resetBallPosition();
                   }}
                   title="Switch to Football"
+                  aria-label="Switch to Football"
                 >
                   ⚽ Play Football
                 </button>
@@ -739,6 +752,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn switch-game-btn"
                   onClick={() => setSelectedGame('f1')}
                   title="Switch to F1 Speed Sprint"
+                  aria-label="Switch to F1 Speed Sprint"
                 >
                   🏎️ Play F1 Race
                 </button>
@@ -748,6 +762,7 @@ const Arcade = ({ onNavigate }) => {
                   className="hud-btn"
                   onClick={() => setIsGameSelectorOpen(true)}
                   title="Select Game Modal"
+                  aria-label="Open Game Menu"
                 >
                   🕹️ Game Menu
                 </button>

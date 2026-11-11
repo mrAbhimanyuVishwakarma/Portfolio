@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './F1RaceGame.css';
 
 /**
@@ -82,7 +82,9 @@ const F1RaceGame = ({ onBackToMenu }) => {
 
         engineSoundRef.current = { osc, gain, filter };
       }
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
   };
 
   const updateEngineAudio = (speedPercent, boosting) => {
@@ -98,7 +100,9 @@ const F1RaceGame = ({ onBackToMenu }) => {
 
       const targetFilter = 400 + speedPercent * 1600;
       filter.frequency.setTargetAtTime(targetFilter, ctx.currentTime, 0.08);
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
   };
 
   const playEffect = (type) => {
@@ -148,7 +152,9 @@ const F1RaceGame = ({ onBackToMenu }) => {
           osc.stop(now + i * 0.12 + 0.36);
         });
       }
-    } catch (_) {}
+    } catch {
+      // ignore
+    }
   };
 
   // Game Engine State Refs
@@ -169,14 +175,14 @@ const F1RaceGame = ({ onBackToMenu }) => {
     nitro: 100,
     isBoosting: false,
     lap: 1,
-    lapStartTime: performance.now(),
+    lapStartTime: 0,
     skidmarks: [],
     particles: [],
     rivals: [],
     trackSegments: [],
     trackLength: 0,
     screenShake: 0,
-    lastFrameTime: performance.now(),
+    lastFrameTime: 0,
     raceFinished: false,
     finalPosition: 8
   });
@@ -192,7 +198,7 @@ const F1RaceGame = ({ onBackToMenu }) => {
 
       for (let n = 0; n < total; n++) {
         const ease = n < enter ? n / enter : n >= enter + hold ? 1 - (n - enter - hold) / leave : 1;
-        const curveVal = curve * (n < enter ? n / enter : n >= enter + hold ? 1 - (n - enter - hold) / leave : 1);
+        const curveVal = curve * ease;
         const yVal = startY + (endY - startY) * (n / total);
 
         segments.push({
@@ -807,9 +813,12 @@ const F1RaceGame = ({ onBackToMenu }) => {
       if (engineSoundRef.current) {
         try {
           engineSoundRef.current.osc.stop();
-        } catch (_) {}
+        } catch {
+      // ignore
+    }
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
