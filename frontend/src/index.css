@@ -1678,7 +1678,7 @@ html[data-theme="light"] .project-tech span {
 @keyframes fadeUp {
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(var(--footer-lift, 0px));
   }
 }
 
@@ -1716,6 +1716,7 @@ html[data-theme="light"] .project-tech span {
 
 /* Vertical Social Sidebars */
 .social-sidebar {
+  --footer-lift: 0px;
   width: 40px;
   position: fixed;
   bottom: 0;
@@ -1726,6 +1727,7 @@ html[data-theme="light"] .project-tech span {
   color: var(--text);
   opacity: 0;
   animation: fadeUp 1s ease 1.5s forwards;
+  will-change: transform;
 }
 
 .social-sidebar.left {

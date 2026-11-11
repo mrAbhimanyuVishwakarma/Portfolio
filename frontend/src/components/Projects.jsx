@@ -83,6 +83,19 @@ const Projects = () => {
       images: getProjectImages("axedrobe")
     },
     {
+      title: "Brownie Water Tracker",
+      desc: [
+        "Built a playful cross-platform hydration tracker featuring Brownie the capybara, personalized daily goals, quick drink logging, progress history, streaks, reminders, and millilitre or fluid-ounce support.",
+        "Developed an interactive mascot pool with six animated characters, optional Supabase cloud backup, and Google Play premium purchase support through RevenueCat."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/Water-Tracker",
+      liveUrl: "https://watertrackerbrownie.vercel.app/",
+      downloadUrl: "https://watertrackerbrownie.vercel.app/download",
+      tech: ["React Native", "Expo", "TypeScript", "Supabase", "RevenueCat"],
+      visibility: "Public",
+      images: getProjectImages("Brownie Water Tracker")
+    },
+    {
       title: "AxePower",
       desc: [
         "Built a modern Windows desktop application to automatically optimize laptop power plans based on charger connection status, featuring Eco, Smart, and Beast modes.",
@@ -96,6 +109,18 @@ const Projects = () => {
       images: getProjectImages("axepower")
     },
     {
+      title: "EatOne1",
+      desc: [
+        "Built a production-ready full-stack snack storefront with responsive product discovery, customer accounts, wishlists, persistent shopping bags, saved addresses, order history, and server-validated checkout flows.",
+        "Engineered a protected owner dashboard for catalog, inventory, order, subscriber, and sales-insight management using an Express API, Supabase PostgreSQL, Vercel Functions, and Razorpay-ready payments."
+      ],
+      url: "https://github.com/mrAbhimanyuVishwakarma/Eatone1",
+      liveUrl: "https://eatone1.vercel.app/",
+      tech: ["React", "Vite", "Express", "Supabase", "PostgreSQL", "Vercel"],
+      visibility: "Public",
+      images: getProjectImages("eatone1")
+    },
+    {
       title: "SmoothCam",
       desc: [
         "Built a real-time Windows virtual camera app that enhances webcam feeds up to 60 FPS and 4K resolution using motion-estimated frame generation and GPU upscalers.",
@@ -107,18 +132,6 @@ const Projects = () => {
       tech: ["C++", "DirectShow", "DirectML", "OpenCV", "DirectX 11"],
       visibility: "Public",
       images: getProjectImages("smoothcam")
-    },
-    {
-      title: "Safarnama",
-      desc: [
-        "Architected an immersive cinematic travel music web application recreating nostalgic journey atmospheres (trains, road trips, monsoon scenes) with procedural soundscape synthesis.",
-        "Engineered multi-source playback (YouTube streams & IndexedDB audio storage), algorithmic ambient sound synthesis (rail clatter, horn, rain), and a responsive glassmorphic UI."
-      ],
-      url: "https://github.com/mrAbhimanyuVishwakarma/mini-Music-Websites.git",
-      liveUrl: "https://safarnama-music.vercel.app",
-      tech: ["React", "Vite", "Web Audio API", "CSS", "IndexedDB"],
-      visibility: "Public",
-      images: getProjectImages("safarnama")
     },
     {
       title: "SyncNotes",

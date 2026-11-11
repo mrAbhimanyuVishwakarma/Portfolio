@@ -22,6 +22,40 @@ const SocialSidebar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const footer = document.querySelector('.site-footer');
+    const sidebars = document.querySelectorAll('.social-sidebar');
+    if (!footer || sidebars.length === 0) return undefined;
+
+    let frameId = null;
+
+    const updateFooterLift = () => {
+      frameId = null;
+      const isDesktop = window.matchMedia('(min-width: 1025px)').matches;
+      const footerLift = isDesktop
+        ? Math.max(0, window.innerHeight - footer.getBoundingClientRect().top)
+        : 0;
+
+      sidebars.forEach((sidebar) => {
+        sidebar.style.setProperty('--footer-lift', `${-footerLift}px`);
+      });
+    };
+
+    const scheduleFooterLift = () => {
+      if (frameId === null) frameId = requestAnimationFrame(updateFooterLift);
+    };
+
+    updateFooterLift();
+    window.addEventListener('scroll', scheduleFooterLift, { passive: true });
+    window.addEventListener('resize', scheduleFooterLift);
+
+    return () => {
+      window.removeEventListener('scroll', scheduleFooterLift);
+      window.removeEventListener('resize', scheduleFooterLift);
+      if (frameId !== null) cancelAnimationFrame(frameId);
+    };
+  }, []);
+
   // 10 seconds visible, 20 seconds vanished recurring cycle
   useEffect(() => {
     let active = true;
